@@ -1,16 +1,11 @@
-import random
 import timeit
 import matplotlib.pyplot as plt
-import pandas as pd
 
+from Week3.Qmatrix import Qmatrix
 from Week3.Stats import *
 from Week3.Robot import Robot
+from Week3.Stats import randomAction
 from Week3.World import World
-
-
-def randomAction():
-    actions = ["left", "right", "down", "up"]
-    return actions[random.randint(0, 3)]
 
 
 def plot(ratioList, rewardList, stepsList, timeList):
@@ -59,7 +54,7 @@ def plot(ratioList, rewardList, stepsList, timeList):
     plt.show()
 
 
-def main():
+def randomRun():
     # world1 = World(10, 10, 100, 0, 100)
     # print("world matrix:", world1.matrix)
     # print("nextState of 21 going down:", world1.nextState(21, "down"))
@@ -95,5 +90,58 @@ def main():
     plot(ratioList, rewardList, stepsList, timeList)
 
 
+def qualityRun(quality):
+    gameWorld = World(10, 10, 100, 1, 100)
+    testBot = Robot(0, 0, gameWorld)
+
+    # start = timeit.default_timer()
+    for x in range(1000):
+        testBot.qualityWalk(quality)
+
+        print("State:",testBot.state)
+        print("Qualities",quality.matrix[testBot.state-1])
+
+    print("Walked:", testBot.statesWalked)
+
+    # stop = timeit.default_timer()
+
+    # timeList.append(stop - start)
+
+    return testBot.rewards / testBot.steps
+
+
+def randomQWalk():
+    random.seed(6)
+
+    width = 10
+    height = 10
+    rewardState = 100
+
+    gameWorld = World(width, height, rewardState, 0, 100)
+    quality = Qmatrix(gameWorld, width * height)
+    testBot = Robot(0, 0, gameWorld)
+
+    for x in range(1):
+        # print("==================", "iteration", x, "==================")
+        for test in range(2000):
+
+            # start = timeit.default_timer()
+            # while not testBot.reachgoal:
+            if test == 1000:
+                plt.imshow(quality.transform())
+                plt.show()
+                print("run 1000 ratio:", qualityRun(quality))
+            # elif test == 1999:
+            # print("run 1000",qualityRun(quality))
+            testBot.randomQualityMapingWalk(quality)
+            # stop = timeit.default_timer()
+
+            # testBot.reset()
+
+    plt.imshow(quality.transform())
+    plt.show()
+    # plot(ratioList, rewardList, stepsList, timeList)
+
+
 if __name__ == "__main__":
-    main()
+    randomQWalk()

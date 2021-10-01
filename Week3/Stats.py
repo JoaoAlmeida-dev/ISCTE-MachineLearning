@@ -1,3 +1,4 @@
+import random
 
 
 def deviation(list):
@@ -9,3 +10,10 @@ def deviation(list):
 
 def mean(list):
     return sum(list) / len(list)
+
+
+actions = ["left", "right", "down", "up"]
+
+
+def randomAction():
+    return actions[random.randint(0, 3)]

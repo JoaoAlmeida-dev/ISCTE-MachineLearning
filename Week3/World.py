@@ -1,16 +1,31 @@
+def setMatrix(width: int, height: int):
+    outerList = []
+    i = 0
+    for y in range(height):
+        innerList = []
+        for x in range(1, width + 1):
+            # if filled:
+            value = x + i
+            # else:
+            #  value = 0
+            innerList.append(value)
+        outerList.insert(y, innerList)
+        i = i + width
+
+    return outerList
 
 
 class World:
 
-    def __init__(self, width, height, rewardState, initialState, worldReward):
+    def __init__(self, width: int, height: int, rewardState: int, initialState: int, worldReward: int):
         self.width = width
         self.height = height
         self.rewardState = rewardState
         self.worldReward = worldReward
         self.initialState = initialState
-        self.matrix = self.setMatrix(width, height)
+        self.matrix = setMatrix(width, height)
 
-    def nextState(self, s, a):
+    def nextState(self, s: int, a: str):
         if a == "up" and s > self.width:
             return s - self.width
         elif a == "down" and s < (self.height * self.width - self.width):
@@ -22,9 +37,18 @@ class World:
         else:
             return s
 
-    def reward(self, s):
+    def walkable(self, state: int, action: str) -> bool:
+        if (action == "up" and state > self.width) \
+                or (action == "down" and state < (self.height * self.width - self.width)) \
+                or (action == "left" and state % self.width != 1) \
+                or (action == "right" and state % self.width != 0):
+            return True
+        else:
+            return False
+
+    def reward(self, s: str):
         if s == self.rewardState:
-            print("REWARDS")
+            print("REWARD REACHED")
             return self.worldReward
         else:
             return 0
@@ -36,15 +60,3 @@ class World:
             bot.state = self.initialState
         else:
             bot.state = bot.state
-
-    def setMatrix(self,width, height):
-        outerList = []
-        i = 0
-        for y in range(height):
-            innerList = []
-            for x in range(1, width + 1):
-                innerList.append(x + i)
-            outerList.insert(y, innerList)
-            i = i + width
-
-        return outerList
