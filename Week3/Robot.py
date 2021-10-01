@@ -20,10 +20,10 @@ class Robot:
         return self.state
 
     def qualityWalk(self, Qmatrix):
-        #maxq = Qmatrix.maxQ(self.state)
-        #action = Qmatrix.decodeAction(self.state-1, maxq)
+        # maxq = Qmatrix.maxQ(self.state)
+        # action = Qmatrix.decodeAction(self.state-1, maxq)
 
-        newstate =self.walk(Qmatrix.chooseBest(self.world,self.state))
+        newstate = self.walk(Qmatrix.chooseBest(self.world, self.state))
 
         return self.state
 

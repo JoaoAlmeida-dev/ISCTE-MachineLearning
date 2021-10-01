@@ -1,3 +1,5 @@
+import builtins
+
 from Week3 import World
 from Week3.Stats import actions
 
@@ -31,13 +33,26 @@ class Qmatrix():
         self.matrix[s][actionnum] = (1 - alfa) * self.matrix[s][actionnum] + alfa * (
                 rs + discount * self.maxQ(nextState))
 
+    def decodeAction(self, state, value):
+        qualityState = self.matrix[state]
+        index = qualityState.index(value)
+        return actions[index]
+
     def maxQ(self, s):
         return max(self.matrix[s - 1], default=0)
         # actions.index(randomAction()))
 
     def chooseBest(self, world: World, state: int) -> str:
-        max = self.maxQ(state)
-        return world.walkable(state, self.decodeAction(state-1, max))
+        qualityCopy = self.matrix[state-1].copy()
+
+        maxquality = self.maxQ(state)
+
+        action = self.decodeAction(state - 1, maxquality)
+        while not world.walkable(state, action):
+            qualityCopy[qualityCopy.index(maxquality)] = -1
+            maxquality = builtins.max(qualityCopy)
+            action = actions[qualityCopy.index(maxquality)]
+        return action
 
     def transform(self):
         outerList = []
@@ -51,8 +66,3 @@ class Qmatrix():
 
         print(outerList)
         return outerList
-
-    def decodeAction(self, state, value):
-        qualityState = self.matrix[state]
-        index = qualityState.index(value)
-        return actions[index]

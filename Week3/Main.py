@@ -6,6 +6,7 @@ from Week3.Stats import *
 from Week3.Robot import Robot
 from Week3.Stats import randomAction
 from Week3.World import World
+import seaborn as sns; sns.set_theme()
 
 
 def plot(ratioList, rewardList, stepsList, timeList):
@@ -98,20 +99,19 @@ def qualityRun(quality):
     for x in range(1000):
         testBot.qualityWalk(quality)
 
-        print("State:",testBot.state)
-        print("Qualities",quality.matrix[testBot.state-1])
+        # print("State:", testBot.state)
+        # print("Qualities", quality.matrix[testBot.state - 1])
 
     print("Walked:", testBot.statesWalked)
 
     # stop = timeit.default_timer()
-
     # timeList.append(stop - start)
 
     return testBot.rewards / testBot.steps
 
 
 def randomQWalk():
-    random.seed(6)
+    # random.seed(6)
 
     width = 10
     height = 10
@@ -123,24 +123,42 @@ def randomQWalk():
 
     for x in range(1):
         # print("==================", "iteration", x, "==================")
-        for test in range(2000):
+        for test in range(20000):
+            testBot.randomQualityMapingWalk(quality)
 
             # start = timeit.default_timer()
             # while not testBot.reachgoal:
-            if test == 1000:
-                plt.imshow(quality.transform())
-                plt.show()
-                print("run 1000 ratio:", qualityRun(quality))
-            # elif test == 1999:
-            # print("run 1000",qualityRun(quality))
-            testBot.randomQualityMapingWalk(quality)
-            # stop = timeit.default_timer()
 
+
+            if test == 5000:
+                plt.subplot(2, 2, 1)
+                testrun(quality, 5000)
+            elif test == 10000:
+                plt.subplot(2, 2, 2)
+                testrun(quality, 10000)
+            elif test == 15000:
+                plt.subplot(2, 2, 3)
+                testrun(quality, 15000)
+            elif test == 19999:
+                plt.subplot(2, 2, 4)
+                testrun(quality, 19999)
+
+            # stop = timeit.default_timer()
             # testBot.reset()
 
-    plt.imshow(quality.transform())
+    # plt.imshow(quality.transform())
+    plt.tight_layout()
     plt.show()
     # plot(ratioList, rewardList, stepsList, timeList)
+
+
+def testrun(quality, run: int):
+    #plt.imshow(quality.transform())
+    title = "run n" + str(run)
+    plt.title(title)
+    # plt.show()
+    sns.heatmap(quality.transform(), annot=True, fmt=".2F", annot_kws={"fontsize":7})
+    print("run", run, ", ratio:", qualityRun(quality))
 
 
 if __name__ == "__main__":
