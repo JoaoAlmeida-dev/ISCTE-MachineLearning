@@ -17,3 +17,8 @@ actions = ["left", "right", "down", "up"]
 
 def randomAction():
     return actions[random.randint(0, 3)]
+
+
+def pretty_print(matrix, string):
+    for x in range(len(matrix)):
+        print(string, matrix[x])

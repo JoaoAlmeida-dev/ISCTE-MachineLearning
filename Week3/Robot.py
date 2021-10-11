@@ -16,23 +16,23 @@ class Robot:
         self.steps = self.steps + 1
         self.state = self.world.nextState(self.state, action)
         self.statesWalked.append(self.state)
-        self.world.endOfEpisode(self)
+        self.world.end_of_episode(self)
         return self.state
 
-    def qualityWalk(self, Qmatrix):
+    def quality_walk(self, Qmatrix):
         # maxq = Qmatrix.maxQ(self.state)
         # action = Qmatrix.decodeAction(self.state-1, maxq)
 
-        newstate = self.walk(Qmatrix.chooseBest(self.world, self.state))
+        newstate = self.walk(Qmatrix.choose_best(self.world, self.state))
 
         return self.state
 
-    def randomQualityMapingWalk(self, Qmatrix):
+    def random_quality_maping_walk(self, Qmatrix):
         action = randomAction()
         currstate = self.state
         newstate = self.walk(action)
 
-        Qmatrix.updateQ(currstate, action)
+        Qmatrix.update_quality(currstate, action)
         while currstate == newstate:
             action = randomAction()
             newstate = self.walk(action)
@@ -40,7 +40,7 @@ class Robot:
         self.statesWalked.append(self.state)
         return newstate
 
-    def randomWalk(self):
+    def random_walk(self):
         currstate = self.state
         newstate = self.walk(randomAction())
         while currstate == newstate:

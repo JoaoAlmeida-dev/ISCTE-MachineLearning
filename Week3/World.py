@@ -1,3 +1,6 @@
+import random
+
+
 def setMatrix(width: int, height: int):
     outerList = []
     i = 0
@@ -48,15 +51,17 @@ class World:
 
     def reward(self, s: str):
         if s == self.rewardState:
-            print("REWARD REACHED")
+            # print("REWARD REACHED")
             return self.worldReward
         else:
             return 0
 
-    def endOfEpisode(self, bot):
+    def end_of_episode(self, bot):
         if bot.state == self.rewardState:
             bot.rewards = bot.rewards + self.worldReward
             bot.reachgoal = True
-            bot.state = self.initialState
+            newpos = random.randint(0, (self.width * self.height) - 1)
+            bot.state = newpos
+            print("World::end_of_episode newpos:", newpos)
         else:
             bot.state = bot.state

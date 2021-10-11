@@ -1,7 +1,7 @@
 import builtins
 
 from Week3 import World
-from Week3.Stats import actions
+from Week3.Stats import actions, pretty_print
 
 
 def setQmatrix(states: int, actionN: int):
@@ -22,7 +22,7 @@ class Qmatrix():
         self.matrix = setQmatrix(states, len(actions))
         self.world = world
 
-    def updateQ(self, s: int, a: str):
+    def update_quality(self, s: int, a: str):
         alfa = 0.7
         discount = 0.99
 
@@ -31,23 +31,23 @@ class Qmatrix():
         actionnum = actions.index(a)
 
         self.matrix[s][actionnum] = (1 - alfa) * self.matrix[s][actionnum] + alfa * (
-                rs + discount * self.maxQ(nextState))
+                rs + discount * self.max_quality(nextState))
 
-    def decodeAction(self, state, value):
+    def decode_action(self, state, value):
         qualityState = self.matrix[state]
         index = qualityState.index(value)
         return actions[index]
 
-    def maxQ(self, s):
+    def max_quality(self, s):
         return max(self.matrix[s - 1], default=0)
         # actions.index(randomAction()))
 
-    def chooseBest(self, world: World, state: int) -> str:
-        qualityCopy = self.matrix[state-1].copy()
+    def choose_best(self, world: World, state: int) -> str:
+        qualityCopy = self.matrix[state - 1].copy()
 
-        maxquality = self.maxQ(state)
+        maxquality = self.max_quality(state)
 
-        action = self.decodeAction(state - 1, maxquality)
+        action = self.decode_action(state - 1, maxquality)
         while not world.walkable(state, action):
             qualityCopy[qualityCopy.index(maxquality)] = -1
             maxquality = builtins.max(qualityCopy)
@@ -60,9 +60,10 @@ class Qmatrix():
         for y in range(self.world.height):
             innerList = []
             for x in range(1, self.world.width + 1):
-                innerList.append(self.maxQ(i))
+                innerList.append(self.max_quality(i))
                 i = i + 1
             outerList.insert(y, innerList)
 
-        print(outerList)
+        pretty_print(outerList, "Qmatrix::transform")
+
         return outerList

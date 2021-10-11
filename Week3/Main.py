@@ -1,58 +1,15 @@
 import timeit
 import matplotlib.pyplot as plt
 
+from Week3.Plot import plot
 from Week3.Qmatrix import Qmatrix
 from Week3.Stats import *
 from Week3.Robot import Robot
 from Week3.Stats import randomAction
 from Week3.World import World
-import seaborn as sns; sns.set_theme()
+import seaborn as sns
 
-
-def plot(ratioList, rewardList, stepsList, timeList):
-    plt.subplot(2, 2, 1)
-    plt.title("Times")
-    plt.plot(timeList)
-    print("timeMean", mean(timeList))
-    print("timeDeviation", deviation(timeList))
-
-    plt.subplot(2, 2, 2)
-    plt.title("Rewards")
-    plt.plot(rewardList)
-    print("rewardMean", mean(rewardList))
-    print("rewardDeviation", deviation(rewardList))
-
-    plt.subplot(2, 2, 3)
-    plt.title("Steps")
-    plt.plot(stepsList)
-    print("stepsMean", mean(stepsList))
-    print("stepsDeviation", deviation(stepsList))
-
-    plt.subplot(2, 2, 4)
-    plt.title("Ratios")
-    plt.plot(ratioList)
-    print("ratiosMean", mean(ratioList))
-    print("ratiosDeviation", deviation(ratioList))
-    plt.tight_layout()
-    plt.show()
-
-    plt.subplot(2, 2, 1)
-    plt.title("Times")
-    plt.boxplot(timeList)
-
-    plt.subplot(2, 2, 2)
-    plt.title("Rewards")
-    plt.boxplot(rewardList)
-
-    plt.subplot(2, 2, 3)
-    plt.title("Steps")
-    plt.boxplot(stepsList)
-
-    plt.subplot(2, 2, 4)
-    plt.title("Ratios")
-    plt.boxplot(ratioList)
-    plt.tight_layout()
-    plt.show()
+sns.set_theme()
 
 
 def randomRun():
@@ -75,9 +32,10 @@ def randomRun():
     ratioList = []
 
     for test in range(30):
-        print("==================", "iteration", test, "==================")
+        print("Main::randomRun", "==================", "iteration", test, "==================")
+
         start = timeit.default_timer()
-        while not testBot.reachgoal:
+        for x in range(1000):
             testBot.walk(randomAction())
         stop = timeit.default_timer()
 
@@ -97,12 +55,12 @@ def qualityRun(quality):
 
     # start = timeit.default_timer()
     for x in range(1000):
-        testBot.qualityWalk(quality)
+        testBot.quality_walk(quality)
 
-        # print("State:", testBot.state)
-        # print("Qualities", quality.matrix[testBot.state - 1])
+        # print("Main-qualityRun","State:", testBot.state)
+        # print("Main-qualityRun","Qualities", quality.matrix[testBot.state - 1])
 
-    print("Walked:", testBot.statesWalked)
+    print("Main::qualityRun", "Walked:", testBot.statesWalked)
 
     # stop = timeit.default_timer()
     # timeList.append(stop - start)
@@ -110,38 +68,42 @@ def qualityRun(quality):
     return testBot.rewards / testBot.steps
 
 
-def randomQWalk():
+def random_qwalk():
     # random.seed(6)
 
     width = 10
     height = 10
     rewardState = 100
 
-    gameWorld = World(width, height, rewardState, 0, 100)
-    quality = Qmatrix(gameWorld, width * height)
-    testBot = Robot(0, 0, gameWorld)
+    gameWorld = World(width=width, height=height, rewardState=rewardState, initialState=0, worldReward=100)
+    quality = Qmatrix(world=gameWorld, states=width * height)
+    testBot = Robot(rewards=0, steps=0, world=gameWorld)
+    n1 = 5000
+    n2 = 10000
+    n3 = 15000
+    n4 = 20000
 
     for x in range(1):
         # print("==================", "iteration", x, "==================")
         for test in range(20000):
-            testBot.randomQualityMapingWalk(quality)
+            testBot.random_quality_maping_walk(quality)
 
             # start = timeit.default_timer()
             # while not testBot.reachgoal:
 
-
-            if test == 5000:
+            if test == n1 - 1:
                 plt.subplot(2, 2, 1)
-                testrun(quality, 5000)
-            elif test == 10000:
+                testrun(quality, n1)
+            elif test == n2 - 1:
                 plt.subplot(2, 2, 2)
-                testrun(quality, 10000)
-            elif test == 15000:
+                testrun(quality, n2)
+            elif test == n3 - 1:
                 plt.subplot(2, 2, 3)
-                testrun(quality, 15000)
-            elif test == 19999:
+                testrun(quality, n3)
+            elif test == n4 - 1:
                 plt.subplot(2, 2, 4)
-                testrun(quality, 19999)
+                testrun(quality, n4)
+                pretty_print(quality.matrix, "Main::random_qwalk")
 
             # stop = timeit.default_timer()
             # testBot.reset()
@@ -153,13 +115,16 @@ def randomQWalk():
 
 
 def testrun(quality, run: int):
-    #plt.imshow(quality.transform())
+    # plt.imshow(quality.transform())
     title = "run n" + str(run)
     plt.title(title)
     # plt.show()
-    sns.heatmap(quality.transform(), annot=True, fmt=".2F", annot_kws={"fontsize":7})
-    print("run", run, ", ratio:", qualityRun(quality))
+    sns.heatmap(quality.transform(), annot=True, fmt=".2F", annot_kws={"fontsize": 7})
+    print("Main::testrun:", "run", run, ", ratio:", qualityRun(quality))
 
 
 if __name__ == "__main__":
-    randomQWalk()
+    # ex 1
+    # randomRun()
+    # ex 2
+    random_qwalk()
