@@ -3,6 +3,7 @@ import random
 import timeit
 
 import numpy as np
+import pylab
 import seaborn as sns
 from matplotlib import pyplot as plt
 
@@ -69,10 +70,7 @@ def line_a():
 
         return run_time, reward, steps, ratio, test_positions_list
 
-    n1 = 5000
-    n2 = 10000
-    n3 = 15000
-    n4 = 20000
+    test_step_numbers = [500, 2000, 10000, 20000]
 
     run_time_list = []
     reward_list = []
@@ -83,7 +81,7 @@ def line_a():
     metrics = []
 
     for _ in range(1):
-        for y in range(20000):
+        for y in range(1, 20001):
             action = random_action()
             current_pos = ex2_robot.current_pos
             next_state = ex2_world.next_state(_action_index=action, _current_pos=current_pos)
@@ -94,22 +92,11 @@ def line_a():
             outer_steps_list.append(next_state)
             ex2_qmatrix.update_state(_current_pos=current_pos, _action_index=action, _next_pos=next_state)
 
-            if y == n1 - 1:
-                plt.subplot(2, 2, 1)
+            if y in test_step_numbers:
+                sub__plot_index = test_step_numbers.index(y) + 1
+                plt.subplot(2, 2, sub__plot_index)
                 metrics.append(
-                    run_test(qmatrix=ex2_qmatrix, world=ex2_world, run_number=n1))
-            elif y == n2 - 1:
-                plt.subplot(2, 2, 2)
-                metrics.append(
-                    run_test(qmatrix=ex2_qmatrix, world=ex2_world, run_number=n2))
-            elif y == n3 - 1:
-                plt.subplot(2, 2, 3)
-                metrics.append(
-                    run_test(qmatrix=ex2_qmatrix, world=ex2_world, run_number=n3))
-            elif y == n4 - 1:
-                plt.subplot(2, 2, 4)
-                metrics.append(
-                    run_test(qmatrix=ex2_qmatrix, world=ex2_world, run_number=n4))
+                    run_test(qmatrix=ex2_qmatrix, world=ex2_world, run_number=y))
 
         for metric in metrics:
             run_time_list.append(metric[0])
@@ -124,13 +111,14 @@ def line_a():
         index = 1
         for steps_taken_list_iterated in steps_taken_list:
             subplot = math.ceil(math.sqrt(len(steps_taken_list)))
-            plt.subplot( subplot, subplot, index)
+            plt.subplot(subplot, subplot, index)
             matrix = generate_steps_matrix(_steps_list=steps_taken_list_iterated, _collumns=ex2_world.collumns,
                                            _rows=ex2_world.rows)
-            sns.heatmap(matrix)
+            run_number = test_step_numbers[index - 1]
+            plt.title(str(run_number))
+            sns.heatmap(matrix, linewidths=0.5 )
             index += 1
 
-        plt.title("Steps")
         plt.tight_layout()
         plt.show()
 
