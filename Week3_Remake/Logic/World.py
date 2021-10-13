@@ -49,12 +49,11 @@ class World:
     def reset_pos(self, robot):
         robot.current_pos = self.initial_state
 
-    def walk(self, _robot: Robot, _action: int):
-        _robot.current_pos = \
-            self.next_state(_action_index=_action, _current_pos=_robot.current_pos)
-        _robot.steps += 1
-        _robot.rewards += self.reward(_robot.current_pos)
-        #self.end_episode(_robot)
+    def walk(self, _robot: Robot, _action: int, _end_of_episode:bool):
+        next_state = self.next_state(_action_index=_action, _current_pos=_robot.current_pos)
+        _robot.move(new_pos=next_state, reward=self.reward(next_state))
+        if _end_of_episode:
+            self.end_episode(_robot)
         #return _robot.current_pos
 
     @staticmethod
