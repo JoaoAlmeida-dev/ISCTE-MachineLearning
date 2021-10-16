@@ -1,6 +1,6 @@
 from math import sqrt, ceil
 
-from Week3_Remake.Logic.World import World
+from Assignment1.Logic.World import World
 
 
 def main():

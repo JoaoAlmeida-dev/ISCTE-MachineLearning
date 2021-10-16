@@ -1,12 +1,12 @@
 import random
 
 import numpy
-
-from Week3_Remake.Logic.Helpers import mean
-from Week3_Remake.Logic.Plot import plot
-from Week3_Remake.Logic.Constants import actions, random_action
-from Week3_Remake.Logic.Robot import Robot
-from Week3_Remake.Logic.World import World
+from Assignment1.Logic.Helpers import mean, random_action
+from Assignment1.Logic.Plot import plot, plot_results
+from Assignment1.Logic.Constants import actions
+from Assignment1.Logic.Result import Result
+from Assignment1.Logic.Robot import Robot
+from Assignment1.Logic.World import World
 import timeit
 
 random.seed(1)
@@ -100,11 +100,11 @@ def _line_e_f():
     ratioList = []
     rewardList = []
     steps_list = []
+    results_list = []
+    steps_per_reward_list = []
     for x in range(30):
         start = timeit.default_timer()
         for y in range(1000):
-
-
             _action = random_action()
             _world_line_e.walk(_robot=_robot_line_e, _action=_action, _end_of_episode=True)
             # robot_line_e.current_pos = \
@@ -113,18 +113,24 @@ def _line_e_f():
             # robot_line_e.steps += 1
         stop = timeit.default_timer()
 
+        results_list.append(Result(_rewards=_robot_line_e.rewards,
+                                   _steps_per_reward_mean=_robot_line_e.get_steps_per_reward_mean(),
+                                   _rewards_per_step=_robot_line_e.rewards / _robot_line_e.total_steps)
+                            )
         run_time_list.append(stop - start)
         rewardList.append(_robot_line_e.rewards)
         ratioList.append(_robot_line_e.rewards / _robot_line_e.total_steps)
 
-        steps_list.append(_robot_line_e.steps_per_reward)
-        steps_mean_list = []
-        for step in steps_list:
-            steps_mean_list.append(mean(step))
+        for step in _robot_line_e.steps_per_reward:
+            steps_per_reward_list.append(step)
+
+        print(mean(steps_per_reward_list))
 
         _robot_line_e.reset()
     print("Exercise1::line_e , line_f::", )
-    plot(ratioList=ratioList, rewardList=rewardList, stepsList=steps_mean_list, timeList=run_time_list)
+
+    # plot(ratioList=ratioList, rewardList=rewardList, stepsList=steps_mean_list, timeList=run_time_list)
+    plot_results(results_list=results_list, timeList=run_time_list)
     print()
 
 

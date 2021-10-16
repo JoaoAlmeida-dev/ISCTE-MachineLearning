@@ -1,8 +1,8 @@
 import numpy as np
 from typing import List
 
-from Week3_Remake.Logic.Constants import actions
-from Week3_Remake.Logic.Robot import Robot
+from Assignment1.Logic.Constants import actions
+from Assignment1.Logic.Robot import Robot
 
 
 class World:
@@ -44,12 +44,6 @@ class World:
             return self.matrix[_pos[0]][_pos[1]]
         except IndexError:
             return 0
-#            if _pos[0] == self.reward_state[0] and _pos[1] == self.reward_state[1]:
-#                return 100
-#            elif _pos[0] < 0 or _pos[0] >= self.rows and _pos[1] < 0 or _pos[1] >= self.collumns:
-#                return 0
-#            else:
-#                return 0
 
     def end_episode(self, _robot: Robot):
         if list(_robot.current_pos) == list(self.reward_state):
@@ -67,7 +61,8 @@ class World:
 
     @staticmethod
     def _create_matrix(_collumns: int, _rows: int, _reward_state: (int, int),
-                       _penalty_pos=None    , _penalty_value: int = 0) -> np.ndarray:
+                       _penalty_pos=None, _penalty_value: int = 0
+                       ) -> np.ndarray:
         if _penalty_pos is None:
             _penalty_pos = []
         _matrix = np.full((_collumns, _rows), 0)

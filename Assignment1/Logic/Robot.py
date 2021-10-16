@@ -1,5 +1,7 @@
 from typing import List
 
+from Week3.Stats import mean
+
 
 class Robot:
 
@@ -33,3 +35,6 @@ class Robot:
         if reward != 0:
             self.steps_per_reward.append(self.steps)
             self.steps = 0
+
+    def get_steps_per_reward_mean(self):
+        return mean(self.steps_per_reward)

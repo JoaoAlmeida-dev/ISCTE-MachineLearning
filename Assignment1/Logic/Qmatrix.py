@@ -1,7 +1,8 @@
 import numpy as np
 
-from Week3_Remake.Logic.Constants import actions
-from Week3_Remake.Logic.World import World
+from Assignment1.Logic.Constants import actions
+from Assignment1.Logic.Helpers import max_index_of
+from Assignment1.Logic.World import World
 
 
 class Qmatrix:
@@ -14,9 +15,9 @@ class Qmatrix:
         alfa = 0.7
         discount = 0.99
 
-        #quality_current_state = self.matrix[_current_pos[0]][_current_pos[1]][_action_index]
-        #max_quality_next_state = max(self.matrix[_next_pos[0]][_next_pos[1]])
-        #reward = self.world.reward(_current_pos)
+        # quality_current_state = self.matrix[_current_pos[0]][_current_pos[1]][_action_index]
+        # max_quality_next_state = max(self.matrix[_next_pos[0]][_next_pos[1]])
+        # reward = self.world.reward(_current_pos)
 
         quality = (1 - alfa) \
                   * self.matrix[_current_pos[0]][_current_pos[1]][_action_index] \
@@ -34,6 +35,9 @@ class Qmatrix:
             for collumn in range(len(self.matrix[row])):
                 transformed_matrix[row][collumn] = (max(self.matrix[row][collumn]))
         return transformed_matrix
+
+    def best_action(self, pos: (int, int)) -> int:
+        return max_index_of(self.matrix[pos[0]][pos[1]])
 
     def reset(self):
         self.matrix = np.full((self.world.rows, self.world.collumns, len(actions)), 0)

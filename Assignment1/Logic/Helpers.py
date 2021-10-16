@@ -2,6 +2,8 @@ import random
 
 import numpy as np
 
+from Assignment1.Logic.Constants import actions
+
 
 def max_index_of(iterable: list) -> int:
     _max_value_indexes = []
@@ -46,12 +48,16 @@ def mean(input_list: list):
 
 
 def test_max_index_of():
-    list = [5, 1, 2, 3, 4, 5]
-    max_index = max_index_of(list)
-    print("Helpers::max_index_of(", list, ")",
+    test_list = [5, 1, 2, 3, 4, 5]
+    max_index = max_index_of(test_list)
+    print("Helpers::max_index_of(", test_list, ")",
           "index=", max_index,
-          "value=", list[max_index]
+          "value=", test_list[max_index]
           )
+
+
+def random_action():
+    return random.randint(0, len(actions) - 1)
 
 
 if __name__ == "__main__":
