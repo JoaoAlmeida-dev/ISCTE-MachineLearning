@@ -14,38 +14,45 @@ from Assignment1.Logic.Robot import Robot
 from Assignment1.Logic.World import World
 
 # random.seed(1)
+EXPERIMENT_MAX_STEPS = 20001
+EXPERIMENT_NUMBER = 30
+STARTING_POS = (0, 0)
 
 ex2_world = World(_collumns=10, _rows=10, _reward_state=(9, 9))
-ex2_robot = Robot(starting_pos=(0, 0))
+ex2_robot = Robot(starting_pos=STARTING_POS)
 ex2_qmatrix = Qmatrix(_world=ex2_world)
 
-# test_ = [100, 1000, 10000, 20000]
-# test_ = [0,1,10,50,100,20000]
-steps_for_tests = [100, 200, 500, 600, 700, 800, 900, 1000, 2500, 5000, 7500, 10000, 12500, 15000, 17500, 20000]
+STEPS_FOR_TESTS = [100, 1000, 10000, 20000]
 
 
-def line_a_random_qmatrix_update():
+# STEPS_FOR_TESTS = [0,1,10,50,100,20000]
+# STEPS_FOR_TESTS = [100, 200, 500, 600, 700, 800, 900, 1000, 2500, 5000, 7500, 10000, 12500, 15000, 17500, 20000]
+
+
+def line_a_random_qmatrix_update(steps: int):
     action = random_action()
     current_pos = ex2_robot.current_pos
+
     next_state = ex2_world.next_state(_action_index=action, _current_pos=current_pos)
     ex2_world.walk(_robot=ex2_robot, _action=action, _end_of_episode=True)
     ex2_qmatrix.update_state(_current_pos=current_pos, _action_index=action, _next_pos=next_state)
-    # ex2_world.end_episode(_robot=ex2_robot)
 
-def line_b_best_qmatrix_update():
+
+def line_b_best_qmatrix_update(steps: int):
     current_pos = ex2_robot.current_pos
     action = ex2_qmatrix.best_action(current_pos)
-    next_state = ex2_world.next_state(_action_index=action, _current_pos=current_pos)
 
+    next_state = ex2_world.next_state(_action_index=action, _current_pos=current_pos)
     ex2_world.walk(_robot=ex2_robot, _action=action, _end_of_episode=True)
     ex2_qmatrix.update_state(_current_pos=current_pos, _action_index=action, _next_pos=next_state)
 
+
 def run_test(qmatrix: Qmatrix, world: World, run_number: int, plot_qmatrix: bool) -> Result:
-    _exploiter_robot = Robot(starting_pos=(0, 0))
+    _exploiter_robot = Robot(starting_pos=STARTING_POS)
     if plot_qmatrix:
         title = "run n" + str(run_number)
         plt.title(title)
-        sns.heatmap(ex2_qmatrix.normalized(), annot=False, fmt=".2F", annot_kws={"fontsize": 7})
+        sns.heatmap(qmatrix.normalized(), annot=False, fmt=".2F", annot_kws={"fontsize": 7})
 
     for step_number in range(1000):
         test_current_pos = _exploiter_robot.current_pos
@@ -56,7 +63,7 @@ def run_test(qmatrix: Qmatrix, world: World, run_number: int, plot_qmatrix: bool
 
         # best_action = best_action_pos[0][0]
         best_action = qmatrix.best_action(test_current_pos)
-        #best_action = max_index_of(qmatrix.matrix[test_current_pos[0]][test_current_pos[1]])
+        # best_action = max_index_of(qmatrix.matrix[test_current_pos[0]][test_current_pos[1]])
         world.walk(_robot=_exploiter_robot, _action=best_action, _end_of_episode=True)
         # world.end_episode(_robot=exploiter_robot)
 
@@ -69,12 +76,13 @@ def run_test(qmatrix: Qmatrix, world: World, run_number: int, plot_qmatrix: bool
     # ,exploiter_robot.position_history
 
 
-def experiment(steps_for_test_list: list, qmatrix_update_function, plot_qmatrix=False) -> (List[Result], float):
+def experiment(steps_for_test_list: list, qmatrix_update_function, qmatrix: Qmatrix, world: World,
+               plot_qmatrix=False) -> (List[Result], float):
     results_list = []
     start = timeit.default_timer()
-    for y in range(1, 20001):
+    for y in range(1, EXPERIMENT_MAX_STEPS):
         # random_qmatrix_update()
-        qmatrix_update_function()
+        qmatrix_update_function(y)
 
         if y in steps_for_test_list:
             sub__plot_index = steps_for_test_list.index(y) + 1
@@ -83,11 +91,11 @@ def experiment(steps_for_test_list: list, qmatrix_update_function, plot_qmatrix=
                 math.ceil(math.sqrt(len(steps_for_test_list))),
                 sub__plot_index)
             results_list.append(
-                run_test(qmatrix=ex2_qmatrix, world=ex2_world, run_number=y, plot_qmatrix=plot_qmatrix))
+                run_test(qmatrix=qmatrix, world=world, run_number=y, plot_qmatrix=plot_qmatrix))
 
     stop = timeit.default_timer()
     experiment_time = stop - start
-    ex2_qmatrix.reset()
+    qmatrix.reset()
     # if plot_qmatrix:
     #    plt.tight_layout()
     #    plt.show()
@@ -95,64 +103,16 @@ def experiment(steps_for_test_list: list, qmatrix_update_function, plot_qmatrix=
     return results_list, experiment_time
 
 
-def results_parser(results: list):
-    # [30]EXP RESULTS
-    #   runtime :int
-    #   [4]
-    #      (ratio,steps)
-    #      [] steps history
-
-    run_time_list = []
-    avg_reward_per_step_list = []
-    steps_upgraded_matrix = []
-    ratio_list = []
-    steps_taken_list = []
-    averages = []
-
-    # results has an entry for each experiment, each position has the results of one experiment
-    for experiment_result in results:
-        run_time_list.append(experiment_result[1])
-        for result in experiment_result[0]:
-            avg_reward_per_step_list.append(result[0])
-            steps_upgraded_matrix.append(result[1])
-            steps_taken_list.append(result[2])
-    # run_time_average = sum(run_time_list) / len(run_time_list)
-    # reward_average = sum(reward_list) / len(reward_list)
-    # steps_average = sum(steps_list) / len(steps_list)
-    # ratio_average = sum(ratio_list) / len(ratio_list)
-
-    run_time_average = mean(run_time_list)
-    # ratio_average = mean(ratio_list)
-    avg_reward_zip_steps_upgrade = []
-    for y in zip(avg_reward_per_step_list, steps_upgraded_matrix):
-        avg_reward_zip_steps_upgrade.append(y)
-    return run_time_average, avg_reward_zip_steps_upgrade
-
-
-def plot_line_a(_tuple: Tuple[any, any, list]):
-    run_time = _tuple[0]
-    avg_reward_steps_list = _tuple[1]
-
-    steps_list = []
-    steps_upgrade_matrix = []
-    for ratio_step in avg_reward_steps_list:
-        steps_list.append(ratio_step[0])
-        steps_upgrade_matrix.append(ratio_step[1])
-
-    plt.scatter(steps_list, steps_upgrade_matrix)
-    plt.ylabel("avg-reward")
-    plt.xlabel("steps upgrade matrix")
-    plt.show()
-
-
-def framework(qmatrix_update_function):
+def framework(qmatrix_update_function, qmatrix: Qmatrix, world: World, plot_qmatrix: bool):
     experiment_results = []
     experiment_runtimes = []
-    for _experiment in range(30):
-        print("Exercise2::framework::experiment n",_experiment)
-        experiment_outputs = experiment(steps_for_test_list=steps_for_tests,
+    for _experiment in range(EXPERIMENT_NUMBER):
+        print("Exercise2::framework::experiment n", _experiment)
+        experiment_outputs = experiment(steps_for_test_list=STEPS_FOR_TESTS,
                                         qmatrix_update_function=qmatrix_update_function,
-                                        plot_qmatrix=True
+                                        qmatrix=qmatrix,
+                                        world=world,
+                                        plot_qmatrix=plot_qmatrix
                                         )
         experiment_runtimes.append(experiment_outputs[1])
         for result in experiment_outputs[0]:
@@ -165,14 +125,14 @@ def framework(qmatrix_update_function):
 
 
 def _line_a():
-    framework(line_a_random_qmatrix_update)
+    framework(line_a_random_qmatrix_update, qmatrix=ex2_qmatrix, world=ex2_world, plot_qmatrix=True)
 
 
 def _line_b():
-    framework(line_b_best_qmatrix_update)
+    framework(line_b_best_qmatrix_update, qmatrix=ex2_qmatrix, world=ex2_world, plot_qmatrix=True)
 
 
 if __name__ == "__main__":
     random.seed(1)
-    #_line_a()
+    # _line_a()
     _line_b()

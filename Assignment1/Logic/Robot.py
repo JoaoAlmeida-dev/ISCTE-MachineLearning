@@ -1,6 +1,6 @@
 from typing import List
 
-from Week3.Stats import mean
+from Assignment1.Logic.Helpers import mean
 
 
 class Robot:
@@ -8,9 +8,9 @@ class Robot:
     def __init__(self, starting_pos: (int, int) = (0, 0)):
         self.position_history: List[(int, int)] = []
         self.rewards: int = 0
-        self.steps: int = 0
         self.current_pos: (int, int) = starting_pos
         self.initial_pos: (int, int) = starting_pos
+        self.steps: int = 0
         self.steps_per_reward: List[int] = []
         self.total_steps = 0
 
@@ -29,9 +29,10 @@ class Robot:
     def move(self, new_pos: (int, int), reward: int):
         self.current_pos = new_pos
         self.position_history.append(new_pos)
-        self.total_steps += 1
-        self.steps += 1
         self.rewards += reward
+
+        self.steps += 1
+        self.total_steps += 1
         if reward != 0:
             self.steps_per_reward.append(self.steps)
             self.steps = 0

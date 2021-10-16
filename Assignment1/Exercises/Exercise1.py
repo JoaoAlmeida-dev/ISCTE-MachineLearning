@@ -9,7 +9,7 @@ from Assignment1.Logic.Robot import Robot
 from Assignment1.Logic.World import World
 import timeit
 
-random.seed(1)
+
 
 ex1_world = World(_collumns=10, _rows=10, _reward_state=(9, 9))
 ex1_robot = Robot(starting_pos=(0, 0))
@@ -93,8 +93,8 @@ def _line_d():
 
 
 def _line_e_f():
-    _world_line_e = World(_collumns=10, _rows=10, _reward_state=(9, 9))
-    _robot_line_e = Robot(starting_pos=(0, 0))
+    ex1_world_line_e = World(_collumns=10, _rows=10, _reward_state=(9, 9))
+    ex1_robot_line_e = Robot(starting_pos=(0, 0))
 
     run_time_list = []
     ratioList = []
@@ -106,27 +106,27 @@ def _line_e_f():
         start = timeit.default_timer()
         for y in range(1000):
             _action = random_action()
-            _world_line_e.walk(_robot=_robot_line_e, _action=_action, _end_of_episode=True)
+            ex1_world_line_e.walk(_robot=ex1_robot_line_e, _action=_action, _end_of_episode=True)
             # robot_line_e.current_pos = \
             #    world_line_e.next_state(_action_index=_action, _current_pos=robot_line_e.current_pos)
             # world_line_e.end_episode(robot_line_e)
             # robot_line_e.steps += 1
         stop = timeit.default_timer()
 
-        results_list.append(Result(_rewards=_robot_line_e.rewards,
-                                   _steps_per_reward_mean=_robot_line_e.get_steps_per_reward_mean(),
-                                   _rewards_per_step=_robot_line_e.rewards / _robot_line_e.total_steps)
+        results_list.append(Result(_rewards=ex1_robot_line_e.rewards,
+                                   _steps_per_reward_mean=ex1_robot_line_e.get_steps_per_reward_mean(),
+                                   _rewards_per_step=ex1_robot_line_e.rewards / ex1_robot_line_e.total_steps)
                             )
         run_time_list.append(stop - start)
-        rewardList.append(_robot_line_e.rewards)
-        ratioList.append(_robot_line_e.rewards / _robot_line_e.total_steps)
+        #rewardList.append(ex1_robot_line_e.rewards)
+        #ratioList.append(ex1_robot_line_e.rewards / ex1_robot_line_e.total_steps)
 
-        for step in _robot_line_e.steps_per_reward:
+        for step in ex1_robot_line_e.steps_per_reward:
             steps_per_reward_list.append(step)
 
-        print(mean(steps_per_reward_list))
+        #print("Exercise1::line_e::mean(steps_per_reward_list)",mean(steps_per_reward_list))
 
-        _robot_line_e.reset()
+        ex1_robot_line_e.reset()
     print("Exercise1::line_e , line_f::", )
 
     # plot(ratioList=ratioList, rewardList=rewardList, stepsList=steps_mean_list, timeList=run_time_list)
@@ -135,6 +135,7 @@ def _line_e_f():
 
 
 if __name__ == "__main__":
+    random.seed(1)
     _setup()
     _line_a()
     _line_b()

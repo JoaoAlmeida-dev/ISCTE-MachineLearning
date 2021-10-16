@@ -1,8 +1,13 @@
 from matplotlib import pyplot as plt
-from Week3.Stats import mean, deviation
+from Assignment1.Logic.Helpers import mean, deviation
 
 
 # def plot(ratioList: list[float], rewardList: list[int], stepsList: list[int], timeList: list[float]):
+REWARDS_TITLE = "Rewards"
+TIMES_TITLE = "Times"
+STEPS_PER_REWARD_TITLE="Steps per Reward"
+REWARD_PER_STEP_TITLE="Reward per step"
+
 def plot_results(results_list, timeList):
     rewardList = []
     steps_per_reward_List = []
@@ -17,28 +22,28 @@ def plot_results(results_list, timeList):
 
 def plot(ratioList, rewardList, stepsList, timeList):
     plt.subplot(2, 2, 1)
-    plt.title("Times")
+    plt.title(TIMES_TITLE)
     plt.plot(timeList)
-    print("Plot::plot timeMean", mean(timeList))
-    print("Plot::plot timeDeviation", deviation(timeList))
+    print("Plot::plot ",TIMES_TITLE,"Mean", mean(timeList))
+    print("Plot::plot ",TIMES_TITLE,"Deviation", deviation(timeList))
 
     plt.subplot(2, 2, 2)
-    plt.title("Rewards")
+    plt.title(REWARDS_TITLE)
     plt.plot(rewardList)
-    print("Plot::plot rewardMean", mean(rewardList))
-    print("Plot::plot rewardDeviation", deviation(rewardList))
+    print("Plot::plot ",REWARDS_TITLE,"Mean", mean(rewardList))
+    print("Plot::plot ",REWARDS_TITLE,"Deviation", deviation(rewardList))
 
     plt.subplot(2, 2, 3)
-    plt.title("Steps per Reward")
+    plt.title(STEPS_PER_REWARD_TITLE)
     plt.plot(stepsList)
-    print("Plot::plot stepsMean", mean(stepsList))
-    print("Plot::plot stepsDeviation", deviation(stepsList))
+    print("Plot::plot ",STEPS_PER_REWARD_TITLE,"Mean", mean(stepsList))
+    print("Plot::plot ",STEPS_PER_REWARD_TITLE,"Deviation", deviation(stepsList))
 
     plt.subplot(2, 2, 4)
-    plt.title("Reward per step")
+    plt.title(REWARD_PER_STEP_TITLE)
     plt.plot(ratioList)
-    print("Plot::plot Reward per step-Mean", mean(ratioList))
-    print("Plot::plot Reward per step-Deviation", deviation(ratioList))
+    print("Plot::plot ",REWARD_PER_STEP_TITLE,"-Mean", mean(ratioList))
+    print("Plot::plot ",REWARD_PER_STEP_TITLE,"Deviation", deviation(ratioList))
     plt.tight_layout()
     plt.show()
 
@@ -47,19 +52,19 @@ def plot(ratioList, rewardList, stepsList, timeList):
 
 def box_plot(ratioList, rewardList, stepsList, timeList):
     plt.subplot(1, 4, 1)
-    plt.title("Times")
+    plt.title(TIMES_TITLE)
     plt.boxplot(timeList)
 
     plt.subplot(1, 4, 2)
-    plt.title("Rewards")
+    plt.title(REWARDS_TITLE)
     plt.boxplot(rewardList)
 
     plt.subplot(1, 4, 3)
-    plt.title("Steps per Reward")
+    plt.title(STEPS_PER_REWARD_TITLE)
     plt.boxplot(stepsList)
 
     plt.subplot(1, 4, 4)
-    plt.title("Reward per step")
+    plt.title(REWARD_PER_STEP_TITLE)
     plt.boxplot(ratioList)
 
     plt.tight_layout()
