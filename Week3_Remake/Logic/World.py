@@ -1,4 +1,5 @@
 import numpy as np
+from typing import List
 
 from Week3_Remake.Logic.Constants import actions
 from Week3_Remake.Logic.Robot import Robot
@@ -6,10 +7,18 @@ from Week3_Remake.Logic.Robot import Robot
 
 class World:
 
-    def __init__(self, _collumns=10, _rows=10, _reward_state: (int, int) = (9, 9), _initial_state: (int, int) = (0, 0)):
+    penalty_positions = []
+    penalty_value = 0
+
+    def __init__(self, _collumns:int=10, _rows:int=10, _reward_state: (int, int) = (9, 9), _initial_state: (int, int) = (0, 0),
+                 _penalty_position=None, _penalty_value=0):
+        if _penalty_position is None:
+            _penalty_position = []
         self.collumns: int = _collumns
         self.rows: int = _rows
-        self.matrix: np.ndarray = World._create_matrix(_collumns, _rows, _reward_state)
+        self.matrix: np.ndarray = World._create_matrix(_collumns=_collumns, _rows=_rows, _reward_state=_reward_state,
+                                                       _penalty_pos=_penalty_position,
+                                                       _penalty_value=_penalty_value)
         self.reward_state: (int, int) = _reward_state
         self.initial_state: (int, int) = _initial_state
 
@@ -57,7 +66,12 @@ class World:
         #return _robot.current_pos
 
     @staticmethod
-    def _create_matrix(_collumns: int, _rows: int, _reward_state: (int, int)) -> np.ndarray:
-        matrix = np.full((_collumns, _rows), 0)
-        matrix[_reward_state[0]][_reward_state[0]] = 100
-        return matrix
+    def _create_matrix(_collumns: int, _rows: int, _reward_state: (int, int),
+                       _penalty_pos=None    , _penalty_value: int = 0) -> np.ndarray:
+        if _penalty_pos is None:
+            _penalty_pos = []
+        _matrix = np.full((_collumns, _rows), 0)
+        _matrix[_reward_state[0]][_reward_state[0]] = 100
+        for pos in _penalty_pos:
+            _matrix[pos[0]][pos[1]] = _penalty_value
+        return _matrix

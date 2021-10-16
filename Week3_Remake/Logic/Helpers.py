@@ -4,20 +4,20 @@ import numpy as np
 
 
 def max_index_of(iterable: list) -> int:
-    max_value_indexes = []
+    _max_value_indexes = []
+    _max_value = iterable[0]
     if len(iterable) != 0:
-        max_value = 0
         # first loop determines the max value in the iterable
         for value in iterable:
-            if max_value < value:
-                max_value = value
+            if _max_value < value:
+                _max_value = value
         # second loop is for breaking ties
         for x in range(len(iterable)):
-            if max_value == iterable[x]:
-                max_value_indexes.append(x)
+            if _max_value == iterable[x]:
+                _max_value_indexes.append(x)
 
-    random_max_value = random.randint(0, len(max_value_indexes) - 1)
-    return max_value_indexes[random_max_value]
+    random_max_value = random.randint(0, len(_max_value_indexes) - 1)
+    return _max_value_indexes[random_max_value]
 
 
 def generate_matrix_from_coordenates_list(_coords_list: list, _collumns: int, _rows: int):
