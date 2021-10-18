@@ -15,11 +15,11 @@ ex2_qmatrix = Qmatrix(_world=ex2_world)
 
 
 def _line_a():
-    framework(line_a_random_qmatrix_update, qmatrix=ex2_qmatrix, world=ex2_world, robot=ex2_robot, plot_qmatrix=True)
+    framework(line_a_random_qmatrix_update, qmatrix=ex2_qmatrix, world=ex2_world, robot=ex2_robot, plot_qmatrix=True,error_chance=0)
 
 
 def _line_b():
-    framework(line_b_best_qmatrix_update, qmatrix=ex2_qmatrix, world=ex2_world, robot=ex2_robot, plot_qmatrix=True)
+    framework(line_b_best_qmatrix_update, qmatrix=ex2_qmatrix, world=ex2_world, robot=ex2_robot, plot_qmatrix=True,error_chance=0)
 
 
 if __name__ == "__main__":

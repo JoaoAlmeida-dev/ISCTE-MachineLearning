@@ -19,34 +19,34 @@ def _setup():
 def _line_a():
     x = (0, 0)
     print("Exercise1::line_a::", x, actions[0],
-          ex1_world.next_state(_action_index=0, _current_pos=x))
+          ex1_world.next_state(_action_index=0, _current_pos=x, _error_chance=0))
     print("Exercise1::line_a::", x, actions[1],
-          ex1_world.next_state(_action_index=1, _current_pos=x))
+          ex1_world.next_state(_action_index=1, _current_pos=x, _error_chance=0))
     print("Exercise1::line_a::", x, actions[2],
-          ex1_world.next_state(_action_index=2, _current_pos=x))
+          ex1_world.next_state(_action_index=2, _current_pos=x, _error_chance=0))
     print("Exercise1::line_a::", x, actions[3],
-          ex1_world.next_state(_action_index=3, _current_pos=x))
+          ex1_world.next_state(_action_index=3, _current_pos=x, _error_chance=0))
     print()
 
     x = (5, 5)
     print("Exercise1::line_a::", x, actions[0],
-          ex1_world.next_state(_action_index=0, _current_pos=x))
+          ex1_world.next_state(_action_index=0, _current_pos=x, _error_chance=0))
     print("Exercise1::line_a::", x, actions[1],
-          ex1_world.next_state(_action_index=1, _current_pos=x))
+          ex1_world.next_state(_action_index=1, _current_pos=x, _error_chance=0))
     print("Exercise1::line_a::", x, actions[2],
-          ex1_world.next_state(_action_index=2, _current_pos=x))
+          ex1_world.next_state(_action_index=2, _current_pos=x, _error_chance=0))
     print("Exercise1::line_a::", x, actions[3],
-          ex1_world.next_state(_action_index=3, _current_pos=x))
+          ex1_world.next_state(_action_index=3, _current_pos=x, _error_chance=0))
     print()
     x = (9, 9)
     print("Exercise1::line_a::", x, actions[0],
-          ex1_world.next_state(_action_index=0, _current_pos=x))
+          ex1_world.next_state(_action_index=0, _current_pos=x, _error_chance=0))
     print("Exercise1::line_a::", x, actions[1],
-          ex1_world.next_state(_action_index=1, _current_pos=x))
+          ex1_world.next_state(_action_index=1, _current_pos=x, _error_chance=0))
     print("Exercise1::line_a::", x, actions[2],
-          ex1_world.next_state(_action_index=2, _current_pos=x))
+          ex1_world.next_state(_action_index=2, _current_pos=x, _error_chance=0))
     print("Exercise1::line_a::", x, actions[3],
-          ex1_world.next_state(_action_index=3, _current_pos=x))
+          ex1_world.next_state(_action_index=3, _current_pos=x, _error_chance=0))
     print()
 
 
@@ -103,7 +103,7 @@ def _line_e_f():
         start = timeit.default_timer()
         for y in range(1000):
             _action = random_action()
-            ex1_world_line_e.walk(_robot=ex1_robot_line_e, _action=_action, _end_of_episode=True)
+            ex1_world_line_e.walk(_robot=ex1_robot_line_e, _action=_action, _end_of_episode=True, _error_chance=0)
             # robot_line_e.current_pos = \
             #    world_line_e.next_state(_action_index=_action, _current_pos=robot_line_e.current_pos)
             # world_line_e.end_episode(robot_line_e)
@@ -112,7 +112,8 @@ def _line_e_f():
 
         results_list.append(Result(_rewards=ex1_robot_line_e.rewards,
                                    _steps_per_reward_mean=ex1_robot_line_e.get_steps_per_reward_mean(),
-                                   _rewards_per_step=ex1_robot_line_e.rewards / ex1_robot_line_e.total_steps)
+                                   _rewards_per_step=ex1_robot_line_e.rewards / ex1_robot_line_e.total_steps,
+                                   _qmatrix_step=x)
                             )
         run_time_list.append(stop - start)
         # rewardList.append(ex1_robot_line_e.rewards)

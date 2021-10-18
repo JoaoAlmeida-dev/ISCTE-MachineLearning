@@ -1,7 +1,10 @@
+import random
+
 import numpy as np
 from typing import List
 
 from Assignment1.Logic.Constants import actions
+from Assignment1.Logic.Helpers import random_action
 from Assignment1.Logic.Robot import Robot
 
 
@@ -26,8 +29,11 @@ class World:
         for x in range(len(self.matrix)):
             print(self.matrix[x])
 
-    def next_state(self, _action_index: int, _current_pos: (int, int)) -> (int, int):
+    def next_state(self, _action_index: int, _current_pos: (int, int), _error_chance:float) -> (int, int):
         _new_pos = list(_current_pos)
+
+        if random.random() < _error_chance:
+            _action_index = random_action()
 
         if actions[_action_index] == "up" and _current_pos[0] > 0:
             _new_pos[0] -= 1
@@ -58,8 +64,8 @@ class World:
     def reset_pos(self, robot):
         robot.current_pos = self.initial_state
 
-    def walk(self, _robot: Robot, _action: int, _end_of_episode: bool):
-        next_state = self.next_state(_action_index=_action, _current_pos=_robot.current_pos)
+    def walk(self, _robot: Robot, _action: int, _end_of_episode: bool, _error_chance:float):
+        next_state = self.next_state(_action_index=_action, _current_pos=_robot.current_pos, _error_chance=_error_chance)
         _robot.move(new_pos=next_state, reward=self.reward(next_state))
         if _end_of_episode:
             self.end_episode(_robot)

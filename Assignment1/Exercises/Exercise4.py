@@ -8,6 +8,7 @@ from Assignment1.Logic.Qmatrix import Qmatrix
 from Assignment1.Logic.Robot import Robot
 from Assignment1.Logic.World import World
 
+
 def process_walls_from_txt(file):
     walls = []
     contents = file.readlines()
@@ -36,6 +37,7 @@ def _line_a(world: World, qmatrix: Qmatrix, qmatrix_update_function, robot: Robo
               qmatrix=qmatrix,
               robot=robot,
               world=world,
+              error_chance=0,
               plot_qmatrix=True
               )
 
@@ -46,7 +48,7 @@ if __name__ == "__main__":
     ex4_world = setup_objects[0]
     ex4_robot = setup_objects[1]
     ex4_qmatrix = setup_objects[2]
-    #_line_a(world=ex4_world, qmatrix=ex4_qmatrix, qmatrix_update_function=line_a_random_qmatrix_update, robot=ex4_robot)
+    # _line_a(world=ex4_world, qmatrix=ex4_qmatrix, qmatrix_update_function=line_a_random_qmatrix_update, robot=ex4_robot)
     _line_a(world=ex4_world, qmatrix=ex4_qmatrix, qmatrix_update_function=line_b_best_qmatrix_update, robot=ex4_robot)
-    #_line_a(world=ex4_world, qmatrix=ex4_qmatrix, qmatrix_update_function=greed_qmatrix_update, robot=ex4_robot)
-    #_line_a(world=ex4_world, qmatrix=ex4_qmatrix, qmatrix_update_function=incremental_greed_qmatrix_update, robot=ex4_robot)
+    # _line_a(world=ex4_world, qmatrix=ex4_qmatrix, qmatrix_update_function=greed_qmatrix_update, robot=ex4_robot)
+    # _line_a(world=ex4_world, qmatrix=ex4_qmatrix, qmatrix_update_function=incremental_greed_qmatrix_update, robot=ex4_robot)

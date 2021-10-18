@@ -18,6 +18,7 @@ def _line_a():
               qmatrix=ex3_qmatrix,
               robot=ex3_robot,
               world=ex3_world,
+              error_chance=0,
               plot_qmatrix=True
               )
 
@@ -28,6 +29,7 @@ def _line_b():
               qmatrix=ex3_qmatrix,
               robot=ex3_robot,
               world=ex3_world,
+              error_chance=0,
               plot_qmatrix=True
               )
 

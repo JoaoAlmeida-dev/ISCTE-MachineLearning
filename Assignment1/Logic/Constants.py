@@ -10,6 +10,7 @@ STEPS_FOR_TESTS = [i for i in range(_step, EXPERIMENT_MAX_STEPS, _step)]
 # STEPS_FOR_TESTS = [0,1,10,50,100,20000]
 # STEPS_FOR_TESTS = [100, 200, 500, 600, 700, 800, 900, 1000, 2500, 5000, 7500, 10000, 12500, 15000, 17500, 20000]
 
+CONSTANT_GREED = 0.9
 greed_threshold = 30
 starting_greed_incremental = 0.3
 
