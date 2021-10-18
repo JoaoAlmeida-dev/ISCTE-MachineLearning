@@ -24,13 +24,13 @@ class Qmatrix:
                   + alfa * (
                           self.world.reward(_next_pos) + discount * max(self.matrix[_next_pos[0]][_next_pos[1]])
                   )
-
+        if _current_pos == (9, 9) or _next_pos == (9, 9):
+            print()
         self.matrix[_current_pos[0]][_current_pos[1]][_action_index] = quality
 
     def normalized(self):
         transformed_matrix = np.full(
-            (len(self.matrix), len(self.matrix[0]))
-            , 0)
+            (len(self.matrix), len(self.matrix[0])), 0)
         for row in range(len(self.matrix)):
             for collumn in range(len(self.matrix[row])):
                 transformed_matrix[row][collumn] = (max(self.matrix[row][collumn]))

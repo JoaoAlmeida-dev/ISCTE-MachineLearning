@@ -33,7 +33,7 @@ class Robot:
 
         self.steps += 1
         self.total_steps += 1
-        if reward != 0:
+        if reward > 0:
             self.steps_per_reward.append(self.steps)
             self.steps = 0
 

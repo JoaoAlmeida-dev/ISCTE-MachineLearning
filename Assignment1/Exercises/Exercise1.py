@@ -1,15 +1,12 @@
 import random
+import timeit
 
-import numpy
-from Assignment1.Logic.Helpers import mean, random_action
-from Assignment1.Logic.Plot import plot, plot_results
 from Assignment1.Logic.Constants import actions
+from Assignment1.Logic.Helpers import random_action
+from Assignment1.Logic.Plot import plot_results
 from Assignment1.Logic.Result import Result
 from Assignment1.Logic.Robot import Robot
 from Assignment1.Logic.World import World
-import timeit
-
-
 
 ex1_world = World(_collumns=10, _rows=10, _reward_state=(9, 9))
 ex1_robot = Robot(starting_pos=(0, 0))
@@ -118,13 +115,13 @@ def _line_e_f():
                                    _rewards_per_step=ex1_robot_line_e.rewards / ex1_robot_line_e.total_steps)
                             )
         run_time_list.append(stop - start)
-        #rewardList.append(ex1_robot_line_e.rewards)
-        #ratioList.append(ex1_robot_line_e.rewards / ex1_robot_line_e.total_steps)
+        # rewardList.append(ex1_robot_line_e.rewards)
+        # ratioList.append(ex1_robot_line_e.rewards / ex1_robot_line_e.total_steps)
 
         for step in ex1_robot_line_e.steps_per_reward:
             steps_per_reward_list.append(step)
 
-        #print("Exercise1::line_e::mean(steps_per_reward_list)",mean(steps_per_reward_list))
+        # print("Exercise1::line_e::mean(steps_per_reward_list)",mean(steps_per_reward_list))
 
         ex1_robot_line_e.reset()
     print("Exercise1::line_e , line_f::", )
