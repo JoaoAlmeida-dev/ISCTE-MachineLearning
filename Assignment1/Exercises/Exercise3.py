@@ -39,10 +39,5 @@ def _line_b():
 if __name__ == "__main__":
     #Exercicio3
     random.seed(1)
-    _line_a()
-    #starting_greed_incremental=0.3
-    #_line_b()
-    #starting_greed_incremental=0.6
-    #_line_b()
-    #starting_greed_incremental=0.9
-    #_line_b()
+    #_line_a()
+    _line_b()

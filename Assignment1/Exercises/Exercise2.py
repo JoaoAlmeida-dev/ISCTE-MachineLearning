@@ -27,5 +27,5 @@ def _line_b():
 if __name__ == "__main__":
     #Exercicio2
     random.seed(1)
-    _line_a()
-    #line_b()
+    #_line_a()
+    _line_b()

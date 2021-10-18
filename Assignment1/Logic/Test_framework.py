@@ -66,7 +66,7 @@ def framework(qmatrix_update_function, qmatrix: Qmatrix, world: World, plot_qmat
     experiment_results = []
     experiment_runtimes = []
     for _experiment in range(EXPERIMENT_NUMBER):
-        #print("Test_framework::framework::experiment n", _experiment)
+        print("Test_framework::framework::experiment n", _experiment)
         experiment_outputs = experiment(steps_for_test_list=STEPS_FOR_TESTS,
                                         qmatrix_update_function=qmatrix_update_function,
                                         robot=robot,
