@@ -6,7 +6,7 @@ from Assignment1.Logic.Helpers import mean
 class Robot:
 
     def __init__(self, starting_pos: (int, int) = (0, 0)):
-        self.position_history: List[(int, int)] = []
+        self.position_history: [(int, int)] = []
         self.rewards: int = 0
         self.current_pos: (int, int) = starting_pos
         self.initial_pos: (int, int) = starting_pos

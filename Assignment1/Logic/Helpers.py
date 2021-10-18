@@ -2,7 +2,7 @@ import random
 
 import numpy as np
 
-from Assignment1.Logic.Constants import actions
+from Assignment1.Logic.Constants import ACTIONS
 
 
 def max_index_of(iterable: list) -> int:
@@ -57,7 +57,7 @@ def test_max_index_of():
 
 
 def random_action():
-    return random.randint(0, len(actions) - 1)
+    return random.randint(0, len(ACTIONS) - 1)
 
 
 if __name__ == "__main__":

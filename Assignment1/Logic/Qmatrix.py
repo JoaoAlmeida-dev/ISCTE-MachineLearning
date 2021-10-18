@@ -1,6 +1,6 @@
 import numpy as np
 
-from Assignment1.Logic.Constants import actions
+from Assignment1.Logic.Constants import ACTIONS
 from Assignment1.Logic.Helpers import max_index_of
 from Assignment1.Logic.World import World
 
@@ -9,7 +9,7 @@ class Qmatrix:
 
     def __init__(self, _world: World):
         self.world: World = _world
-        self.matrix = np.full((_world.rows, _world.collumns, len(actions)), 0)
+        self.matrix = np.full((_world.rows, _world.collumns, len(ACTIONS)), 0)
 
     def update_state(self, _current_pos: (int, int), _action_index: int, _next_pos: (int, int)):
         alfa = 0.7
@@ -24,8 +24,6 @@ class Qmatrix:
                   + alfa * (
                           self.world.reward(_next_pos) + discount * max(self.matrix[_next_pos[0]][_next_pos[1]])
                   )
-        if _current_pos == (9, 9) or _next_pos == (9, 9):
-            print()
         self.matrix[_current_pos[0]][_current_pos[1]][_action_index] = quality
 
     def normalized(self):
@@ -40,4 +38,4 @@ class Qmatrix:
         return max_index_of(self.matrix[pos[0]][pos[1]])
 
     def reset(self):
-        self.matrix = np.full((self.world.rows, self.world.collumns, len(actions)), 0)
+        self.matrix = np.full((self.world.rows, self.world.collumns, len(ACTIONS)), 0)

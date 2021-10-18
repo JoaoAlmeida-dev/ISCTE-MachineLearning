@@ -33,6 +33,8 @@ def setup(walls_file: str):
 
 
 def _line_a(world: World, qmatrix: Qmatrix, qmatrix_update_function, robot: Robot):
+
+    print("Exercise4::line_a::", )
     framework(qmatrix_update_function=qmatrix_update_function,
               qmatrix=qmatrix,
               robot=robot,
@@ -43,12 +45,13 @@ def _line_a(world: World, qmatrix: Qmatrix, qmatrix_update_function, robot: Robo
 
 
 if __name__ == "__main__":
+    #Exercicio4
     random.seed(2)
     setup_objects = setup(walls_file='../walls.txt')
     ex4_world = setup_objects[0]
     ex4_robot = setup_objects[1]
     ex4_qmatrix = setup_objects[2]
-    # _line_a(world=ex4_world, qmatrix=ex4_qmatrix, qmatrix_update_function=line_a_random_qmatrix_update, robot=ex4_robot)
-    _line_a(world=ex4_world, qmatrix=ex4_qmatrix, qmatrix_update_function=line_b_best_qmatrix_update, robot=ex4_robot)
+    _line_a(world=ex4_world, qmatrix=ex4_qmatrix, qmatrix_update_function=line_a_random_qmatrix_update, robot=ex4_robot)
+    #_line_a(world=ex4_world, qmatrix=ex4_qmatrix, qmatrix_update_function=line_b_best_qmatrix_update, robot=ex4_robot)
     # _line_a(world=ex4_world, qmatrix=ex4_qmatrix, qmatrix_update_function=greed_qmatrix_update, robot=ex4_robot)
     # _line_a(world=ex4_world, qmatrix=ex4_qmatrix, qmatrix_update_function=incremental_greed_qmatrix_update, robot=ex4_robot)

@@ -15,14 +15,17 @@ ex2_qmatrix = Qmatrix(_world=ex2_world)
 
 
 def _line_a():
+    print("Exercise2::line_a::")
     framework(line_a_random_qmatrix_update, qmatrix=ex2_qmatrix, world=ex2_world, robot=ex2_robot, plot_qmatrix=True,error_chance=0)
 
 
 def _line_b():
+    print("Exercise2::line_b::")
     framework(line_b_best_qmatrix_update, qmatrix=ex2_qmatrix, world=ex2_world, robot=ex2_robot, plot_qmatrix=True,error_chance=0)
 
 
 if __name__ == "__main__":
+    #Exercicio2
     random.seed(1)
     _line_a()
     #line_b()

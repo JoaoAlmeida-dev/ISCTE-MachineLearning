@@ -3,7 +3,7 @@ import random
 import numpy as np
 from typing import List
 
-from Assignment1.Logic.Constants import actions
+from Assignment1.Logic.Constants import ACTIONS
 from Assignment1.Logic.Helpers import random_action
 from Assignment1.Logic.Robot import Robot
 
@@ -29,27 +29,28 @@ class World:
         for x in range(len(self.matrix)):
             print(self.matrix[x])
 
-    def next_state(self, _action_index: int, _current_pos: (int, int), _error_chance:float) -> (int, int):
-        _new_pos = list(_current_pos)
-
+    def next_state(self, _action_index: int, _current_pos: (int, int), _error_chance: float) -> (int, int):
+        _new_pos: list = list(_current_pos)
+        # taking into account walls (penalty from hitting a wall)
+        penalty: float = 0.0
+        # taking into account possible error chance
         if random.random() < _error_chance:
             _action_index = random_action()
 
-        if actions[_action_index] == "up" and _current_pos[0] > 0:
+        if ACTIONS[_action_index] == "up" and _current_pos[0] > 0:
             _new_pos[0] -= 1
-        elif actions[_action_index] == "down" and _current_pos[0] < self.rows - 1:
+        elif ACTIONS[_action_index] == "down" and _current_pos[0] < self.rows - 1:
             _new_pos[0] += 1
-        elif actions[_action_index] == "left" and _current_pos[1] > 0:
+        elif ACTIONS[_action_index] == "left" and _current_pos[1] > 0:
             _new_pos[1] -= 1
-        elif actions[_action_index] == "right" and _current_pos[1] < self.collumns - 1:
+        elif ACTIONS[_action_index] == "right" and _current_pos[1] < self.collumns - 1:
             _new_pos[1] += 1
-        #taking into account walls
+        # taking into account walls
         if self.reward(_new_pos) < 0:
-            return _current_pos
-        if _current_pos == (9, 9) or _new_pos == (9, 9):
-            print()
+            penalty = self.reward(_new_pos)
+            return _current_pos, penalty
 
-        return _new_pos
+        return _new_pos, penalty
 
     def reward(self, _pos: (int, int)) -> int:
         try:
@@ -64,8 +65,13 @@ class World:
     def reset_pos(self, robot):
         robot.current_pos = self.initial_state
 
-    def walk(self, _robot: Robot, _action: int, _end_of_episode: bool, _error_chance:float):
-        next_state = self.next_state(_action_index=_action, _current_pos=_robot.current_pos, _error_chance=_error_chance)
+    def walk(self, _robot: Robot, _action: int, _end_of_episode: bool, _error_chance: float):
+        next_state_results = self.next_state(_action_index=_action, _current_pos=_robot.current_pos,
+                                             _error_chance=_error_chance)
+        next_state = next_state_results[0]
+        penalty = next_state_results[1]
+
+        _robot.rewards += penalty
         _robot.move(new_pos=next_state, reward=self.reward(next_state))
         if _end_of_episode:
             self.end_episode(_robot)

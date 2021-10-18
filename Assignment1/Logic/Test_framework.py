@@ -13,8 +13,8 @@ from Assignment1.Logic.Robot import Robot
 from Assignment1.Logic.World import World
 
 
-def run_test(qmatrix: Qmatrix, world: World, run_number: int, plot_qmatrix: bool, qmatrix_step_number:int,error_chance:float) -> Result:
-
+def run_test(qmatrix: Qmatrix, world: World, run_number: int, plot_qmatrix: bool, qmatrix_step_number: int,
+             error_chance: float) -> Result:
     _exploiter_robot = Robot(starting_pos=STARTING_POS)
     if plot_qmatrix:
         title = "run n" + str(run_number)
@@ -24,15 +24,9 @@ def run_test(qmatrix: Qmatrix, world: World, run_number: int, plot_qmatrix: bool
     for step_number in range(1000):
         test_current_pos = _exploiter_robot.current_pos
 
-        # matrix = qmatrix.matrix[test_current_pos[0]][test_current_pos[1]]
-        # max_quality = max(qmatrix.matrix[test_current_pos[0]][test_current_pos[1]])
-        # best_action_pos = np.where(    matrix == max_quality)
-
-        # best_action = best_action_pos[0][0]
         best_action = qmatrix.best_action(test_current_pos)
-        # best_action = max_index_of(qmatrix.matrix[test_current_pos[0]][test_current_pos[1]])
-        world.walk(_robot=_exploiter_robot, _action=best_action, _end_of_episode=True,_error_chance=error_chance)
-        # world.end_episode(_robot=exploiter_robot)
+
+        world.walk(_robot=_exploiter_robot, _action=best_action, _end_of_episode=True, _error_chance=error_chance)
 
     reward_per_step = (_exploiter_robot.rewards / _exploiter_robot.total_steps)
     result = Result(_rewards=_exploiter_robot.rewards,
@@ -40,17 +34,15 @@ def run_test(qmatrix: Qmatrix, world: World, run_number: int, plot_qmatrix: bool
                     _rewards_per_step=reward_per_step,
                     _qmatrix_step=qmatrix_step_number)
     return result
-    # return reward_per_step, _exploiter_robot.total_steps
-    # ,exploiter_robot.position_history
 
 
 def experiment(steps_for_test_list: list, qmatrix_update_function, qmatrix: Qmatrix, world: World,
-               robot: Robot,error_chance:float, plot_qmatrix=False
+               robot: Robot, error_chance: float, plot_qmatrix=False
                ) -> (List[Result], float):
     results_list = []
     start = timeit.default_timer()
     for y in range(1, EXPERIMENT_MAX_STEPS):
-        qmatrix_update_function(steps=y, robot=robot,qmatrix=qmatrix,world=world,error_chance=error_chance)
+        qmatrix_update_function(steps=y, robot=robot, qmatrix=qmatrix, world=world, error_chance=error_chance)
         if y in steps_for_test_list:
             sub__plot_index = steps_for_test_list.index(y) + 1
             plt.subplot(
@@ -58,7 +50,8 @@ def experiment(steps_for_test_list: list, qmatrix_update_function, qmatrix: Qmat
                 math.ceil(math.sqrt(len(steps_for_test_list))),
                 sub__plot_index)
             results_list.append(
-                run_test(qmatrix=qmatrix, world=world, run_number=y, plot_qmatrix=plot_qmatrix,qmatrix_step_number=y,error_chance=error_chance)
+                run_test(qmatrix=qmatrix, world=world, run_number=y, plot_qmatrix=plot_qmatrix, qmatrix_step_number=y,
+                         error_chance=error_chance)
             )
 
     stop = timeit.default_timer()
@@ -68,11 +61,12 @@ def experiment(steps_for_test_list: list, qmatrix_update_function, qmatrix: Qmat
     return results_list, experiment_time
 
 
-def framework(qmatrix_update_function, qmatrix: Qmatrix, world: World, plot_qmatrix: bool, robot: Robot,error_chance:float):
+def framework(qmatrix_update_function, qmatrix: Qmatrix, world: World, plot_qmatrix: bool, robot: Robot,
+              error_chance: float):
     experiment_results = []
     experiment_runtimes = []
     for _experiment in range(EXPERIMENT_NUMBER):
-        print("Test_framework::framework::experiment n", _experiment)
+        #print("Test_framework::framework::experiment n", _experiment)
         experiment_outputs = experiment(steps_for_test_list=STEPS_FOR_TESTS,
                                         qmatrix_update_function=qmatrix_update_function,
                                         robot=robot,
@@ -86,6 +80,4 @@ def framework(qmatrix_update_function, qmatrix: Qmatrix, world: World, plot_qmat
             experiment_results.append(result)
     plt.tight_layout()
     plt.show()
-    # results_averages = results_parser(experiment_results)
-    # plot_line_a(results_averages)
     plot_results(experiment_results, experiment_runtimes)

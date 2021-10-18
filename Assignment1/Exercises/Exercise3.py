@@ -13,6 +13,7 @@ ex3_qmatrix = Qmatrix(_world=ex3_world)
 
 
 def _line_a():
+    print("Exercise3::line_a::")
     #constant greed
     framework(qmatrix_update_function=greed_qmatrix_update,
               qmatrix=ex3_qmatrix,
@@ -24,6 +25,7 @@ def _line_a():
 
 
 def _line_b():
+    print("Exercise3::line_b::")
     #incremental greed
     framework(qmatrix_update_function=incremental_greed_qmatrix_update,
               qmatrix=ex3_qmatrix,
@@ -35,6 +37,7 @@ def _line_b():
 
 
 if __name__ == "__main__":
+    #Exercicio3
     random.seed(1)
     _line_a()
     #starting_greed_incremental=0.3

@@ -19,7 +19,7 @@ def plot_results(results_list, timeList):
         steps_per_reward_List.append(result.steps_per_reward_mean)
         avg_reward_per_step.append((result.qmatrix_step, result.rewards_per_step))
 
-    plot_avg_reward_per_step(avg_reward_per_step)
+    plot_avg_reward_per_step(avg_reward_per_step=avg_reward_per_step)
     plot(ratioList=ratioList, rewardList=rewardList, stepsList=steps_per_reward_List, timeList=timeList)
 
 
@@ -63,7 +63,7 @@ def plot(ratioList, rewardList, stepsList, timeList):
     plt.subplot(2, 2, 4)
     plt.title(REWARD_PER_STEP_TITLE)
     plt.plot(ratioList)
-    print("Plot::plot ", REWARD_PER_STEP_TITLE, "-Mean", mean(ratioList))
+    print("Plot::plot ", REWARD_PER_STEP_TITLE, "Mean", mean(ratioList))
     print("Plot::plot ", REWARD_PER_STEP_TITLE, "Deviation", deviation(ratioList))
     plt.tight_layout()
     plt.show()

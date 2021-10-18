@@ -1,6 +1,6 @@
 import random
 
-from Assignment1.Logic.Constants import EXPERIMENT_MAX_STEPS, greed_threshold, starting_greed_incremental, \
+from Assignment1.Logic.Constants import EXPERIMENT_MAX_STEPS, GREED_THRESHOLD, STARTING_GREED_INCREMENTAL, \
     CONSTANT_GREED
 from Assignment1.Logic.Helpers import random_action
 from Assignment1.Logic.Qmatrix import Qmatrix
@@ -12,7 +12,7 @@ def line_a_random_qmatrix_update(steps: int, robot: Robot, qmatrix: Qmatrix, wor
     action = random_action()
     current_pos = robot.current_pos
 
-    next_state = world.next_state(_action_index=action, _current_pos=current_pos,_error_chance=error_chance)
+    next_state = world.next_state(_action_index=action, _current_pos=current_pos,_error_chance=error_chance)[0]
     world.walk(_robot=robot, _action=action, _end_of_episode=True,_error_chance=error_chance)
     qmatrix.update_state(_current_pos=current_pos, _action_index=action, _next_pos=next_state)
 
@@ -21,7 +21,7 @@ def line_b_best_qmatrix_update(steps: int, robot: Robot, qmatrix: Qmatrix, world
     current_pos = robot.current_pos
     action = qmatrix.best_action(current_pos)
 
-    next_state = world.next_state(_action_index=action, _current_pos=current_pos,_error_chance=error_chance)
+    next_state = world.next_state(_action_index=action, _current_pos=current_pos,_error_chance=error_chance)[0]
     world.walk(_robot=robot, _action=action, _end_of_episode=True,_error_chance=error_chance)
     qmatrix.update_state(_current_pos=current_pos, _action_index=action, _next_pos=next_state)
 
@@ -37,14 +37,14 @@ def greed_qmatrix_update(steps: int, robot: Robot, qmatrix: Qmatrix, world: Worl
     else:
         action = qmatrix.best_action(current_pos)
 
-    next_state = world.next_state(_action_index=action, _current_pos=current_pos,_error_chance=error_chance)
+    next_state = world.next_state(_action_index=action, _current_pos=current_pos,_error_chance=error_chance)[0]
     world.walk(_robot=robot, _action=action, _end_of_episode=True,_error_chance=error_chance)
     qmatrix.update_state(_current_pos=current_pos, _action_index=action, _next_pos=next_state)
 
 
 def incremental_greed_qmatrix_update(steps: int, robot: Robot, qmatrix: Qmatrix, world: World,error_chance:float):
-    _starting_greed: float = starting_greed_incremental
-    _incremental_threshold: float = greed_threshold
+    _starting_greed: float = STARTING_GREED_INCREMENTAL
+    _incremental_threshold: float = GREED_THRESHOLD
 
     _step_percentage: float = steps * 100 / EXPERIMENT_MAX_STEPS
 
@@ -65,6 +65,6 @@ def incremental_greed_qmatrix_update(steps: int, robot: Robot, qmatrix: Qmatrix,
     else:
         action = qmatrix.best_action(current_pos)
 
-    next_state = world.next_state(_action_index=action, _current_pos=current_pos,_error_chance=error_chance)
+    next_state = world.next_state(_action_index=action, _current_pos=current_pos,_error_chance=error_chance)[0]
     world.walk(_robot=robot, _action=action, _end_of_episode=True,_error_chance=error_chance)
     qmatrix.update_state(_current_pos=current_pos, _action_index=action, _next_pos=next_state)
