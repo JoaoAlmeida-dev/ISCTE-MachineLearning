@@ -1,6 +1,6 @@
 from typing import List
 
-from Assignment1.Logic.Helpers import mean
+from Assignment1_ReinforcedLearning_Qmatrix.Logic.Helpers import mean
 
 
 class Robot:

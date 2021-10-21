@@ -2,7 +2,7 @@ import random
 
 import numpy as np
 
-from Assignment1.Logic.Constants import ACTIONS
+from Assignment1_ReinforcedLearning_Qmatrix.Logic.Constants import ACTIONS
 
 
 def max_index_of(iterable: list) -> int:

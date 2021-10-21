@@ -1,5 +1,5 @@
 from matplotlib import pyplot as plt
-from Assignment1.Logic.Helpers import mean, deviation
+from Assignment1_ReinforcedLearning_Qmatrix.Logic.Helpers import mean, deviation
 
 # def plot(ratioList: list[float], rewardList: list[int], stepsList: list[int], timeList: list[float]):
 REWARDS_TITLE = "Rewards"

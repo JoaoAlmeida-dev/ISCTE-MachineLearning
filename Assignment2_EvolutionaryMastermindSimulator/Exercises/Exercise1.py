@@ -6,35 +6,32 @@ from statistics import mean
 
 from matplotlib import pyplot as plt
 
-from Assignment2.Logic.Result import Result
-from Assignment2.Logic.Logic import randomBitPattern
+from Assignment2_EvolutionaryMastermindSimulator.Logic.Mastermind import Mastermind, evaluate, fitness
+from Assignment2_EvolutionaryMastermindSimulator.Logic.Result import Result
 
-global bits
-global TIME_LIMIT
-global TRIAL_RUNS
 TIME_LIMIT = 2  # seconds
 TRIAL_RUNS = 30
 bits = [2, 4, 8, 12, 16, 20, 24, 28, 32, ]
 
 
 def _assignment2_exercise1_line_a():
-    print("Exercise1::LineA::", randomBitPattern(10))
-    print("Exercise1::LineA::", randomBitPattern(10))
-    print("Exercise1::LineA::", randomBitPattern(10))
+    print("Exercise1::LineA::", Mastermind.randomBitPattern(size=10))
+    print("Exercise1::LineA::", Mastermind.randomBitPattern(size=10))
+    print("Exercise1::LineA::", Mastermind.randomBitPattern(size=10))
 
 
 def _assignment2_exercise1_line_b():
     results: [Result] = [[] for _ in range(len(bits))]
 
     def randomTest(patternSize: int) -> Result:
-        pattern: str = randomBitPattern(size=patternSize)
+        pattern: str = Mastermind.randomBitPattern(size=patternSize)
         generated_pattern: str = ""
 
         start = timeit.default_timer()
         attempts = 0
         success: bool = False
         while pattern != generated_pattern:
-            generated_pattern = randomBitPattern(size=patternSize)
+            generated_pattern = Mastermind.randomBitPattern(size=patternSize)
             if timeit.default_timer() - start > TIME_LIMIT:
                 success = False
                 result = Result(run_time=timeit.default_timer() - start, attempts=attempts, pattern_size=patternSize,
@@ -55,7 +52,7 @@ def _assignment2_exercise1_line_b():
         lock.acquire()
 
         results[bits.index(result.pattern_size)].append(result)
-        # print("Assignment2::Exercise1::_store_result::" + str(result.__dict__))
+        # print("Assignment2_EvolutionaryMastermindSimulator::Exercise1::_store_result::" + str(result.__dict__))
         lock.release()
 
     with concurrent.futures.ThreadPoolExecutor() as executor:
@@ -100,34 +97,22 @@ def plot_results_exercise1_lineb(results: [[Result]]):
 
 
 def _assignment2_exercise1_line_c():
-    def evaluate(goal: str, curr: str):
-        close_value = len(goal)
-        for char_index in range(len(goal)):
-            if goal[char_index] == curr[char_index]:
-                close_value -= 1
-        return close_value
-
     def demo():
         goal = "0000"
-        current_solution = randomBitPattern(len(goal))
-        print("Assignment2::Exercise1::line_c::goal", goal, "current_solution:", current_solution, "evaluate:",
+        current_solution = Mastermind.randomBitPattern(size=len(goal))
+        print("Assignment2_EvolutionaryMastermindSimulator::Exercise1::line_c::goal", goal, "current_solution:",
+              current_solution, "evaluate:",
               evaluate(goal=goal, curr=current_solution))
 
     for _ in range(10): demo()
 
 
 def _assignment2_exercise1_line_d():
-    def fitness(goal: str, curr: str):
-        fitness_value = 0
-        for char_index in range(len(goal)):
-            if goal[char_index] == curr[char_index]:
-                fitness_value += 1
-        return fitness_value
-
     def demo():
         goal = "0000"
-        current_solution = randomBitPattern(len(goal))
-        print("Assignment2::Exercise1::line_c::goal", goal, "current_solution:", current_solution, "fitness:",
+        current_solution = Mastermind.randomBitPattern(size=len(goal))
+        print("Assignment2_EvolutionaryMastermindSimulator::Exercise1::line_c::goal", goal, "current_solution:",
+              current_solution, "fitness:",
               fitness(goal=goal, curr=current_solution))
 
     for _ in range(10): demo()
@@ -136,7 +121,10 @@ def _assignment2_exercise1_line_d():
 if __name__ == '__main__':
     lock = threading.Lock()
     random.seed(1)
-    # _assignment2_exercise1_line_a()
-    # _assignment2_exercise1_line_b()
+    _assignment2_exercise1_line_a()
+    print()
+    _assignment2_exercise1_line_b()
+    print()
     _assignment2_exercise1_line_c()
+    print()
     _assignment2_exercise1_line_d()

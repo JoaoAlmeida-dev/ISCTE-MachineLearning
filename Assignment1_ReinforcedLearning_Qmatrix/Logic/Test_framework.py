@@ -5,12 +5,12 @@ from typing import List
 import seaborn as sns
 from matplotlib import pyplot as plt
 
-from Assignment1.Logic.Constants import EXPERIMENT_MAX_STEPS, EXPERIMENT_NUMBER, STARTING_POS, STEPS_FOR_TESTS
-from Assignment1.Logic.Plot import plot_results
-from Assignment1.Logic.Qmatrix import Qmatrix
-from Assignment1.Logic.Result import Result
-from Assignment1.Logic.Robot import Robot
-from Assignment1.Logic.World import World
+from Assignment1_ReinforcedLearning_Qmatrix.Logic.Constants import EXPERIMENT_MAX_STEPS, EXPERIMENT_NUMBER, STARTING_POS, STEPS_FOR_TESTS
+from Assignment1_ReinforcedLearning_Qmatrix.Logic.Plot import plot_results
+from Assignment1_ReinforcedLearning_Qmatrix.Logic.Qmatrix import Qmatrix
+from Assignment1_ReinforcedLearning_Qmatrix.Logic.Result import Result
+from Assignment1_ReinforcedLearning_Qmatrix.Logic.Robot import Robot
+from Assignment1_ReinforcedLearning_Qmatrix.Logic.World import World
 
 
 def run_test(qmatrix: Qmatrix, world: World, run_number: int, plot_qmatrix: bool, qmatrix_step_number: int,

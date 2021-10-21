@@ -1,12 +1,9 @@
 import random
 import timeit
 
-from Assignment1.Logic.Constants import ACTIONS
-from Assignment1.Logic.Helpers import random_action
-from Assignment1.Logic.Plot import plot_results
-from Assignment1.Logic.Result import Result
-from Assignment1.Logic.Robot import Robot
-from Assignment1.Logic.World import World
+from Assignment1_ReinforcedLearning_Qmatrix.Logic.Constants import ACTIONS
+from Assignment1_ReinforcedLearning_Qmatrix.Logic.Helpers import random_action
+from Assignment1_ReinforcedLearning_Qmatrix.Logic.World import World
 
 ex1_world = World(_collumns=10, _rows=10, _reward_state=(9, 9))
 ex1_robot = Robot(starting_pos=(0, 0))

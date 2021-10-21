@@ -1,11 +1,11 @@
 import random
 
-from Assignment1.Logic.Constants import EXPERIMENT_MAX_STEPS, GREED_THRESHOLD, STARTING_GREED_INCREMENTAL, \
+from Assignment1_ReinforcedLearning_Qmatrix.Logic.Constants import EXPERIMENT_MAX_STEPS, GREED_THRESHOLD, STARTING_GREED_INCREMENTAL, \
     CONSTANT_GREED
-from Assignment1.Logic.Helpers import random_action
-from Assignment1.Logic.Qmatrix import Qmatrix
-from Assignment1.Logic.Robot import Robot
-from Assignment1.Logic.World import World
+from Assignment1_ReinforcedLearning_Qmatrix.Logic.Helpers import random_action
+from Assignment1_ReinforcedLearning_Qmatrix.Logic.Qmatrix import Qmatrix
+from Assignment1_ReinforcedLearning_Qmatrix.Logic.Robot import Robot
+from Assignment1_ReinforcedLearning_Qmatrix.Logic.World import World
 
 
 def line_a_random_qmatrix_update(steps: int, robot: Robot, qmatrix: Qmatrix, world: World,error_chance:float):

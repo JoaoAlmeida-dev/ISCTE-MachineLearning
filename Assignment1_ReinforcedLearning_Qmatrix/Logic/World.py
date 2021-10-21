@@ -3,9 +3,9 @@ import random
 import numpy as np
 from typing import List
 
-from Assignment1.Logic.Constants import ACTIONS
-from Assignment1.Logic.Helpers import random_action
-from Assignment1.Logic.Robot import Robot
+from Assignment1_ReinforcedLearning_Qmatrix.Logic.Constants import ACTIONS
+from Assignment1_ReinforcedLearning_Qmatrix.Logic.Helpers import random_action
+from Assignment1_ReinforcedLearning_Qmatrix.Logic.Robot import Robot
 
 
 class World:

@@ -1,12 +1,12 @@
 import random
 
-from Assignment1.Logic.Constants import STARTING_POS
-from Assignment1.Logic.Qmatrix_Updaters import line_a_random_qmatrix_update, line_b_best_qmatrix_update, \
+from Assignment1_ReinforcedLearning_Qmatrix.Logic.Constants import STARTING_POS
+from Assignment1_ReinforcedLearning_Qmatrix.Logic.Qmatrix_Updaters import line_a_random_qmatrix_update, line_b_best_qmatrix_update, \
     greed_qmatrix_update, incremental_greed_qmatrix_update
-from Assignment1.Logic.Test_framework import framework
-from Assignment1.Logic.Qmatrix import Qmatrix
-from Assignment1.Logic.Robot import Robot
-from Assignment1.Logic.World import World
+from Assignment1_ReinforcedLearning_Qmatrix.Logic.Test_framework import framework
+from Assignment1_ReinforcedLearning_Qmatrix.Logic.Qmatrix import Qmatrix
+from Assignment1_ReinforcedLearning_Qmatrix.Logic.Robot import Robot
+from Assignment1_ReinforcedLearning_Qmatrix.Logic.World import World
 
 
 def process_walls_from_txt(file):

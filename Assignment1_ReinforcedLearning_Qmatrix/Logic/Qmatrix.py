@@ -1,8 +1,8 @@
 import numpy as np
 
-from Assignment1.Logic.Constants import ACTIONS
-from Assignment1.Logic.Helpers import max_index_of
-from Assignment1.Logic.World import World
+from Assignment1_ReinforcedLearning_Qmatrix.Logic.Constants import ACTIONS
+from Assignment1_ReinforcedLearning_Qmatrix.Logic.Helpers import max_index_of
+from Assignment1_ReinforcedLearning_Qmatrix.Logic.World import World
 
 
 class Qmatrix:
