@@ -13,7 +13,7 @@ class Mastermind:
     @staticmethod
     def randomBitPattern(size: int) -> str:
         result: str = ""
-        for i in range(size):
+        for _ in range(size):
             if random.random() > 0.5:
                 result += '0'
             else:

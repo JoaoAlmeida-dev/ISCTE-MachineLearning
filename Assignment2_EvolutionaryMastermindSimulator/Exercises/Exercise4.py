@@ -1,33 +1,64 @@
+import random
+import threading
+import timeit
+
 from matplotlib import pyplot as plt
 
-from Assignment2_EvolutionaryMastermindSimulator.Logic.Population import Population, mutate_population
+from Assignment2_EvolutionaryMastermindSimulator.Exercises.Constants import bits, STAGNATION_VARIANCE
+from Assignment2_EvolutionaryMastermindSimulator.Exercises.Thread_Launcher import launch_Threads, store_result
+from Assignment2_EvolutionaryMastermindSimulator.Logic.Mastermind import Mastermind
+from Assignment2_EvolutionaryMastermindSimulator.Logic.Plotter import plot_results_list
+from Assignment2_EvolutionaryMastermindSimulator.Logic.Population import Population, mutate_population, \
+    crossover_population
+from Assignment2_EvolutionaryMastermindSimulator.Logic.Result import Result
 
 exercise3_max_generations = 100
 
+exercise4_best_percentage = 0.3
+exercise4_goal = "11111111"
+exercise4_sample_size = 100
 
-def _assignment2_exercise4_line_a():
 
-    exercise4_best_percentage = 0.3
-    exercise4_goal = "11111111"
-    exercise4_sample_size = 100
+def _assignment2_exercise4_line_a(pattern_size: int):
+    _goal = Mastermind.randomBitPattern(pattern_size)
 
-    current_population: Population = Population.generate_fist_population(sample_size=exercise4_sample_size,
-                                                                         goal=exercise4_goal)
-    mean_fitness_list = []
-    counter = 0
-    while current_population.get_mean_fitness() < len(exercise4_goal) and counter <= exercise3_max_generations:
-        mutated_pop: Population = mutate_population(new_pop_size=exercise4_sample_size, goal=exercise4_goal,
-                                                    initial_population=current_population,
-                                                    best_percentage_mutation=exercise4_best_percentage)
-        current_population = mutated_pop
-        mean_fitness_list.append(current_population.get_mean_fitness())
-        counter += 1
-        print("counter", counter, "pop", current_population)
+    _results_generation_counter: int = 0
+    _success = True
 
-    plt.plot(mean_fitness_list)
-    plt.tight_layout()
-    plt.show()
+    _current_population = Population.generate_fist_population(goal=_goal, sample_size=exercise4_sample_size)
+    _fitness_history: [int] = []
+    _stagnated: bool = False
+    _results_start = timeit.default_timer()
+
+    while not _stagnated and _current_population.get_mean_fitness() < len(_goal):
+        # while _current_population.get_mean_fitness() < len(_goal):
+        fitness_list_len: bool = len(_fitness_history) > 1
+        if fitness_list_len:
+            _stagnated = _fitness_history[
+                             -1] + STAGNATION_VARIANCE > _current_population.get_mean_fitness() > \
+                         _fitness_history[-1] - STAGNATION_VARIANCE
+
+        _fitness_history.append(_current_population.get_mean_fitness())
+        _current_population = crossover_population(initial_population=_current_population,
+                                                   new_pop_size=exercise4_sample_size, goal=_goal,
+                                                   best_percentage_mutation=exercise4_best_percentage)
+        _results_generation_counter += 1
+
+    _results_stop = timeit.default_timer()
+    _result: Result = Result(
+        run_time=_results_stop - _results_start,
+        attempts=_results_generation_counter,
+        pattern_size=pattern_size,
+        successfull=_success,
+    )
+    print("Assignment2_EvolutionaryMastermindSimulator::Exercise4::", threading.get_ident(),
+          "population_mean_fitness", _current_population.get_mean_fitness(), "::" + str(_result))
+    store_result(results=exercise4_results_list, result=_result, lock=exercise4_lock)
 
 
 if __name__ == '__main__':
-    _assignment2_exercise4_line_a()
+    # random.seed(1)
+    exercise4_lock = threading.Lock()
+    exercise4_results_list: [[Result]] = [[] for _ in range(len(bits))]
+    launch_Threads(method_to_run=_assignment2_exercise4_line_a, results=exercise4_results_list)
+    plot_results_list(results=exercise4_results_list, title="Exercise4")

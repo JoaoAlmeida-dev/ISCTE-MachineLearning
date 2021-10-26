@@ -1,3 +1,4 @@
-TIME_LIMIT = 2  # seconds
+TIME_LIMIT = 0.5  # seconds
 TRIAL_RUNS = 30
-bits = [2, 4, 8, 12, 16, 20, 24, 28, 32 ]
+bits = [2, 4, 8, 16, 32]
+STAGNATION_VARIANCE = 0.025
