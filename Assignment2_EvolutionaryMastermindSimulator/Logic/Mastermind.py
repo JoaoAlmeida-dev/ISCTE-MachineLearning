@@ -56,3 +56,16 @@ class Mastermind:
             _mutated = flip_random_bit(_mutated)
             _counter += 1
         return _mutated
+
+    @staticmethod
+    def crossover(input_a: str, input_b: str) -> str:
+        first_input = randint(0, 1)
+        slice_index = randint(0, min(len(input_a), len(input_b)))
+        if first_input == 0:
+            return input_a[0:slice_index] + input_b[slice_index:len(input_b)]
+        else:
+            return input_b[0:slice_index] + input_a[slice_index:len(input_a)]
+
+
+if __name__ == '__main__':
+    print(Mastermind.crossover("00000", "11111"))

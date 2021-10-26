@@ -6,7 +6,7 @@ from statistics import mean
 
 from matplotlib import pyplot as plt
 
-from Assignment2_EvolutionaryMastermindSimulator.Logic.Mastermind import Mastermind, evaluate, fitness
+from Assignment2_EvolutionaryMastermindSimulator.Logic.Mastermind import Mastermind
 from Assignment2_EvolutionaryMastermindSimulator.Logic.Result import Result
 
 TIME_LIMIT = 2  # seconds
@@ -102,7 +102,7 @@ def _assignment2_exercise1_line_c():
         current_solution = Mastermind.randomBitPattern(size=len(goal))
         print("Assignment2_EvolutionaryMastermindSimulator::Exercise1::line_c::goal", goal, "current_solution:",
               current_solution, "evaluate:",
-              evaluate(goal=goal, curr=current_solution))
+              Mastermind.evaluate(goal=goal, curr=current_solution))
 
     for _ in range(10): demo()
 
@@ -113,7 +113,7 @@ def _assignment2_exercise1_line_d():
         current_solution = Mastermind.randomBitPattern(size=len(goal))
         print("Assignment2_EvolutionaryMastermindSimulator::Exercise1::line_c::goal", goal,
               "current_solution:", current_solution,
-              "fitness:",  fitness(goal=goal, curr=current_solution))
+              "fitness:",  Mastermind.fitness(goal=goal, curr=current_solution))
 
     for _ in range(10): demo()
 
