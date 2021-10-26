@@ -6,7 +6,7 @@ from Assignment2_EvolutionaryMastermindSimulator.Logic.Mastermind import Masterm
 
 class Population:
     def __str__(self) -> str:
-        string_output: str = "mean_Fitness=" + str(self.mean_fitness()) + ";\tpop_size=" + str(
+        string_output: str = "mean_Fitness=" + str(self.get_mean_fitness()) + ";\tpop_size=" + str(
             self.get_population_size()) + \
                              ";\tpatterns:" + str(self._patterns_list) + ";fitnesses:" + str(self._fitness_list)
         return string_output
@@ -41,7 +41,7 @@ class Population:
         result = (self._patterns_list[_random_index], self._fitness_list[_random_index])
         return result
 
-    def mean_fitness(self) -> float:
+    def get_mean_fitness(self) -> float:
         return mean(self._fitness_list)
 
     def sort(self):
@@ -85,9 +85,10 @@ class Population:
         _new_individuals_pattern: [str] = []
         _new_individuals_fitness: [int] = []
         for item_index in range(self.get_population_size()):
-            if self._fitness_list[item_index] < max_fitness: break
+            if self._fitness_list[item_index] < max_fitness:
+                break
             _new_individuals_pattern.append(self._patterns_list[item_index])
-            _new_individuals_fitness.append(item_index[1])
+            _new_individuals_fitness.append(self._fitness_list[item_index])
 
         return Population(initial_goal=self._goal,
                           initial_patterns_list=_new_individuals_pattern, initial_fitness_list=_new_individuals_fitness,
@@ -117,29 +118,30 @@ class Population:
 # @staticmethod
 def mutate_population(initial_population: Population, new_pop_size: int, goal: str,
                       best_percentage_mutation: float) -> Population:
-
-    _new_best_population: Population = initial_population.extract_best_patterns(
-        best_percentage=best_percentage_mutation)
-    # _new_best_population: Population = initial_population.extract_max_patterns( best_percentage=best_percentage_mutation)
+    _new_best_population: Population = initial_population.extract_best_patterns( best_percentage=best_percentage_mutation)
+    # _new_best_population: Population = initial_population.extract_max_patterns(
+    # best_percentage=best_percentage_mutation)
 
     while _new_best_population.get_population_size() < new_pop_size:
         _chosen_for_mutation: str = _new_best_population.get_random_individual()[0]
-        _generated_pattern: str = Mastermind.mutate(input=_chosen_for_mutation, goal=goal)
+        _generated_pattern: str = Mastermind.mutate(input=_chosen_for_mutation)
 
         _new_best_population.add_individual(pattern=_generated_pattern,
                                             fitness=Mastermind.fitness(goal=goal, curr=_generated_pattern))
     return _new_best_population
 
+
 def crossover_population(initial_population: Population, new_pop_size: int, goal: str,
-                      best_percentage_mutation: float)-> Population:
+                         best_percentage_mutation: float) -> Population:
     _new_best_population: Population = initial_population.extract_best_patterns(
         best_percentage=best_percentage_mutation)
-    # _new_best_population: Population = initial_population.extract_max_patterns( best_percentage=best_percentage_mutation)
+    # _new_best_population: Population = initial_population.extract_max_patterns(
+    # best_percentage=best_percentage_mutation)
 
     while _new_best_population.get_population_size() < new_pop_size:
         _chosen_for_mutation_a: str = _new_best_population.get_random_individual()[0]
         _chosen_for_mutation_b: str = _new_best_population.get_random_individual()[0]
-        _generated_pattern: str = Mastermind.crossover(input_a=_chosen_for_mutation_a, input_b=_chosen_for_mutation_b, goal=goal)
+        _generated_pattern: str = Mastermind.crossover(input_a=_chosen_for_mutation_a, input_b=_chosen_for_mutation_b)
 
         _new_best_population.add_individual(pattern=_generated_pattern,
                                             fitness=Mastermind.fitness(goal=goal, curr=_generated_pattern))

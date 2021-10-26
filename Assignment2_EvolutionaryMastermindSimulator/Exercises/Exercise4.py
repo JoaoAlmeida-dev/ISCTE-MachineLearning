@@ -15,12 +15,12 @@ def _assignment2_exercise4_line_a():
                                                                          goal=exercise4_goal)
     mean_fitness_list = []
     counter = 0
-    while current_population.mean_fitness() < len(exercise4_goal) and counter <= exercise3_max_generations:
+    while current_population.get_mean_fitness() < len(exercise4_goal) and counter <= exercise3_max_generations:
         mutated_pop: Population = mutate_population(new_pop_size=exercise4_sample_size, goal=exercise4_goal,
                                                     initial_population=current_population,
                                                     best_percentage_mutation=exercise4_best_percentage)
         current_population = mutated_pop
-        mean_fitness_list.append(current_population.mean_fitness())
+        mean_fitness_list.append(current_population.get_mean_fitness())
         counter += 1
         print("counter", counter, "pop", current_population)
 

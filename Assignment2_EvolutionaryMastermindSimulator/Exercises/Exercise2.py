@@ -2,7 +2,6 @@ import concurrent.futures
 import random
 import threading
 import timeit
-from statistics import mean
 
 from matplotlib import pyplot as plt
 
@@ -26,11 +25,8 @@ def _assignment2_exercise2_line_a():
               )
 
     def demo_graph():
-        _sample_size: int = 100
-        _goal: str = "1111"
-
         results: [[Result]] = [[] for _ in range(len(bits))]
-        fitnesses_list: [int] = [[] for _ in range(len(bits))]
+        #fitnesses_list: [int] = [[] for _ in range(len(bits))]
 
         def randomTest(pattern_size: int):
             _goal = Mastermind.randomBitPattern(pattern_size)
@@ -55,8 +51,8 @@ def _assignment2_exercise2_line_a():
                     _results_attempts += 1
                     _counter += 1
                 _current_pattern = _mutated
-                #print("Assignment2::Exercise2::demo_graph::randomTest::goal:",_goal,"current:",_current_pattern)
-                fitnesses_list[bits.index(pattern_size)].append(Mastermind.fitness(goal=_goal, curr=_mutated))
+                # print("Assignment2::Exercise2::demo_graph::randomTest::goal:",_goal,"current:",_current_pattern)
+                #fitnesses_list[bits.index(pattern_size)].append(Mastermind.fitness(goal=_goal, curr=_mutated))
             _results_stop = timeit.default_timer()
 
             result = Result(
@@ -71,7 +67,7 @@ def _assignment2_exercise2_line_a():
             lock.acquire()
 
             results[bits.index(result.pattern_size)].append(result)
-            print("Assignment2_EvolutionaryMastermindSimulator::Exercise2::_store_result::" + str(result) )#str(result.__dict__))
+            print("Assignment2_EvolutionaryMastermindSimulator::Exercise2::ThreadN:",threading.get_ident(),"::_store_result::\t" + str(result))  # str(result.__dict__))
             lock.release()
 
         with concurrent.futures.ThreadPoolExecutor() as executor:
@@ -79,7 +75,6 @@ def _assignment2_exercise2_line_a():
             for _ in range(TRIAL_RUNS):
                 executor.map(randomTest, bits)
         plot_results_list(results=results)
-
 
     demo1()
     demo_graph()
