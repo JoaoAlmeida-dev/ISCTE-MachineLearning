@@ -9,3 +9,7 @@ class Result:
         self.attempts = attempts
         self.pattern_size = pattern_size
         self.successfull = successfull
+
+    def __str__(self) -> str:
+        return str(self.__dict__)
+

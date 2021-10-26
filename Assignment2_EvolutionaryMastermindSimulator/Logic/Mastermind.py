@@ -38,24 +38,22 @@ class Mastermind:
         return fitness_value
 
     @staticmethod
-    def mutate(input: str, goal: str) -> str:
+    def mutate(input: str) -> str:
+        input_as_list = list(input)
+        index = randint(0, len(input) - 1)
+        if input_as_list[index] == "0":
+            input_as_list[index] = "1"
+        elif input_as_list[index] == "1":
+            input_as_list[index] = "0"
+        return "".join(input_as_list)
 
-        def flip_random_bit(input: str):
-            input_as_list = list(input)
-            index = randint(0, len(input) - 1)
-            if input_as_list[index] == "0":
-                input_as_list[index] = "1"
-            elif input_as_list[index] == "1":
-                input_as_list[index] = "0"
-            return "".join(input_as_list)
-
-        _original_fitness: int = Mastermind.fitness(goal=goal, curr=input)
-        _mutated = input
-        _counter = 0
-        while _original_fitness >= Mastermind.fitness(goal=goal, curr=_mutated) and _counter < 1000:
-            _mutated = flip_random_bit(_mutated)
-            _counter += 1
-        return _mutated
+#        _original_fitness: int = Mastermind.fitness(goal=goal, curr=input)
+#        _mutated = input
+#        _counter = 0
+#        while _original_fitness >= Mastermind.fitness(goal=goal, curr=_mutated) and _counter < 1000:
+#            _mutated = flip_random_bit(_mutated)
+#            _counter += 1
+#       return _mutated
 
     @staticmethod
     def crossover(input_a: str, input_b: str) -> str:
@@ -68,4 +66,10 @@ class Mastermind:
 
 
 if __name__ == '__main__':
+    for _ in range(100):
+        _goal = "11111111"
+        _original:str = "11111111"
+        print("original:",_original, "mutated:" , Mastermind.mutate(_original,_goal))
+
+
     print(Mastermind.crossover("00000", "11111"))

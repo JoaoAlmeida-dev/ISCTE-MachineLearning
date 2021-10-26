@@ -2,16 +2,11 @@ import concurrent.futures
 import random
 import threading
 import timeit
-from statistics import mean
 
-from matplotlib import pyplot as plt
-
+from Assignment2_EvolutionaryMastermindSimulator.Exercises.Constants import TIME_LIMIT, TRIAL_RUNS, bits
 from Assignment2_EvolutionaryMastermindSimulator.Logic.Mastermind import Mastermind
+from Assignment2_EvolutionaryMastermindSimulator.Logic.Plotter import plot_results_list
 from Assignment2_EvolutionaryMastermindSimulator.Logic.Result import Result
-
-TIME_LIMIT = 2  # seconds
-TRIAL_RUNS = 30
-bits = [2, 4, 8, 12, 16, 20, 24, 28, 32, ]
 
 
 def _assignment2_exercise1_line_a():
@@ -21,7 +16,7 @@ def _assignment2_exercise1_line_a():
 
 
 def _assignment2_exercise1_line_b():
-    results: [Result] = [[] for _ in range(len(bits))]
+    results: [[Result]] = [[] for _ in range(len(bits))]
 
     def randomTest(patternSize: int) -> Result:
         pattern: str = Mastermind.randomBitPattern(size=patternSize)
@@ -60,40 +55,7 @@ def _assignment2_exercise1_line_b():
         for _ in range(TRIAL_RUNS):
             executor.map(randomTest, bits)
 
-    plot_results_exercise1_lineb(results=results)
-
-
-def plot_results_exercise1_lineb(results: [[Result]]):
-    attempts_list = [[] for _ in range(len(bits))]
-    run_time_list = [[] for _ in range(len(bits))]
-    pattern_size_list = [[] for _ in range(len(bits))]
-    # successfull_list = [[] for _ in range(len(bits))]
-    for pattern_size in results:
-        for result in pattern_size:
-            attempts_list[bits.index(result.pattern_size)].append(result.attempts)
-            run_time_list[bits.index(result.pattern_size)].append(result.run_time)
-            pattern_size_list[bits.index(result.pattern_size)].append(result.pattern_size)
-            # successfull_list[bits.index(result.pattern_size)].append(result.successfull)
-
-    mean_attempts_list = []
-    for attempt in attempts_list:
-        mean_attempts_list.append(mean(attempt))
-    mean_run_times_list = []
-    for run_time in run_time_list:
-        mean_run_times_list.append(mean(run_time))
-
-    plt.subplot(2, 1, 1)
-    plt.plot(bits, mean_attempts_list, )
-    plt.boxplot(attempts_list, positions=bits, notch=True)
-    plt.xlabel("pattern_size")
-    plt.ylabel("attempts")
-    plt.subplot(2, 1, 2)
-    plt.plot(bits, mean_run_times_list, )
-    plt.boxplot(run_time_list, positions=bits, notch=True)
-    plt.xlabel("pattern_size")
-    plt.ylabel("run_time")
-    plt.tight_layout()
-    plt.show()
+    plot_results_list(results=results)
 
 
 def _assignment2_exercise1_line_c():
