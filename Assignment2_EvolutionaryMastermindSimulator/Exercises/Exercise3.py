@@ -2,7 +2,7 @@ import random
 import threading
 import timeit
 
-from Assignment2_EvolutionaryMastermindSimulator.Exercises.Constants import bits, STAGNATION_VARIANCE
+from Assignment2_EvolutionaryMastermindSimulator.Exercises.Constants import BITS, STAGNATION_VARIANCE
 from Assignment2_EvolutionaryMastermindSimulator.Exercises.Thread_Launcher import store_result, launch_Threads
 from Assignment2_EvolutionaryMastermindSimulator.Logic.Mastermind import Mastermind
 from Assignment2_EvolutionaryMastermindSimulator.Logic.Plotter import plot_results_list
@@ -15,7 +15,7 @@ exercise3_sample_size = 100
 
 
 def _assignment2_exercise3_line_a(pattern_size: int):
-    _goal = Mastermind.randomBitPattern(pattern_size)
+    _goal = Mastermind.random_bit_pattern(pattern_size)
 
     _results_generation_counter: int = 0
     _success = True
@@ -46,14 +46,14 @@ def _assignment2_exercise3_line_a(pattern_size: int):
         pattern_size=pattern_size,
         successfull=_success,
     )
-    print("Assignment2_EvolutionaryMastermindSimulator::Exercise3::", threading.get_ident(),
-          "population_mean_fitness", _current_population.get_mean_fitness(), "::" + str(result))
+    #print("Assignment2_EvolutionaryMastermindSimulator::Exercise3::", threading.get_ident(),
+    #      "population_mean_fitness", _current_population.get_mean_fitness(), "::" + str(result))
     store_result(results=exercise3_results_list, result=result, lock=exercise3_lock)
 
 
 if __name__ == '__main__':
     random.seed(1)
     exercise3_lock = threading.Lock()
-    exercise3_results_list: [[Result]] = [[] for _ in range(len(bits))]
+    exercise3_results_list: [[Result]] = [[] for _ in range(len(BITS))]
     launch_Threads(method_to_run=_assignment2_exercise3_line_a, results=exercise3_results_list)
     plot_results_list(results=exercise3_results_list, title="Exercise3")

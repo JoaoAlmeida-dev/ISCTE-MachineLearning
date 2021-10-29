@@ -11,15 +11,15 @@ class Mastermind:
         self.pattern_size = len(goal)
 
     @staticmethod
-    def randomBitPattern(size: int) -> str:
+    def random_bit_pattern(size: int) -> str:
         result: str = ""
         for _ in range(size):
-            if random.random() > 0.5:
-                result += '0'
-            else:
-                result += '1'
-
+            result += Mastermind.random_bit()
         return result
+
+    @staticmethod
+    def random_bit() -> str:
+        return random.choice(['0','1'])
 
     @staticmethod
     def evaluate(goal: str, curr: str):

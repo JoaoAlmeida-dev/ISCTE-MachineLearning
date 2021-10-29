@@ -14,7 +14,7 @@ ex5_qmatrix = Qmatrix(_world=ex5_world)
 
 
 def _line_a(world: World, qmatrix: Qmatrix, qmatrix_update_function, robot: Robot,error_chance:float):
-    print("Exercise5::line_a", )
+    print("Exercise5.py::line_a", )
     framework(qmatrix_update_function=qmatrix_update_function,
               qmatrix=qmatrix,
               robot=robot,

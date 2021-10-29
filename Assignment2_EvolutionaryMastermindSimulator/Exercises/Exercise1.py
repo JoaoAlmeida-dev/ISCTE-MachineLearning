@@ -3,7 +3,7 @@ import random
 import threading
 import timeit
 
-from Assignment2_EvolutionaryMastermindSimulator.Exercises.Constants import TIME_LIMIT, TRIAL_RUNS, bits
+from Assignment2_EvolutionaryMastermindSimulator.Exercises.Constants import TIME_LIMIT, TRIAL_RUNS, BITS
 from Assignment2_EvolutionaryMastermindSimulator.Exercises.Thread_Launcher import store_result, launch_Threads
 from Assignment2_EvolutionaryMastermindSimulator.Logic.Mastermind import Mastermind
 from Assignment2_EvolutionaryMastermindSimulator.Logic.Plotter import plot_results_list
@@ -11,20 +11,20 @@ from Assignment2_EvolutionaryMastermindSimulator.Logic.Result import Result
 
 
 def _assignment2_exercise1_line_a():
-    print("Exercise1::LineA::", Mastermind.randomBitPattern(size=10))
-    print("Exercise1::LineA::", Mastermind.randomBitPattern(size=10))
-    print("Exercise1::LineA::", Mastermind.randomBitPattern(size=10))
+    print("Exercise1::LineA::", Mastermind.random_bit_pattern(size=10))
+    print("Exercise1::LineA::", Mastermind.random_bit_pattern(size=10))
+    print("Exercise1::LineA::", Mastermind.random_bit_pattern(size=10))
 
 
 def _assignment2_exercise1_line_b(patternSize: int):
-    _goal_pattern: str = Mastermind.randomBitPattern(size=patternSize)
+    _goal_pattern: str = Mastermind.random_bit_pattern(size=patternSize)
     _generated_pattern: str = ""
 
     _start = timeit.default_timer()
     _attempts = 0
     _success: bool = True
-    while _goal_pattern != _generated_pattern:
-        _generated_pattern = Mastermind.randomBitPattern(size=patternSize)
+    while _goal_pattern != _generated_pattern and (timeit.default_timer() -_start) <TIME_LIMIT:
+        _generated_pattern = Mastermind.random_bit_pattern(size=patternSize)
         #if timeit.default_timer() - _start > TIME_LIMIT:
         #    _success = False
         #    _result = Result(run_time=timeit.default_timer() - _start, attempts=_attempts, pattern_size=patternSize,
@@ -45,7 +45,7 @@ def _assignment2_exercise1_line_b(patternSize: int):
 def _assignment2_exercise1_line_c():
     def demo():
         _goal = "0000"
-        _current_solution = Mastermind.randomBitPattern(size=len(_goal))
+        _current_solution = Mastermind.random_bit_pattern(size=len(_goal))
         print("Assignment2_EvolutionaryMastermindSimulator::Exercise1::line_c::goal", _goal, "current_solution:",
               _current_solution, "evaluate:",
               Mastermind.evaluate(goal=_goal, curr=_current_solution))
@@ -56,7 +56,7 @@ def _assignment2_exercise1_line_c():
 def _assignment2_exercise1_line_d():
     def demo():
         _goal = "0000"
-        _current_solution = Mastermind.randomBitPattern(size=len(_goal))
+        _current_solution = Mastermind.random_bit_pattern(size=len(_goal))
         print("Assignment2_EvolutionaryMastermindSimulator::Exercise1::line_c::goal", _goal,
               "current_solution:", _current_solution,
               "fitness:", Mastermind.fitness(goal=_goal, curr=_current_solution))
@@ -68,7 +68,7 @@ def _assignment2_exercise1_line_d():
 if __name__ == '__main__':
     random.seed(1)
     exercise1_lock = threading.Lock()
-    exercise1_results_list: [[Result]] = [[] for _ in range(len(bits))]
+    exercise1_results_list: [[Result]] = [[] for _ in range(len(BITS))]
 
     _assignment2_exercise1_line_a()
     print()

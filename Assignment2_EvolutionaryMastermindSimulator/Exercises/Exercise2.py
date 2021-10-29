@@ -5,7 +5,7 @@ import timeit
 
 from matplotlib import pyplot as plt
 
-from Assignment2_EvolutionaryMastermindSimulator.Exercises.Constants import TRIAL_RUNS, bits, TIME_LIMIT
+from Assignment2_EvolutionaryMastermindSimulator.Exercises.Constants import TRIAL_RUNS, BITS, TIME_LIMIT
 from Assignment2_EvolutionaryMastermindSimulator.Exercises.Thread_Launcher import launch_Threads, store_result
 from Assignment2_EvolutionaryMastermindSimulator.Logic.Plotter import plot_results_list
 from Assignment2_EvolutionaryMastermindSimulator.Logic.Mastermind import Mastermind
@@ -14,7 +14,7 @@ from Assignment2_EvolutionaryMastermindSimulator.Logic.Result import Result
 
 def demo1():
     _goal = "0000"
-    current_solution: str = Mastermind.randomBitPattern(size=len(_goal))
+    current_solution: str = Mastermind.random_bit_pattern(size=len(_goal))
     mutated: str = Mastermind.mutate(input=current_solution)
     print("Assignment2_EvolutionaryMastermindSimulator::Exercise2::line_a::_goal", _goal,
           "\ncurrent_solution:", current_solution,
@@ -26,8 +26,8 @@ def demo1():
 
 
 def _assignment2_exercise2_line_a(pattern_size: int):
-    _goal = Mastermind.randomBitPattern(pattern_size)
-    _current_pattern = Mastermind.randomBitPattern(pattern_size)
+    _goal = Mastermind.random_bit_pattern(pattern_size)
+    _current_pattern = Mastermind.random_bit_pattern(pattern_size)
     _results_attempts: int = 0
     success = True
 
@@ -63,6 +63,6 @@ def _assignment2_exercise2_line_a(pattern_size: int):
 if __name__ == '__main__':
     random.seed(1)
     exercise2_lock = threading.Lock()
-    exercise2_results_list: [[Result]] = [[] for _ in range(len(bits))]
+    exercise2_results_list: [[Result]] = [[] for _ in range(len(BITS))]
     launch_Threads(method_to_run=_assignment2_exercise2_line_a, results=exercise2_results_list)
     plot_results_list(results=exercise2_results_list, title="Exercise2")

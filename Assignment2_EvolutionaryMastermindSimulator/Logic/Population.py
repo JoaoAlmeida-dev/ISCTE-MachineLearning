@@ -100,7 +100,7 @@ class Population:
         _patterns_list = []
         _fitnesses_list = []
         for _ in range(0, sample_size):
-            _generated_pattern: str = Mastermind.randomBitPattern(size=len(goal))
+            _generated_pattern: str = Mastermind.random_bit_pattern(size=len(goal))
             # _generated_dict: dict = {
             #    'pattern': _generated_pattern,
             #    'fitness': Mastermind.fitness(goal=goal, curr=_generated_pattern)
