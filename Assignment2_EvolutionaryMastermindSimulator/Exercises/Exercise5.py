@@ -52,13 +52,13 @@ def fitness_undefined_size_test():
 
 # In mutation my guess is that the function will have the chance of adding or removing a random bit
 
-def mutate_undefined_size(input: str) -> str:
-    input_as_list = list(input)
+def mutate_undefined_size(mutation_input: str) -> str:
+    input_as_list = list(mutation_input)
     # print(input_as_list)
     same_add_remove: int = randint(0, 3)
     if same_add_remove == 1:
         # same_length
-        index = randint(0, len(input) - 1)
+        index = randint(0, len(mutation_input) - 1)
         print("same_length in ", index)
         if input_as_list[index] == "0":
             input_as_list[index] = "1"
@@ -66,30 +66,52 @@ def mutate_undefined_size(input: str) -> str:
             input_as_list[index] = "0"
     elif same_add_remove == 2:
         # remove_bit
-        index = randint(0, len(input) - 1)
+        index = randint(0, len(mutation_input) - 1)
         print("remove_bit in", index)
         input_as_list.pop(index)
     else:
         # add_bit
-        index = randint(0, len(input))
-        _new_bit:str = Mastermind.random_bit()
-        print("added_bit",_new_bit," in", index )
-        input_as_list.insert(index,_new_bit )
+        index = randint(0, len(mutation_input))
+        _new_bit: str = Mastermind.random_bit()
+        print("added_bit", _new_bit, " in", index)
+        input_as_list.insert(index, _new_bit)
     # print(input_as_list)
     return "".join(input_as_list)
 
 
 def mutate_undefined_size_test():
     for _ in range(10):
-        _random: str = Mastermind.random_bit_pattern(3)
-        _mutated: str = mutate_undefined_size(input=_random)
+        _random: str = Mastermind.random_bit_pattern(random.randint(1, 4))
+        _mutated: str = mutate_undefined_size(mutation_input=_random)
         print(_random, _mutated)
 
 
+# Para um tamanho indefinido de padrão temos apenas de nos certificar que o meio da divisão
+# não é maior que o tamanho de nenhum dos padrões
+
+def crossover_undefined_size(input_a: str, input_b: str) -> str:
+    first_input = randint(0, 1)
+    slice_index = randint(0, min(len(input_a), len(input_b)))
+    if first_input == 0:
+        return input_a[0:slice_index] + input_b[slice_index:len(input_b)]
+    else:
+        return input_b[0:slice_index] + input_a[slice_index:len(input_a)]
+
+
+def crossover_undefined_size_test():
+    for _ in range(10):
+        _random_a: str = Mastermind.random_bit_pattern(random.randint(1, 4))
+        _random_b: str = Mastermind.random_bit_pattern(random.randint(1, 4))
+        _crossover_value: str = crossover_undefined_size(input_a=_random_a, input_b=_random_b)
+        print(_random_a, _random_b, _crossover_value)
+
+
 if __name__ == '__main__':
-    print("----------evaluate_undefined_size_test----------")
+    print("----------evaluate_undefined_size_test-----------")
     evaluate_undefined_size_test()
-    print("----------fitness_undefined_size----------")
+    print("----------fitness_undefined_size-----------------")
     fitness_undefined_size_test()
-    print("----------mutate_undefined_size_test----------")
+    print("----------mutate_undefined_size_test-------------")
     mutate_undefined_size_test()
+    print("----------crossover_undefined_size_test----------")
+    crossover_undefined_size_test()

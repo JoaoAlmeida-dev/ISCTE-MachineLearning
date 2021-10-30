@@ -23,23 +23,26 @@ def _assignment2_exercise1_line_b(patternSize: int):
     _start = timeit.default_timer()
     _attempts = 0
     _success: bool = True
-    while _goal_pattern != _generated_pattern and (timeit.default_timer() -_start) <TIME_LIMIT:
-        _generated_pattern = Mastermind.random_bit_pattern(size=patternSize)
-        #if timeit.default_timer() - _start > TIME_LIMIT:
-        #    _success = False
-        #    _result = Result(run_time=timeit.default_timer() - _start, attempts=_attempts, pattern_size=patternSize,
-        #                     successfull=_success)
-        #    store_result(result=_result, results=exercise1_results_list, lock=exercise1_lock)
+    while _goal_pattern != _generated_pattern and _success:
+        _current_time = timeit.default_timer()
+        if _current_time - _start > TIME_LIMIT:
+            _success = False
+            result = Result(run_time=timeit.default_timer() - _start, attempts=_attempts,
+                            pattern_size=patternSize,
+                            successfull=_success)
+            store_result(result=result, results=exercise1_results_list, lock=exercise1_lock)
+            #return
+        else:
+            _generated_pattern = Mastermind.random_bit_pattern(size=patternSize)
+            _attempts += 1
+    if _success:
+        _stop = timeit.default_timer()
+        _time: float = _stop - _start
+        _result = Result(run_time=_time, attempts=_attempts, pattern_size=patternSize, successfull=_success)
 
-        _attempts += 1
-    _stop = timeit.default_timer()
-    _time: float = _stop - _start
-
-    _result = Result(run_time=_time, attempts=_attempts, pattern_size=patternSize, successfull=_success)
-
-    #print("Assignment2_EvolutionaryMastermindSimulator::Exercise1::", threading.get_ident(),
-    #      "population_mean_fitness::" + str(_result))
-    store_result(result=_result, results=exercise1_results_list, lock=exercise1_lock)
+        #print("Assignment2_EvolutionaryMastermindSimulator::Exercise1::", threading.get_ident(),
+        #      "population_mean_fitness::" + str(_result))
+        store_result(result=_result, results=exercise1_results_list, lock=exercise1_lock)
 
 
 def _assignment2_exercise1_line_c():
@@ -80,3 +83,5 @@ if __name__ == '__main__':
     _assignment2_exercise1_line_c()
     print()
     _assignment2_exercise1_line_d()
+
+
