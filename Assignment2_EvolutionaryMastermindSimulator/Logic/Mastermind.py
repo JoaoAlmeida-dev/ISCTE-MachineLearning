@@ -47,14 +47,6 @@ class Mastermind:
             input_as_list[index] = "0"
         return "".join(input_as_list)
 
-#        _original_fitness: int = Mastermind.fitness(goal=goal, curr=input)
-#        _mutated = input
-#        _counter = 0
-#        while _original_fitness >= Mastermind.fitness(goal=goal, curr=_mutated) and _counter < 1000:
-#            _mutated = flip_random_bit(_mutated)
-#            _counter += 1
-#       return _mutated
-
     @staticmethod
     def crossover(input_a: str, input_b: str) -> str:
         first_input = randint(0, 1)

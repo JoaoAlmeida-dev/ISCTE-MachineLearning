@@ -4,7 +4,7 @@ import threading
 import timeit
 
 from Assignment2_EvolutionaryMastermindSimulator.Exercises.Constants import TIME_LIMIT, TRIAL_RUNS, BITS
-from Assignment2_EvolutionaryMastermindSimulator.Exercises.Thread_Launcher import store_result, launch_Threads
+from Assignment2_EvolutionaryMastermindSimulator.Exercises.Thread_Launcher import store_result, launch_threads
 from Assignment2_EvolutionaryMastermindSimulator.Logic.Mastermind import Mastermind
 from Assignment2_EvolutionaryMastermindSimulator.Logic.Plotter import plot_results_list
 from Assignment2_EvolutionaryMastermindSimulator.Logic.Result import Result
@@ -31,7 +31,6 @@ def _assignment2_exercise1_line_b(patternSize: int):
                             pattern_size=patternSize,
                             successfull=_success)
             store_result(result=result, results=exercise1_results_list, lock=exercise1_lock)
-            #return
         else:
             _generated_pattern = Mastermind.random_bit_pattern(size=patternSize)
             _attempts += 1
@@ -76,7 +75,7 @@ if __name__ == '__main__':
     _assignment2_exercise1_line_a()
     print()
 
-    launch_Threads(method_to_run=_assignment2_exercise1_line_b, results=exercise1_results_list)
+    launch_threads(method_to_run=_assignment2_exercise1_line_b, results=exercise1_results_list)
     plot_results_list(results=exercise1_results_list, title="Exercise1")
 
     print()

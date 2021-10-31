@@ -1,8 +1,9 @@
-from statistics import mean
+
 
 from matplotlib import pyplot as plt
 
 from Assignment2_EvolutionaryMastermindSimulator.Exercises.Constants import BITS
+from Assignment2_EvolutionaryMastermindSimulator.Logic.Logic import mean
 from Assignment2_EvolutionaryMastermindSimulator.Logic.Result import Result
 
 

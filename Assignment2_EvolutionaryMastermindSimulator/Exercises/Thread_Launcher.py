@@ -18,7 +18,7 @@ def store_result(results: [Result], result: Result, lock: threading.Lock):
     lock.release()
 
 
-def launch_Threads(method_to_run, results: [Result]):
+def launch_threads(method_to_run, results: [Result]):
     with concurrent.futures.ThreadPoolExecutor() as executor:
         # [executor.submit(randomTest,bit) for bit in bits]
         for _ in range(TRIAL_RUNS):

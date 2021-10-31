@@ -24,26 +24,26 @@ def random_decimal() -> str:
 # Para avaliar os novos padrões decimais estou a iterar por todos os caracteres de ambos os padrões e
 # convertendo em numeros inteiros, depois calculo o absoluto da subtração do goal pelo curr
 def evaluate_decimal(goal: str, curr: str) -> int:
-    # _dif_counter: int = max(len(goal), len(curr))
-    _dif_counter: int = 0
+    _dif_counter: int = abs(len(goal)-len(curr))
     for charindex in range(min(len(curr), len(goal))):
         _goal_int: int = int(goal[charindex])
         _current_int: int = int(curr[charindex])
         _dif_counter += abs(_goal_int - _current_int)
-        # if curr[charindex] == goal[charindex]:
-        #    _dif_counter -= 1
-
     return _dif_counter
 
 
 def evaluate_decimal_test():
-    for _ in range(10):
-        _goal: str = random_decimal_pattern(4)
-        _current: str = random_decimal_pattern(4)
+    for _ in range(5):
+        _goal: str = random_decimal_pattern(random.randint(1,4))
+        _current: str = random_decimal_pattern(random.randint(1,4))
         _evaluation: int = evaluate_decimal(goal=_goal, curr=_current)
         print("goal=", _goal, "\t_current=", _current, "\tevaluation=", _evaluation)
     print("goal=", "01231", "\t_current=", "01231", "\tevaluation=", evaluate_decimal(goal="01231", curr="01231"))
     print("goal=", "01231", "\t_current=", "01233", "\tevaluation=", evaluate_decimal(goal="01231", curr="01233"))
+    print("goal=", "01231", "\t_current=", "012339", "\tevaluation=", evaluate_decimal(goal="01231", curr="012339"))
+    print("goal=", "012", "\t_current=", "012339", "\tevaluation=", evaluate_decimal(goal="012", curr="012339"))
+    print("goal=", "012", "\t_current=", "012339", "\tevaluation=", evaluate_decimal(goal="012", curr="012339"))
+    print("goal=", "012", "\t_current=", "019339", "\tevaluation=", evaluate_decimal(goal="012", curr="019339"))
 
 
 # Para corrigir a função de fitness
@@ -55,9 +55,6 @@ def fitness_decimal(goal: str, curr: str) -> float:
         _goal_int: int = int(goal[charindex])
         _current_int: int = int(curr[charindex])
         _dif_counter -= abs(_goal_int - _current_int)
-        # if curr[charindex] == goal[charindex]:
-        #    _dif_counter -= 1
-
     return _dif_counter / _max_diff
 
 

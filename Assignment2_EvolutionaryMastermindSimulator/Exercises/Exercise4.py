@@ -5,7 +5,7 @@ import timeit
 from matplotlib import pyplot as plt
 
 from Assignment2_EvolutionaryMastermindSimulator.Exercises.Constants import BITS, STAGNATION_VARIANCE
-from Assignment2_EvolutionaryMastermindSimulator.Exercises.Thread_Launcher import launch_Threads, store_result
+from Assignment2_EvolutionaryMastermindSimulator.Exercises.Thread_Launcher import launch_threads, store_result
 from Assignment2_EvolutionaryMastermindSimulator.Logic.Mastermind import Mastermind
 from Assignment2_EvolutionaryMastermindSimulator.Logic.Plotter import plot_results_list
 from Assignment2_EvolutionaryMastermindSimulator.Logic.Population import Population, mutate_population, \
@@ -57,8 +57,8 @@ def _assignment2_exercise4_line_a(pattern_size: int):
 
 
 if __name__ == '__main__':
-    # random.seed(1)
+    random.seed(1)
     exercise4_lock = threading.Lock()
     exercise4_results_list: [[Result]] = [[] for _ in range(len(BITS))]
-    launch_Threads(method_to_run=_assignment2_exercise4_line_a, results=exercise4_results_list)
+    launch_threads(method_to_run=_assignment2_exercise4_line_a, results=exercise4_results_list)
     plot_results_list(results=exercise4_results_list, title="Exercise4")
