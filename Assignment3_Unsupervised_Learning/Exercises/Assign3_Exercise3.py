@@ -5,22 +5,28 @@ from matplotlib import pyplot as plt
 import Assignment3_Unsupervised_Learning.Logic.Assign3_PointGenerator
 from Assignment3_Unsupervised_Learning.Logic.Assign3_PointGenerator import generate_Points
 
+lens_for_analysis = [3,6,8]
 
-def average_point(point_a: np.ndarray, point_b: np.ndarray) -> list:
+
+def average_point(point_a: [int, int], point_b: [int, int]) -> [int, int]:
+
     avg_x = (point_a[0] + point_b[0]) / 2
     avg_y = (point_a[1] + point_b[1]) / 2
-    list = [avg_x, avg_y]
+    avg_point = [avg_x, avg_y]
 
-    return list
+    if avg_x > max(point_a[0], point_b[0]) or avg_y> max(point_a[1], point_b[1]) or  \
+            avg_x < min(point_a[0], point_b[0]) or avg_y < min(point_a[1], point_b[1]):
+        print(point_a, point_b, avg_point)
+    return avg_point
 
 
 def distance_between(point_a: np.ndarray, point_b: np.ndarray) -> float:
-    return np.sqrt((point_a[0] - point_b[0]) ** 2 + (point_a[0] - point_b[0]) ** 2)
+    return np.sqrt((point_a[0] - point_b[0]) ** 2 + (point_a[1] - point_b[1]) ** 2)
 
 
 def find_closest_two_points(points_lst: list) -> (np.ndarray, np.ndarray):
-    point_a: np.ndarray = random.choice(points_lst)
-    point_b: np.ndarray = random.choice(points_lst)
+    point_a: np.ndarray = points_lst[0]
+    point_b: np.ndarray = points_lst[1]
     shortest_distance: float = distance_between(point_a, point_b)
 
     for point1 in points_lst:
@@ -35,11 +41,10 @@ def find_closest_two_points(points_lst: list) -> (np.ndarray, np.ndarray):
 
 
 def assign3_exercise3():
-    a, b, c = generate_Points(plot=False, pointN=200)
+    a, b, c = generate_Points(plot=True, alpha=1, pointN=200)
     points_lst: list = c.T.copy().tolist()
     initial_len = len(points_lst)
-    #lens_for_analysis = [(initial_len / 4) * 1 - 1, (initial_len / 4) * 2 - 1, (initial_len / 4) * 3 - 1, ]
-    lens_for_analysis = [10,20,30]
+    # lens_for_analysis = [(initial_len / 4) * 1 - 1, (initial_len / 4) * 2 - 1, (initial_len / 4) * 3 - 1, ]
 
     point_for_analysis = [[[], []] for _ in range(len(lens_for_analysis))]
     points_lst_Length = len(points_lst)
@@ -55,7 +60,9 @@ def assign3_exercise3():
             print("ERROR:point_a", point_a[0], point_a[1])
             print("ERROR:point_b", point_b[0], point_b[1])
         points_lst.append(point_avg)
-        print("points_lst_Length:", points_lst_Length, point_avg)
+        print("points_lst_Length:", points_lst_Length, "point_a\t", point_a, "point_b\t", point_b, "point_avg\t",
+              point_avg)
+
         points_lst_Length = len(points_lst)
         if points_lst_Length in lens_for_analysis:
             for point in points_lst:
@@ -66,21 +73,27 @@ def assign3_exercise3():
 
     for i in range(len(point_for_analysis)):
         curr_label: str = "len" + str(lens_for_analysis[i])
-        alpha_value: float = -i/(len(lens_for_analysis))+1
-        print("alpha_value", alpha_value)
-        plt.scatter(point_for_analysis[i][0], point_for_analysis[i][1], label=curr_label, alpha=alpha_value)
+        alpha_value: float = -i / (len(lens_for_analysis)) + 1
+        # print("alpha_value", alpha_value)
+        plt.scatter(point_for_analysis[i][0], point_for_analysis[i][1], label=curr_label, alpha=alpha_value-0.1,
+                    c=Assignment3_Unsupervised_Learning.Logic.Assign3_PointGenerator.GREYSCALE[i])
 
     plt.scatter(points_lst[0][0], points_lst[0][1], label="lastPointA",
-                c=Assignment3_Unsupervised_Learning.Logic.Assign3_PointGenerator.COLORS[-1])
+                c=Assignment3_Unsupervised_Learning.Logic.Assign3_PointGenerator.COLORS[0])
     plt.scatter(points_lst[1][0], points_lst[1][1], label="lastPointB",
-                c=Assignment3_Unsupervised_Learning.Logic.Assign3_PointGenerator.COLORS[-2])
+                c=Assignment3_Unsupervised_Learning.Logic.Assign3_PointGenerator.COLORS[1])
     print("end-points_lst", points_lst)
     plt.legend()
     plt.show()
 
 
 if __name__ == '__main__':
-    # np.random.seed(1)
-    # random.seed(1)
+    # good seed 4756
+    # good seed 4670
+    seed: int = random.randint(0, 10000)
+    seed =4670
+    np.random.seed(seed)
+    random.seed(seed)
     plt.figure(figsize=(10, 10))
     assign3_exercise3()
+    print("seed", seed)

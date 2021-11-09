@@ -8,7 +8,7 @@ alpha = 10E-5
 
 
 def assign3_exercise1():
-    a, b, c = generate_Points(True, 1000)
+    a, b, c = generate_Points(plot=True, alpha=1,pointN=1000)
     r1ListBeggining: list = []
     r2ListBeggining: list = []
     r1ListEndOfPassage: list = []
