@@ -6,7 +6,9 @@ from Assignment3.Logic.Assign3_PointGenerator import generate_Points
 
 alpha = 10E-5
 
-def assign3_exercise1(a: np.ndarray, b: np.ndarray, c: np.ndarray):
+
+def assign3_exercise1():
+    a, b, c = generate_Points(True, 1000)
     r1ListBeggining: list = []
     r2ListBeggining: list = []
     r1ListEndOfPassage: list = []
@@ -14,7 +16,7 @@ def assign3_exercise1(a: np.ndarray, b: np.ndarray, c: np.ndarray):
 
     r1 = random.choice(a.T)
     r2 = random.choice(b.T)
-    iterations = 100
+    iterations = 10
     for i in range(iterations):
         for point in c.T:
             r1Closeness: float = np.sqrt((r1[0] - point[0]) ** 2 + (r1[0] - point[0]) ** 2)
@@ -30,11 +32,11 @@ def assign3_exercise1(a: np.ndarray, b: np.ndarray, c: np.ndarray):
         r1ListEndOfPassage.append((r1[0], r1[1]))
         r2ListEndOfPassage.append((r2[0], r2[1]))
 
-    plt.scatter(r1ListBeggining[0], r1ListBeggining[1], label="r1ListFirstPassage")
-    plt.scatter(r2ListBeggining[0], r2ListBeggining[1], label="r2ListFirstPassage")
+    plt.scatter(r1ListBeggining[0], r1ListBeggining[1], label="r1ListBeggining")
+    plt.scatter(r2ListBeggining[0], r2ListBeggining[1], label="r2ListBeggining")
 
-    plt.scatter(r1ListEndOfPassage[0], r1ListEndOfPassage[1], label="r1ListLastArrayEnd")
-    plt.scatter(r2ListEndOfPassage[0], r2ListEndOfPassage[1], label="r2ListLastArrayEnd")
+    plt.scatter(r1ListEndOfPassage[0], r1ListEndOfPassage[1], label="r1ListEndOfPassage")
+    plt.scatter(r2ListEndOfPassage[0], r2ListEndOfPassage[1], label="r2ListEndOfPassage")
     plt.legend()
     plt.show()
 
@@ -42,5 +44,5 @@ def assign3_exercise1(a: np.ndarray, b: np.ndarray, c: np.ndarray):
 if __name__ == '__main__':
     np.random.seed(1)
     random.seed(1)
-    points1, points2 , pointsconcat = generate_Points(True)
-    assign3_exercise1(points1, points2, pointsconcat)
+    plt.figure(figsize=(10, 10))
+    assign3_exercise1()
