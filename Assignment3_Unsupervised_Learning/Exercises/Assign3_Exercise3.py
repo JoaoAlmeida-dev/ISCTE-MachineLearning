@@ -2,7 +2,7 @@ import random
 import numpy as np
 from matplotlib import pyplot as plt
 
-from Assignment3.Logic.Assign3_PointGenerator import generate_Points
+from Assignment3_Unsupervised_Learning.Logic.Assign3_PointGenerator import generate_Points
 
 
 def average_point(point_a: np.ndarray, point_b: np.ndarray) -> list:

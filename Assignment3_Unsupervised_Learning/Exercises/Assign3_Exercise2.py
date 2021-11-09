@@ -2,8 +2,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import random
 
-import Assignment3.Logic.Assign3_PointGenerator
-from Assignment3.Logic.Assign3_PointGenerator import generate_Points
+import Assignment3_Unsupervised_Learning.Logic.Assign3_PointGenerator
+from Assignment3_Unsupervised_Learning.Logic.Assign3_PointGenerator import generate_Points
 
 alpha = 1
 
@@ -104,19 +104,19 @@ def assign3_exercise2_line_b():
     if points_closer_r1_label1_NParray.size != 0:
         plt.scatter(points_closer_r1_label1_NParray[0], points_closer_r1_label1_NParray[1], marker='+',
                     label="closer_r1_label1",
-                    color=Assignment3.Logic.Assign3_PointGenerator.COLORS[0], alpha=alpha_value_plotting)
+                    color=Assignment3_Unsupervised_Learning.Logic.Assign3_PointGenerator.COLORS[0], alpha=alpha_value_plotting)
     if points_closer_r1_label2_NParray.size != 0:
         plt.scatter(points_closer_r1_label2_NParray[0], points_closer_r1_label2_NParray[1], marker='+',
                     label="closer_r1_label2",
-                    color=Assignment3.Logic.Assign3_PointGenerator.COLORS[1], alpha=alpha_value_plotting)
+                    color=Assignment3_Unsupervised_Learning.Logic.Assign3_PointGenerator.COLORS[1], alpha=alpha_value_plotting)
     if points_closer_r2_label2_NParray.size != 0:
         plt.scatter(points_closer_r2_label2_NParray[0], points_closer_r2_label2_NParray[1], marker='+',
                     label="closer_r2_label2",
-                    color=Assignment3.Logic.Assign3_PointGenerator.COLORS[2], alpha=alpha_value_plotting)
+                    color=Assignment3_Unsupervised_Learning.Logic.Assign3_PointGenerator.COLORS[2], alpha=alpha_value_plotting)
     if points_closer_r2_label1_NParray.size != 0:
         plt.scatter(points_closer_r2_label1_NParray[0], points_closer_r2_label1_NParray[1], marker='+',
                     label="closer_r2_label1",
-                    color=Assignment3.Logic.Assign3_PointGenerator.COLORS[3], alpha=alpha_value_plotting)
+                    color=Assignment3_Unsupervised_Learning.Logic.Assign3_PointGenerator.COLORS[3], alpha=alpha_value_plotting)
     plt.title("assign3_exercise2_line_b")
     plt.legend()
 
