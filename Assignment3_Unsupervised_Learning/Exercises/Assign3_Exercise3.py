@@ -2,6 +2,7 @@ import random
 import numpy as np
 from matplotlib import pyplot as plt
 
+import Assignment3_Unsupervised_Learning.Logic.Assign3_PointGenerator
 from Assignment3_Unsupervised_Learning.Logic.Assign3_PointGenerator import generate_Points
 
 
@@ -34,41 +35,45 @@ def find_closest_two_points(points_lst: list) -> (np.ndarray, np.ndarray):
 
 
 def assign3_exercise3():
-    a, b, c = generate_Points(plot=True, pointN=200)
+    a, b, c = generate_Points(plot=False, pointN=200)
     points_lst: list = c.T.copy().tolist()
     initial_len = len(points_lst)
-    lens_for_analysis = [(initial_len / 4) * 1 - 1, (initial_len / 4) * 2 - 1, (initial_len / 4) * 3 - 1,
-                         (initial_len / 4) * 4 - 1]
-    point_for_analysis = []
+    #lens_for_analysis = [(initial_len / 4) * 1 - 1, (initial_len / 4) * 2 - 1, (initial_len / 4) * 3 - 1, ]
+    lens_for_analysis = [10,20,30]
+
+    point_for_analysis = [[[], []] for _ in range(len(lens_for_analysis))]
     points_lst_Length = len(points_lst)
     while points_lst_Length > 2:
 
         point_a, point_b = find_closest_two_points(points_lst)
         point_avg = average_point(point_a, point_b)
-        if points_lst_Length == 3:
-            point_to_remove = random.choice([point_a, point_b])
-            points_lst.remove(point_to_remove)
-        else:
-            try:
-                points_lst.remove(point_a)
-                points_lst.remove(point_b)
-            except:
-                print("ERROR:points_lst", points_lst)
-                print("ERROR:point_a", point_a[0], point_a[1])
-                print("ERROR:point_b", point_b[0], point_b[1])
+        try:
+            points_lst.remove(point_a)
+            points_lst.remove(point_b)
+        except:
+            print("ERROR:points_lst", points_lst)
+            print("ERROR:point_a", point_a[0], point_a[1])
+            print("ERROR:point_b", point_b[0], point_b[1])
         points_lst.append(point_avg)
         print("points_lst_Length:", points_lst_Length, point_avg)
         points_lst_Length = len(points_lst)
-    #        if len(points_lst) in lens_for_analysis:
-    #          point_for_analysis.append(points_lst)
+        if points_lst_Length in lens_for_analysis:
+            for point in points_lst:
+                # x
+                point_for_analysis[lens_for_analysis.index(points_lst_Length)][0].append(point[0])
+                # y
+                point_for_analysis[lens_for_analysis.index(points_lst_Length)][1].append(point[1])
 
-    #    for i in range(len(lens_for_analysis)):
-    #      curr_label="len"+str(lens_for_analysis[i])
-    #      for point in point_for_analysis[i]:
-    #        plt.scatter(point[0],point[1],label=curr_label)
+    for i in range(len(point_for_analysis)):
+        curr_label: str = "len" + str(lens_for_analysis[i])
+        alpha_value: float = -i/(len(lens_for_analysis))+1
+        print("alpha_value", alpha_value)
+        plt.scatter(point_for_analysis[i][0], point_for_analysis[i][1], label=curr_label, alpha=alpha_value)
 
-    plt.scatter(points_lst[0][0], points_lst[0][1], label="lastPointA", c="black")
-    plt.scatter(points_lst[1][0], points_lst[1][1], label="lastPointB", c="black")
+    plt.scatter(points_lst[0][0], points_lst[0][1], label="lastPointA",
+                c=Assignment3_Unsupervised_Learning.Logic.Assign3_PointGenerator.COLORS[-1])
+    plt.scatter(points_lst[1][0], points_lst[1][1], label="lastPointB",
+                c=Assignment3_Unsupervised_Learning.Logic.Assign3_PointGenerator.COLORS[-2])
     print("end-points_lst", points_lst)
     plt.legend()
     plt.show()
