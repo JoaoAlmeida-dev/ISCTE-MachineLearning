@@ -32,11 +32,17 @@ def assign3_exercise1():
         r1ListEndOfPassage.append((r1[0], r1[1]))
         r2ListEndOfPassage.append((r2[0], r2[1]))
 
-    plt.scatter(r1ListBeggining[0], r1ListBeggining[1], label="r1ListBeggining")
-    plt.scatter(r2ListBeggining[0], r2ListBeggining[1], label="r2ListBeggining")
+    r1ListBeggining_NPArray_T = np.asarray(r1ListBeggining).T
+    r2ListBeggining_NPArray_T = np.asarray(r2ListBeggining).T
 
-    plt.scatter(r1ListEndOfPassage[0], r1ListEndOfPassage[1], label="r1ListEndOfPassage")
-    plt.scatter(r2ListEndOfPassage[0], r2ListEndOfPassage[1], label="r2ListEndOfPassage")
+    r1ListEndOfPassage_NPArray_T = np.asarray(r1ListEndOfPassage).T
+    r2ListEndOfPassage_NPArray_T = np.asarray(r2ListEndOfPassage).T
+
+    plt.scatter(r1ListBeggining_NPArray_T[0], r1ListBeggining_NPArray_T[1], label="r1ListBeggining")
+    plt.scatter(r2ListBeggining_NPArray_T[0], r2ListBeggining_NPArray_T[1], label="r2ListBeggining")
+
+    plt.scatter(r1ListEndOfPassage_NPArray_T[0], r1ListEndOfPassage_NPArray_T[1], label="r1ListEndOfPassage")
+    plt.scatter(r2ListEndOfPassage_NPArray_T[0], r2ListEndOfPassage_NPArray_T[1], label="r2ListEndOfPassage")
     plt.legend()
     plt.show()
 
