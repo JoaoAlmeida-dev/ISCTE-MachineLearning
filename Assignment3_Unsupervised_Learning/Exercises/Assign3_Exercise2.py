@@ -5,7 +5,7 @@ import random
 import Assignment3_Unsupervised_Learning.Logic.Assign3_PointGenerator
 from Assignment3_Unsupervised_Learning.Logic.Assign3_PointGenerator import generate_Points
 
-alpha = 1
+alpha = 10E-2
 
 
 def assign3_exercise2_advanceR(a: np.ndarray, b: np.ndarray, c: np.ndarray):
@@ -30,14 +30,14 @@ def assign3_exercise2_advanceR(a: np.ndarray, b: np.ndarray, c: np.ndarray):
     r2List.append(r2)
 
     iterations = 10
-    d1: float = 0.0
-    d2: float = 0.0
-    n_examples = len(a[0]) + len(b[0])
+    d1: np.ndarray = np.zeros(2)
+    d2: np.ndarray = np.zeros(2)
+    n_examples = len(c[0])
     print("n_examples", n_examples)
     for i in range(iterations):
         for point in c.T:
-            r1Closeness: float = np.sqrt((r1[0] - point[0]) ** 2 + (r1[0] - point[0]) ** 2)
-            r2Closeness: float = np.sqrt((r2[0] - point[0]) ** 2 + (r2[0] - point[0]) ** 2)
+            r1Closeness: float = np.sqrt((r1[0] - point[0]) ** 2 + (r1[1] - point[1]) ** 2)
+            r2Closeness: float = np.sqrt((r2[0] - point[0]) ** 2 + (r2[1] - point[1]) ** 2)
             if r1Closeness < r2Closeness:
                 d1 = d1 + (point - r1)
             else:
@@ -76,7 +76,7 @@ def assign3_exercise2_advanceR(a: np.ndarray, b: np.ndarray, c: np.ndarray):
     plt.plot(r2_List_NPArray[0], r2_List_NPArray[1], 'o', label="r2first", color='brown', linewidth=100)
     plt.plot(r2_List_NPArray[0][-1], r2_List_NPArray[1][-1], 'o', label="r2last", color='black', linewidth=100)
 
-    return points_closer_r1_label1, points_closer_r1_label2, points_closer_r2_label2, points_closer_r2_label1
+    return [points_closer_r1_label1, points_closer_r1_label2, points_closer_r2_label2, points_closer_r2_label1]
 
 
 def assign3_exercise2_line_a():
@@ -88,35 +88,48 @@ def assign3_exercise2_line_a():
 
 def assign3_exercise2_line_b():
     a, b, c = generate_Points(False, 1000)
-    points_closer_r1_label1, points_closer_r1_label2, points_closer_r2_label2, points_closer_r2_label1 = assign3_exercise2_advanceR(
-        a, b, c)
+    points = assign3_exercise2_advanceR(a, b, c)
+    # points_closer_r1_label1, points_closer_r1_label2, points_closer_r2_label2, points_closer_r2_label1
 
-    points_closer_r1_label1_NParray = np.asarray(points_closer_r1_label1).T
-    points_closer_r1_label2_NParray = np.asarray(points_closer_r1_label2).T
-    points_closer_r2_label2_NParray = np.asarray(points_closer_r2_label2).T
-    points_closer_r2_label1_NParray = np.asarray(points_closer_r2_label1).T
+    # points_closer_r1_label1_NParray = np.asarray(points[0]).T
+    # points_closer_r1_label2_NParray = np.asarray(points[1]).T
+    # points_closer_r2_label2_NParray = np.asarray(points[2]).T
+    # points_closer_r2_label1_NParray = np.asarray(points[3]).T
+
+    alpha_value_plotting: float = 0.5
+    labels = ["closer_r1_label1", "closer_r1_label2", "closer_r2_label2", "closer_r2_label1"]
+    points_closer_label_NParray = [np.asarray(i).T for i in points]
+    for i in range(len(points_closer_label_NParray)):
+        if points_closer_label_NParray[i].size != 0:
+            plt.scatter(points_closer_label_NParray[i][0], points_closer_label_NParray[i][1], marker='+',
+                        label=labels[i],
+                        color=Assignment3_Unsupervised_Learning.Logic.Assign3_PointGenerator.COLORS[i],
+                        alpha=alpha_value_plotting)
     # print("points_closer_r1_label1_NParray",points_closer_r1_label1_NParray)
     # print("points_closer_r1_label2_NParray",points_closer_r1_label2_NParray)
     # print("points_closer_r2_label2_NParray",points_closer_r2_label2_NParray)
     # print("points_closer_r2_label1_NParray",points_closer_r2_label1_NParray)
 
-    alpha_value_plotting: float = 0.5
-    if points_closer_r1_label1_NParray.size != 0:
-        plt.scatter(points_closer_r1_label1_NParray[0], points_closer_r1_label1_NParray[1], marker='+',
-                    label="closer_r1_label1",
-                    color=Assignment3_Unsupervised_Learning.Logic.Assign3_PointGenerator.COLORS[0], alpha=alpha_value_plotting)
-    if points_closer_r1_label2_NParray.size != 0:
-        plt.scatter(points_closer_r1_label2_NParray[0], points_closer_r1_label2_NParray[1], marker='+',
-                    label="closer_r1_label2",
-                    color=Assignment3_Unsupervised_Learning.Logic.Assign3_PointGenerator.COLORS[1], alpha=alpha_value_plotting)
-    if points_closer_r2_label2_NParray.size != 0:
-        plt.scatter(points_closer_r2_label2_NParray[0], points_closer_r2_label2_NParray[1], marker='+',
-                    label="closer_r2_label2",
-                    color=Assignment3_Unsupervised_Learning.Logic.Assign3_PointGenerator.COLORS[2], alpha=alpha_value_plotting)
-    if points_closer_r2_label1_NParray.size != 0:
-        plt.scatter(points_closer_r2_label1_NParray[0], points_closer_r2_label1_NParray[1], marker='+',
-                    label="closer_r2_label1",
-                    color=Assignment3_Unsupervised_Learning.Logic.Assign3_PointGenerator.COLORS[3], alpha=alpha_value_plotting)
+    # if points_closer_r1_label1_NParray.size != 0:
+    #    plt.scatter(points_closer_r1_label1_NParray[0], points_closer_r1_label1_NParray[1], marker='+',
+    #                label="closer_r1_label1",
+    #                color=Assignment3_Unsupervised_Learning.Logic.Assign3_PointGenerator.COLORS[0],
+    #                alpha=alpha_value_plotting)
+    # if points_closer_r1_label2_NParray.size != 0:
+    #    plt.scatter(points_closer_r1_label2_NParray[0], points_closer_r1_label2_NParray[1], marker='+',
+    #                label="closer_r1_label2",
+    #                color=Assignment3_Unsupervised_Learning.Logic.Assign3_PointGenerator.COLORS[1],
+    #                alpha=alpha_value_plotting)
+    # if points_closer_r2_label2_NParray.size != 0:
+    #    plt.scatter(points_closer_r2_label2_NParray[0], points_closer_r2_label2_NParray[1], marker='+',
+    #                label="closer_r2_label2",
+    #                color=Assignment3_Unsupervised_Learning.Logic.Assign3_PointGenerator.COLORS[2],
+    #                alpha=alpha_value_plotting)
+    # if points_closer_r2_label1_NParray.size != 0:
+    #    plt.scatter(points_closer_r2_label1_NParray[0], points_closer_r2_label1_NParray[1], marker='+',
+    #                label="closer_r2_label1",
+    #                color=Assignment3_Unsupervised_Learning.Logic.Assign3_PointGenerator.COLORS[3],
+    #                alpha=alpha_value_plotting)
     plt.title("assign3_exercise2_line_b")
     plt.legend()
 
