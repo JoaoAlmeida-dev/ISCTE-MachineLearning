@@ -6,7 +6,7 @@ import Assignment3_Unsupervised_Learning.Logic.Assign3_PointGenerator
 from Assignment3_Unsupervised_Learning.Logic.Assign3_PointGenerator import generate_Points
 from binarytree import Node
 
-from Assignment3_Unsupervised_Learning.Logic.TreeManager import TreeManager
+from Assignment3_Unsupervised_Learning.Logic.Assign3_TreeManager import TreeManager
 
 lens_for_analysis = [3, 6, 8]
 
