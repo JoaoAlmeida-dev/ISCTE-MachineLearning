@@ -1,53 +1,44 @@
 import random
 
-import numpy as np
+from Assignment3_Unsupervised_Learning.Logic.Helpers import distance_between
+from Assignment3_Unsupervised_Learning.Logic.Point import Point
 
 
 class Cluster:
-    _points_list: [[float, float]]
+    _points_list: [Point]
 
     def __init__(self):
         self._points_list = []
 
-    def addPoint(self, point: [float, float]):
+    def addPoint(self, point: Point):
         self._points_list.append(point)
 
-    def addPointList(self, points: [[float, float]]):
+    def addPointList(self, points: [Point]):
         for point in points:
             self.addPoint(point)
 
-    def getPoints(self) -> [[float, float]]:
+    def getPoints(self) -> [Point]:
         return self._points_list.copy()
 
     @classmethod
-    def distance_between(cls, point_a: [float, float], point_b: [float, float]) -> float:
-        return np.sqrt((point_a[0] - point_b[0]) ** 2 + (point_a[1] - point_b[1]) ** 2)
-
-    @classmethod
-    def get_point_inside_epsilon(cls, initial_point: [float, float], points_lst: [[float, float]], epsilon: float):
-        original_points: [[float, float]] = points_lst.copy()
-        points_in_epsilon: [[float, float]] = []
-
+    def get_point_inside_epsilon(cls, initial_point: Point, points_lst: [Point], epsilon: float):
+        original_points: [Point] = points_lst.copy()
+        points_in_epsilon: [Point] = []
 
         for point in points_lst:
-            if Cluster.distance_between(point, initial_point) < epsilon:
+            if distance_between(point, initial_point) < epsilon:
                 points_in_epsilon.append(point)
 
         for found_point in points_in_epsilon:
             try:
                 original_points.remove(found_point)
             except:
+                print("ERROR removing")
                 continue
-
 
         return points_in_epsilon
 
     @classmethod
-    def create_cluster(cls, points_lst: [[float, float]], epsilon: float):
+    def create_cluster(cls, points_lst: [Point], epsilon: float):
         cluster: Cluster = Cluster()
-        initial_point: [float, float] = random.choice(points_lst)
-
-
-
-
-
+        initial_point: Point = random.choice(points_lst)
