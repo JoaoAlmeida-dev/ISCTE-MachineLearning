@@ -12,9 +12,10 @@ from Assignment3_Unsupervised_Learning.Logic.Assign3_PointGenerator import gener
 
 r_plot_symbol = 'o'
 
-alpha = 10E-2
-r_color_list=['orange','red','brown','black']
-r_label=["r1first" ,"r1last" , "r2first","r2last"]
+alpha = 1
+r_color_list = ['orange', 'red', 'brown', 'black']
+r_label = ["r1first", "r1last", "r2first", "r2last"]
+
 
 def assign3_exercise2_advanceR(a: np.ndarray, b: np.ndarray, c: np.ndarray):
     a = a.T
@@ -40,7 +41,7 @@ def assign3_exercise2_advanceR(a: np.ndarray, b: np.ndarray, c: np.ndarray):
     r1List.append(r1)
     r2List.append(r2)
 
-    iterations = 100
+    iterations = 10
     d1: np.ndarray = np.zeros(2)
     d2: np.ndarray = np.zeros(2)
     n_examples = len(c)
@@ -85,23 +86,25 @@ def assign3_exercise2_advanceR(a: np.ndarray, b: np.ndarray, c: np.ndarray):
     r2_List_NPArray = np.asarray(r2List).T
 
     plt.plot(r1_List_NPArray[0], r1_List_NPArray[1], r_plot_symbol, label=r_label, color=r_color_list[0], linewidth=100)
-    plt.plot(r1_List_NPArray[0][-1], r1_List_NPArray[1][-1], r_plot_symbol, label=r_label, color=r_color_list[1], linewidth=100)
+    plt.plot(r1_List_NPArray[0][-1], r1_List_NPArray[1][-1], r_plot_symbol, label=r_label, color=r_color_list[1],
+             linewidth=100)
 
     plt.plot(r2_List_NPArray[0], r2_List_NPArray[1], r_plot_symbol, label=r_label, color=r_color_list[1], linewidth=100)
-    plt.plot(r2_List_NPArray[0][-1], r2_List_NPArray[1][-1], r_plot_symbol, label=r_label, color=r_color_list[1], linewidth=100)
+    plt.plot(r2_List_NPArray[0][-1], r2_List_NPArray[1][-1], r_plot_symbol, label=r_label, color=r_color_list[1],
+             linewidth=100)
 
     return [points_closer_r1_label1, points_closer_r1_label2, points_closer_r2_label2, points_closer_r2_label1]
 
 
 def assign3_exercise2_line_a():
-    a, b, c = generate_Points(plot=True,alpha=1,pointN= 1000)
+    a, b, c = generate_Points(plot=True, alpha=1, pointN=1000)
     assign3_exercise2_advanceR(a, b, c)
     plt.title("assign3_exercise2_line_a")
     plt.legend()
 
 
 def assign3_exercise2_line_b():
-    a, b, c = generate_Points(plot=False,alpha=1,pointN= 1000)
+    a, b, c = generate_Points(plot=False, alpha=1, pointN=1000)
     points: list = assign3_exercise2_advanceR(a, b, c)
 
     alpha_value_plotting: float = 0.5
@@ -114,14 +117,18 @@ def assign3_exercise2_line_b():
                         label=labels[i],
                         alpha=alpha_value_plotting)
 
-#    plt.title("assign3_exercise2_line_b")
-    patch_0 = patches.Patch(color=Assignment3_Unsupervised_Learning.Logic.Assign3_PointGenerator.COLORS[0], label=labels[0])
-    patch_1 = patches.Patch(color=Assignment3_Unsupervised_Learning.Logic.Assign3_PointGenerator.COLORS[1], label=labels[1])
-    patch_2 = patches.Patch(color=Assignment3_Unsupervised_Learning.Logic.Assign3_PointGenerator.COLORS[2], label=labels[2])
-    patch_3 = patches.Patch(color=Assignment3_Unsupervised_Learning.Logic.Assign3_PointGenerator.COLORS[3], label=labels[3])
+    #    plt.title("assign3_exercise2_line_b")
+    patch_0 = patches.Patch(color=Assignment3_Unsupervised_Learning.Logic.Assign3_PointGenerator.COLORS[0],
+                            label=labels[0])
+    patch_1 = patches.Patch(color=Assignment3_Unsupervised_Learning.Logic.Assign3_PointGenerator.COLORS[1],
+                            label=labels[1])
+    patch_2 = patches.Patch(color=Assignment3_Unsupervised_Learning.Logic.Assign3_PointGenerator.COLORS[2],
+                            label=labels[2])
+    patch_3 = patches.Patch(color=Assignment3_Unsupervised_Learning.Logic.Assign3_PointGenerator.COLORS[3],
+                            label=labels[3])
 
-    plt.legend(handles=[patch_0, patch_1,patch_2,patch_3])
-    #plt.legend(prop={'size': 6})
+    plt.legend(handles=[patch_0, patch_1, patch_2, patch_3])
+    # plt.legend(prop={'size': 6})
 
 
 if __name__ == '__main__':
@@ -133,8 +140,8 @@ if __name__ == '__main__':
     plt.subplot(122)
     EXPERIENTS = 9
     for i in range(EXPERIENTS):
-        gridside:int = int(math.sqrt(EXPERIENTS))
-        plt.subplot(gridside,gridside,i+1)
+        gridside: int = int(math.sqrt(EXPERIENTS))
+        plt.subplot(gridside, gridside, i + 1)
         assign3_exercise2_line_b()
 
     plt.show()

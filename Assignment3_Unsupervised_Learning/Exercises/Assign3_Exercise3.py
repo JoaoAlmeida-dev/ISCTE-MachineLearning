@@ -8,7 +8,7 @@ from binarytree import Node
 
 from Assignment3_Unsupervised_Learning.Logic.Assign3_TreeManager import TreeManager
 
-lens_for_analysis = [3, 6, 8]
+lens_for_analysis = [4, 8, 10]
 
 
 def average_point(point_a: [int, int], point_b: [int, int]) -> [int, int]:
@@ -23,7 +23,8 @@ def average_point(point_a: [int, int], point_b: [int, int]) -> [int, int]:
 
 
 def distance_between(point_a: np.ndarray, point_b: np.ndarray) -> float:
-    return np.sqrt((point_a[0] - point_b[0]) ** 2 + (point_a[1] - point_b[1]) ** 2)
+    #return np.sqrt((point_a[0] - point_b[0]) ** 2 + (point_a[1] - point_b[1]) ** 2)
+    return (point_a[0] - point_b[0]) ** 2 + (point_a[1] - point_b[1]) ** 2
 
 
 def find_closest_two_points(points_lst: list) -> (np.ndarray, np.ndarray):
@@ -55,15 +56,15 @@ def assign3_exercise3(treemanager:TreeManager):
 
         point_a, point_b = find_closest_two_points(points_lst)
         point_avg = average_point(point_a, point_b)
-        parent1:Node = treemanager.get(point_a)
-        parent2:Node = treemanager.get(point_b)
-        root:Node = Node(point_avg)
-        root.right = parent1
-        root.left =parent2
+        #parent1:Node = treemanager.get(point_a)
+        #parent2:Node = treemanager.get(point_b)
+        #root:Node = Node(point_avg)
+        #root.right = parent1
+        #root.left =parent2
 
-        treemanager.add(parent1)
-        treemanager.add(parent2)
-        treemanager.add(root)
+        #treemanager.add(parent1)
+        #treemanager.add(parent2)
+        #treemanager.add(root)
 
         try:
             points_lst.remove(point_a)
