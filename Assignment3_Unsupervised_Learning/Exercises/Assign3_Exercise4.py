@@ -3,10 +3,9 @@ import random
 import matplotlib.pyplot as plt
 import numpy as np
 
-from Assignment3_Unsupervised_Learning.Logic.Assign3_PointGenerator import generate_Points
 from Assignment3_Unsupervised_Learning.Logic.Assign3_ex4_Cluster import Cluster
 from Assignment3_Unsupervised_Learning.Logic.Point import Point
-from Assignment3_Unsupervised_Learning.Logic.Helpers import distance_between
+from Assignment3_Unsupervised_Learning.Logic.Helpers import distance_between, create_empty_matrix
 
 
 def point_get_Epsylon_points(point: Point, point_list: [Point], epsilon: float) -> [np.ndarray]:
@@ -20,7 +19,8 @@ def point_get_Epsylon_points(point: Point, point_list: [Point], epsilon: float) 
 def assign3_exercise4(epsilon: float):
     cluster_list: [Cluster] = []
     points_lst: [Point] = Point.generate_Points(alpha=1, plot=False, pointN=1000)
-
+    point_matrix: [[]] = create_empty_matrix(1000, 1000)
+    print(point_matrix)
     while len(points_lst) > 0:
         cluster = Cluster.create_cluster(points_lst)
         cluster_list.append(cluster)
@@ -40,4 +40,4 @@ if __name__ == '__main__':
     np.random.seed(seed)
     random.seed(seed)
     epsilon = random.random()
-    # assign3_exercise4(epsilon)
+    assign3_exercise4(epsilon)
