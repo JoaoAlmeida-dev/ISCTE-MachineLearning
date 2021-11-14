@@ -27,12 +27,29 @@ class DistanceMatrix:
         matrix_copy = [[] for _ in range(self.size)]
         for row in range(len(self.matrix)):
             if row != point_index:
-                index_ = self.matrix[row][0:point_index:]+self.matrix[row][point_index+1:len(self.matrix[row]):]
+                index_ = self.matrix[row][0:point_index:] + self.matrix[row][point_index + 1:len(self.matrix[row]):]
                 for input in index_:
                     matrix_copy[row].append(input)
-        matrix_copy = matrix_copy[0:point_index:]+matrix_copy[point_index+1:len(self.matrix):]
+        matrix_copy = matrix_copy[0:point_index:] + matrix_copy[point_index + 1:len(self.matrix):]
 
         self.matrix = matrix_copy
+
+    def add_point(self, point: Point):
+
+        # _distances: [float] = [distance_between(point_in_self, point) for point_in_self in self.points_list]
+        _distances: [float] = []
+        _last_row: [float] = []
+        for point_in_self in self.points_list:
+            _distances.append(distance_between(point_in_self, point))
+            _last_row.append(0)
+        _last_row.append(distance_between(point, point))
+
+        self.points_list.append(point)
+        _counter: int = 0
+        for row_index in range(len(self.matrix)):
+            self.matrix[row_index].append(_distances[_counter])
+            _counter += 1
+        self.matrix.append(_last_row)
 
     def __str__(self):
         # result = [ str(row)+"\n" for row in self.matrix]
@@ -56,4 +73,6 @@ if __name__ == '__main__':
     matrix0 = DistanceMatrix(len(points), points)
     print(matrix0)
     matrix0.remove_point(point_to_remove2)
+    print(matrix0)
+    matrix0.add_point(point_to_remove2)
     print(matrix0)
