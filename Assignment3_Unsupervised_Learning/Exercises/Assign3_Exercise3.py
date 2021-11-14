@@ -4,9 +4,7 @@ from matplotlib import pyplot as plt
 
 import Assignment3_Unsupervised_Learning.Logic.Assign3_PointGenerator
 from Assignment3_Unsupervised_Learning.Logic.Assign3_PointGenerator import generate_Points
-from binarytree import Node
-
-from Assignment3_Unsupervised_Learning.Logic.Assign3_TreeManager import TreeManager
+#from Assignment3_Unsupervised_Learning.Logic.Assign3_TreeManager import TreeManager
 
 lens_for_analysis = [4, 8, 10]
 
@@ -43,7 +41,8 @@ def find_closest_two_points(points_lst: list) -> (np.ndarray, np.ndarray):
     return point_a, point_b
 
 
-def assign3_exercise3(treemanager:TreeManager):
+#def assign3_exercise3(treemanager:TreeManager):
+def assign3_exercise3():
 
     a, b, c = generate_Points(plot=True, alpha=1, pointN=200)
     points_lst: list = c.T.copy().tolist()
@@ -109,9 +108,10 @@ if __name__ == '__main__':
     np.random.seed(seed)
     random.seed(seed)
 
-    treemanager:TreeManager = TreeManager()
+    #treemanager:TreeManager = TreeManager()
 
     plt.figure(figsize=(10, 10))
-    assign3_exercise3(treemanager)
+    #assign3_exercise3(treemanager)
+    assign3_exercise3()
     print("seed", seed)
-    treemanager.build()
+    #treemanager.build()

@@ -86,12 +86,10 @@ def assign3_exercise2_advanceR(a: np.ndarray, b: np.ndarray, c: np.ndarray):
     r2_List_NPArray = np.asarray(r2List).T
 
     plt.plot(r1_List_NPArray[0], r1_List_NPArray[1], r_plot_symbol, label=r_label, color=r_color_list[0], linewidth=100)
-    plt.plot(r1_List_NPArray[0][-1], r1_List_NPArray[1][-1], r_plot_symbol, label=r_label, color=r_color_list[1],
-             linewidth=100)
+    plt.plot(r1_List_NPArray[0][-1], r1_List_NPArray[1][-1], r_plot_symbol, label=r_label, color=r_color_list[1], linewidth=100)
 
     plt.plot(r2_List_NPArray[0], r2_List_NPArray[1], r_plot_symbol, label=r_label, color=r_color_list[1], linewidth=100)
-    plt.plot(r2_List_NPArray[0][-1], r2_List_NPArray[1][-1], r_plot_symbol, label=r_label, color=r_color_list[1],
-             linewidth=100)
+    plt.plot(r2_List_NPArray[0][-1], r2_List_NPArray[1][-1], r_plot_symbol, label=r_label, color=r_color_list[1],linewidth=100)
 
     return [points_closer_r1_label1, points_closer_r1_label2, points_closer_r2_label2, points_closer_r2_label1]
 
@@ -135,9 +133,10 @@ if __name__ == '__main__':
     # np.random.seed(1)
     # random.seed(1)
     plt.figure(figsize=(10, 10))
-    plt.subplot(121)
-    assign3_exercise2_line_a()
-    plt.subplot(122)
+    #plt.subplot(121)
+    #assign3_exercise2_line_a()
+    #plt.subplot(122)
+    #assign3_exercise2_line_b()
     EXPERIENTS = 9
     for i in range(EXPERIENTS):
         gridside: int = int(math.sqrt(EXPERIENTS))

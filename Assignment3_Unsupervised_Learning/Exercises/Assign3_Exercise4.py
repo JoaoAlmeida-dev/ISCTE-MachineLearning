@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from Assignment3_Unsupervised_Learning.Logic.Assign3_ex4_Cluster import Cluster
-from Assignment3_Unsupervised_Learning.Logic.Point import Point
+from Assignment3_Unsupervised_Learning.Logic.Assign3_Point import Point
 from Assignment3_Unsupervised_Learning.Logic.Helpers import distance_between, create_empty_matrix
 
 

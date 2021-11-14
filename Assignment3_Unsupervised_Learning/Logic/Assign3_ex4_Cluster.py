@@ -1,7 +1,7 @@
 import random
 
 from Assignment3_Unsupervised_Learning.Logic.Helpers import distance_between
-from Assignment3_Unsupervised_Learning.Logic.Point import Point
+from Assignment3_Unsupervised_Learning.Logic.Assign3_Point import Point
 
 
 class Cluster:

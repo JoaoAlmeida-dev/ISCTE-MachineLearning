@@ -1,4 +1,4 @@
-from Assignment3_Unsupervised_Learning.Logic.Point import Point
+from Assignment3_Unsupervised_Learning.Logic.Assign3_Point import Point
 
 
 def distance_between(point_a: Point, point_b: Point) -> float:
