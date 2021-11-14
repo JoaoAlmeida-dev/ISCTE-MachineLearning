@@ -5,28 +5,26 @@ import numpy as np
 
 from Assignment3_Unsupervised_Learning.Logic.Assign3_ex4_Cluster import Cluster
 from Assignment3_Unsupervised_Learning.Logic.Assign3_Point import Point
+from Assignment3_Unsupervised_Learning.Logic.Assign3_ex4_DistanceMatrix import DistanceMatrix
 from Assignment3_Unsupervised_Learning.Logic.Helpers import distance_between, create_empty_matrix
 
 
-def point_get_Epsylon_points(point: Point, point_list: [Point], epsilon: float) -> [np.ndarray]:
-    _epsilon_points_list: [np.ndarray] = []
-    for point_from_list in point_list:
-        if distance_between(point_a=point_from_list, point_b=point) < epsilon:
-            _epsilon_points_list.append(point_from_list)
-    return _epsilon_points_list
+# def point_get_Epsylon_points(point: Point, point_list: [Point], epsilon: float) -> [np.ndarray]:
+#    _epsilon_points_list: [np.ndarray] = []
+#    for point_from_list in point_list:
+#        if distance_between(point_a=point_from_list, point_b=point) < epsilon:
+#            _epsilon_points_list.append(point_from_list)
+#    return _epsilon_points_list
 
 
 def assign3_exercise4(epsilon: float):
     cluster_list: [Cluster] = []
-    points_lst: [Point] = Point.generate_Points(alpha=1, plot=False, pointN=1000)
-    point_matrix: [[]] = create_empty_matrix(1000, 1000)
-    print(point_matrix)
+    points_lst: [Point] = Point.generate_Points(alpha=1, plot=False, pointN=200)
+    distance_matrix: DistanceMatrix = DistanceMatrix(size=len(points_lst), points_list=points_lst)
+    print(distance_matrix)
     while len(points_lst) > 0:
-        cluster = Cluster.create_cluster(points_lst)
+        cluster = Cluster.create_cluster(points_lst=points_lst, epsilon=epsilon)
         cluster_list.append(cluster)
-        cluster_points = cluster.getPoints()
-
-        points_lst.remove(cluster_points)
 
     plt.legend()
     plt.show()
