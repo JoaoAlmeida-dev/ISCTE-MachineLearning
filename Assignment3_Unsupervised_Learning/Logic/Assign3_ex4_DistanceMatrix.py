@@ -51,6 +51,17 @@ class DistanceMatrix:
             _counter += 1
         self.matrix.append(_last_row)
 
+    def get_points_inside_epsilon(self, epsilon: float):
+        _distances_found: [float] = []
+        _points_found: [(int, int)] = []
+        for row_index in range(len(self.matrix)):
+            for collumn_index in range(len(self.matrix[row_index])):
+                _value: float = self.matrix[row_index][collumn_index]
+                if epsilon >= _value > 0:
+                    _distances_found.append(_value)
+                    _points_found.append((row_index, collumn_index))
+        return _points_found
+
     def __str__(self):
         # result = [ str(row)+"\n" for row in self.matrix]
         result = ""
@@ -76,3 +87,4 @@ if __name__ == '__main__':
     print(matrix0)
     matrix0.add_point(point_to_remove2)
     print(matrix0)
+    print(matrix0.get_points_inside_epsilon(1))
