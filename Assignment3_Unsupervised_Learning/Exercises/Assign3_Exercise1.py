@@ -21,7 +21,7 @@ def assign3_exercise1():
         for point in c.T:
             r1Closeness: float = np.sqrt((r1[0] - point[0]) ** 2 + (r1[0] - point[0]) ** 2)
             r2Closeness: float = np.sqrt((r2[0] - point[0]) ** 2 + (r2[0] - point[0]) ** 2)
-            # print(point,r1Closeness,r2Closeness)
+            # print(point_index,r1Closeness,r2Closeness)
             if r1Closeness < r2Closeness:
                 r1 = (1 - alpha) * r1 + alpha * point
             else:
