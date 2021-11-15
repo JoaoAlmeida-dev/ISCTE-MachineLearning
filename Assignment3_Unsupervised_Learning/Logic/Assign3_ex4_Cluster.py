@@ -1,11 +1,11 @@
 import random
 
+from matplotlib import pyplot as plt
+
 from Assignment3_Unsupervised_Learning.Logic.Assign3_ex4_DistanceMatrix import DistanceMatrix
 from Assignment3_Unsupervised_Learning.Logic.Helpers import distance_between
 from Assignment3_Unsupervised_Learning.Logic.Assign3_Point import Point
 
-
-# https://www.youtube.com/watch?v=_A9Tq6mGtLI
 
 class Cluster:
     _points_list: [Point]
@@ -20,29 +20,28 @@ class Cluster:
         while initial_point.visited:
             initial_point: Point = random.choice(distance_matrix.points_list)
         self._initial_point = initial_point
-        self._initial_point.visited= True
+        self._initial_point.visited = True
         self._points_list.append(self._initial_point)
         initial_point_index = distance_matrix.points_list.index(self._initial_point)
 
+        self.aux(distance_matrix, epsilon, initial_point)
 
-        def aux(distance_matrix_aux, epsilon_aux, initial_point_aux):
-            core_points_in_epsilon: [Point] = distance_matrix_aux.get_points_inside_epsilon(
-                center_point=initial_point_aux,
-                epsilon=epsilon_aux)
-            for point in core_points_in_epsilon:
-                self.addPoint(point)
-                points_in_epsilon_temp: [Point] = distance_matrix_aux.get_points_inside_epsilon(center_point=point,
-                                                                                                epsilon=epsilon_aux)
-                distance_matrix_aux.remove_point(point)
-                for point2 in points_in_epsilon_temp:
-                    print(point2)
-                    aux(distance_matrix_aux=distance_matrix_aux, epsilon_aux=epsilon_aux, initial_point_aux=point2)
+    def aux(self, distance_matrix, epsilon, initial_point):
+        initial_point.visited = True
+        self.addPoint(point=initial_point)
 
-        aux(distance_matrix_aux=distance_matrix, epsilon_aux=epsilon, initial_point_aux=initial_point)
+        first_layer = distance_matrix.get_points_inside_epsilon(center_point=initial_point, epsilon=epsilon)
+        for point in first_layer:
+            point.visited = True
+            self.addPoint(point=point)
+            # distance_matrix.remove_point(point=point)
+        for point in first_layer:
+            self.aux(distance_matrix,epsilon,point)
+                # distance_matrix.remove_point(point=point2)
 
     def addPoint(self, point: Point):
-        point.visited = True
-        self._points_list.append(point)
+        if not point in self._points_list:
+            self._points_list.append(point)
 
     def addPointList(self, points: [Point]):
         for point in points:
@@ -80,3 +79,28 @@ class Cluster:
     #                print("ERROR removing")
     #                continue
     #        return points_in_epsilon
+
+
+if __name__ == '__main__':
+    points = [Point(random.random(), random.random()) for _ in range(10)]
+    matrix0 = DistanceMatrix(len(points), points)
+    print(matrix0)
+    center_point = points[5]
+    epsilon: float = 0.5
+    points_in_epsilon = matrix0.get_points_inside_epsilon(center_point=center_point, epsilon=epsilon)
+
+    circle = plt.Circle(xy=(center_point.x, center_point.y), radius=epsilon, alpha=0.2,
+                        color="orange")
+    figure, axes = plt.subplots()
+
+    axes.set_aspect(1)
+    axes.add_artist(circle)
+
+    for point in points:
+        plt.scatter(point.x, point.y, c="black", alpha=0.5)
+    for point_in_epsilon in points_in_epsilon:
+        plt.scatter(point_in_epsilon.x, point_in_epsilon.y, alpha=0.5, c="red")
+
+    plt.tight_layout()
+    plt.legend()
+    plt.show()

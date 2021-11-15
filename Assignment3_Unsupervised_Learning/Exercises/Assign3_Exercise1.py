@@ -4,7 +4,7 @@ import random
 
 from Assignment3_Unsupervised_Learning.Logic.Assign3_PointGenerator import generate_Points
 
-alpha = 10E-5
+alpha = 10E-3
 
 
 def assign3_exercise1():
@@ -14,13 +14,13 @@ def assign3_exercise1():
     r1ListEndOfPassage: list = []
     r2ListEndOfPassage: list = []
 
-    r1 = random.choice(a.T)
-    r2 = random.choice(b.T)
+    r1 = random.choice(c.T)
+    r2 = random.choice(c.T)
     iterations = 10
     for i in range(iterations):
         for point in c.T:
-            r1Closeness: float = np.sqrt((r1[0] - point[0]) ** 2 + (r1[0] - point[0]) ** 2)
-            r2Closeness: float = np.sqrt((r2[0] - point[0]) ** 2 + (r2[0] - point[0]) ** 2)
+            r1Closeness: float = np.sqrt((r1[0] - point[0]) ** 2 + (r1[1] - point[1]) ** 2)
+            r2Closeness: float = np.sqrt((r2[0] - point[0]) ** 2 + (r2[1] - point[1]) ** 2)
             # print(point_index,r1Closeness,r2Closeness)
             if r1Closeness < r2Closeness:
                 r1 = (1 - alpha) * r1 + alpha * point
@@ -48,7 +48,9 @@ def assign3_exercise1():
 
 
 if __name__ == '__main__':
-    np.random.seed(1)
-    random.seed(1)
+    seed = np.random.randint(0,1000)
+    np.random.seed(seed)
+    random.seed(seed)
+    print("seed=",seed)
     plt.figure(figsize=(10, 10))
     assign3_exercise1()

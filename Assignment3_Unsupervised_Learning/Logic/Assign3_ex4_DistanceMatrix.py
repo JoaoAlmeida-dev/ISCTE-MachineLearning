@@ -23,9 +23,9 @@ class DistanceMatrix:
             self.points_list = points_list
             for point_index in range(len(points_list)):
                 for point_index_2 in range(len(points_list)):
-                    if self.matrix[point_index_2][point_index] == 0:
-                        distance = distance_between(points_list[point_index], points_list[point_index_2])
-                        self.matrix[point_index][point_index_2] = distance
+                    # if self.matrix[point_index][point_index_2] == 0:
+                    distance = distance_between(points_list[point_index], points_list[point_index_2])
+                    self.matrix[point_index_2][point_index] = distance
         else:
             self.points_list = []
 
@@ -61,21 +61,19 @@ class DistanceMatrix:
         self.matrix.append(_last_row)
 
     def get_points_inside_epsilon(self, center_point: Point, epsilon: float) -> [Point]:
-        _distances_found: [float] = []
         _points_found: [int] = []
-        _point_index = self.points_list.index(center_point)
-
-        for row_index in range(len(self.matrix)):
-            # for collumn_index in range(len(self.matrix[_point_index])):
-            _value: float = self.matrix[row_index][_point_index]
-            _point_value = self.points_list[row_index]
-            if epsilon >= _value > 0 and not _point_value.visited:
-                _distances_found.append(_value)
-                # _points_found.append((row_index, _point_index))
-                #_points_found.append(row_index)
-                _point_value.visited=True
-                _points_found.append(_point_value)
-        return _points_found
+        _center_point_index = self.points_list.index(center_point)
+        #print("matrix at", _center_point_index, self.matrix[_center_point_index])
+        for column_index in range(len(self.matrix[_center_point_index])):
+            curr_dist: float = self.matrix[_center_point_index][column_index]
+            curr_point: Point = self.points_list[column_index]
+            if curr_dist <= epsilon > 0 and not curr_point.visited:
+                _points_found.append(column_index)
+        #print("_points_found", _points_found)
+        points_list: [Point] = []
+        for _point_index in _points_found:
+            points_list.append(self.points_list[_point_index])
+        return points_list
 
     def __str__(self):
         # result = [ str(row)+"\n" for row in self.matrix]
@@ -104,14 +102,14 @@ if __name__ == '__main__':
         plt.scatter(matrix0.points_list[point_index].x, matrix0.points_list[point_index].y, alpha=1, c="red")
     print(matrix0.hasPointsNotVisited())
     print(matrix0.points_list)
-    points[0].visited=True
+    points[0].visited = True
     print(matrix0.hasPointsNotVisited())
     print(matrix0.points_list)
-    points[9].visited=True
+    points[9].visited = True
     print(matrix0.hasPointsNotVisited())
     print(matrix0.points_list)
     for point in matrix0.points_list:
-        point.visited=True
+        point.visited = True
     print(matrix0.hasPointsNotVisited())
     print(matrix0.points_list)
 
