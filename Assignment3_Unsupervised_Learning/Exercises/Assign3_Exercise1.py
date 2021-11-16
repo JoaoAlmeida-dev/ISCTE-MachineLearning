@@ -1,3 +1,5 @@
+import time
+
 import matplotlib.pyplot as plt
 import numpy as np
 import random
@@ -47,13 +49,13 @@ def assign3_exercise1(seed:int):
         [r1ListEndOfPassage, r2ListEndOfPassage, r3ListEndOfPassage])
 
     axes.set_aspect(1)
-    plt.title("seed=" + str(seed)+" alpha="+str(alpha))
-    plt.tight_layout()
-    plt.legend()
-    plt.show()
+
+
 
 
 def exercise1_plot(beggining_list,ending_list):
+    plt.title("seed=" + str(seed)+" alpha="+str(alpha))
+
     transposed_beggining_list:[]=[]
     for list in beggining_list:
         transposed_beggining_list.append(np.asarray(list).T)
@@ -62,23 +64,11 @@ def exercise1_plot(beggining_list,ending_list):
     for list in ending_list:
         transposed_ending_list.append(np.asarray(list).T)
 
-    #r1ListBeggining_NPArray_T = np.asarray(r1ListBeggining).T
-    #r2ListBeggining_NPArray_T = np.asarray(r2ListBeggining).T
-#
-    #r1ListEndOfPassage_NPArray_T = np.asarray(r1ListEndOfPassage).T
-    #r2ListEndOfPassage_NPArray_T = np.asarray(r2ListEndOfPassage).T
-
     for list_index in range(len(transposed_beggining_list)):
         plt.scatter(transposed_beggining_list[list_index][0], transposed_beggining_list[list_index][1], label="r"+str(list_index)+"ListBeggining")
 
     for list_index in range(len(transposed_ending_list)):
         plt.scatter(transposed_ending_list[list_index][0], transposed_ending_list[list_index][1], label="r"+str(list_index)+"ListEndOfPassage")
-
-    #plt.scatter(r1ListBeggining_NPArray_T[0], r1ListBeggining_NPArray_T[1], label="r1ListBeggining")
-    #plt.scatter(r2ListBeggining_NPArray_T[0], r2ListBeggining_NPArray_T[1], label="r2ListBeggining")
-#
-    #plt.scatter(r1ListEndOfPassage_NPArray_T[0], r1ListEndOfPassage_NPArray_T[1], label="r1ListEndOfPassage")
-    #plt.scatter(r2ListEndOfPassage_NPArray_T[0], r2ListEndOfPassage_NPArray_T[1], label="r2ListEndOfPassage")
 
 
 if __name__ == '__main__':
@@ -88,4 +78,13 @@ if __name__ == '__main__':
     np.random.seed(seed)
     random.seed(seed)
     print("seed=", seed)
+    start = time.perf_counter()
+
     assign3_exercise1(seed=seed)
+
+    stop = time.perf_counter()
+    print("time=",stop-start)
+
+    plt.tight_layout()
+    plt.legend()
+    plt.show()
