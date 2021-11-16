@@ -1,4 +1,5 @@
 import random
+import time
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -45,8 +46,7 @@ def assign3_exercise4(epsilon: float):
         axes.add_artist(circle)
 
         plt.scatter(cluster_initial_point.x, cluster_initial_point.y, color=cluster_color_center, alpha=1)
-    plt.legend()
-    plt.show()
+
 
 
 if __name__ == '__main__':
@@ -59,7 +59,12 @@ if __name__ == '__main__':
     np.random.seed(seed)
     random.seed(seed)
 
+    start = time.perf_counter()
     epsilon: float = 1
     print("seed=",seed,"epsilon=",epsilon)
-
     assign3_exercise4(epsilon)
+    stop = time.perf_counter()
+    print("time=",stop-start)
+
+    plt.legend()
+    plt.show()
