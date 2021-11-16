@@ -1,5 +1,49 @@
 from binarytree import Node
 
+COUNT = 10
+
+
+class Node:
+
+    # Construct to create a newNode
+    def __init__(self, key):
+        self.data = key
+        self.left = None
+        self.right = None
+
+    # Function to print binary tree in 2D
+    # It does reverse inorder traversal
+    @classmethod
+    def print2DUtil(cls, root, space,maxdepth):
+        currdepth=space/COUNT
+
+        # Base case
+        if root is None or currdepth > maxdepth:
+            return
+
+        # Increase distance between levels
+        space += COUNT
+
+        # Process right child first
+        Node.print2DUtil(root.right, space,maxdepth)
+
+        # Print current node after space
+        # count
+        #print()
+        for i in range(COUNT, space):
+            print(end=" ")
+        print(root.data)
+
+        # Process left child
+        Node.print2DUtil(root.left, space,maxdepth)
+
+    # Wrapper over print2DUtil()
+    @classmethod
+    def print2D(cls, root,depth:int):
+        # space=[0]
+        # Pass initial space count as 0
+        Node.print2DUtil(root, 0,depth)
+
 
 class TreeManager:
     Assign3_Nodes_List: [Node]
@@ -9,7 +53,7 @@ class TreeManager:
 
     def get(self, content: [float, float]):
         for node in self.Assign3_Nodes_List:
-            if node.val == content:
+            if node.data == content:
                 return node
         return Node(content)
 
@@ -23,7 +67,11 @@ class TreeManager:
             raise Exception(node, "Node already exists in Tree")
 
     def build(self):
-        print(self.Assign3_Nodes_List[-1])
+        depth = 3
+        print("----------FirstNode----------")
+        print(Node.print2D(self.Assign3_Nodes_List[-1],depth))
+        print("----------SecondNode----------")
+        print(Node.print2D(self.Assign3_Nodes_List[-2],depth))
 
 
 if __name__ == '__main__':
@@ -31,8 +79,10 @@ if __name__ == '__main__':
     node1: Node = Node(2.1310)
     parent1: Node = Node(1.232)
     parent2: Node = Node(-1.1231)
+
     node1.right = parent1
     node1.left = parent2
+
     treeManager.add(parent2)
     treeManager.add(parent1)
     treeManager.add(node1)
