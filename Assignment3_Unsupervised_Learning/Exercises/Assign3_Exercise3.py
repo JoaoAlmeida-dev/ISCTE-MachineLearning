@@ -20,27 +20,6 @@ def average_point(point_a: [int, int], point_b: [int, int]) -> [int, int]:
     return avg_point
 
 
-def distance_between(point_a: np.ndarray, point_b: np.ndarray) -> float:
-    #return np.sqrt((point_a[0] - point_b[0]) ** 2 + (point_a[1] - point_b[1]) ** 2)
-    return (point_a[0] - point_b[0]) ** 2 + (point_a[1] - point_b[1]) ** 2
-
-
-def find_closest_two_points(points_lst: list) -> (np.ndarray, np.ndarray):
-    point_a: np.ndarray = points_lst[0]
-    point_b: np.ndarray = points_lst[1]
-    shortest_distance: float = distance_between(point_a, point_b)
-
-    for point1 in points_lst:
-        for point2 in points_lst:
-            if point1[0] != point2[0] and point1[1] != point2[1]:
-                distance = distance_between(point1, point2)
-                if distance < shortest_distance:
-                    shortest_distance = distance
-                    point_a = point1
-                    point_b = point2
-    return point_a, point_b
-
-
 #def assign3_exercise3(treemanager:TreeManager):
 def assign3_exercise3():
 

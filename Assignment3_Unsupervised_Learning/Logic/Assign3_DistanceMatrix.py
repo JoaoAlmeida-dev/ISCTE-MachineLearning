@@ -63,17 +63,43 @@ class DistanceMatrix:
     def get_points_inside_epsilon(self, center_point: Point, epsilon: float) -> [Point]:
         _points_found: [int] = []
         _center_point_index = self.points_list.index(center_point)
-        #print("matrix at", _center_point_index, self.matrix[_center_point_index])
+        # print("matrix at", _center_point_index, self.matrix[_center_point_index])
         for column_index in range(len(self.matrix[_center_point_index])):
             curr_dist: float = self.matrix[_center_point_index][column_index]
             curr_point: Point = self.points_list[column_index]
             if curr_dist <= epsilon > 0 and not curr_point.visited:
                 _points_found.append(column_index)
-        #print("_points_found", _points_found)
+        # print("_points_found", _points_found)
         points_list: [Point] = []
         for _point_index in _points_found:
             points_list.append(self.points_list[_point_index])
         return points_list
+
+    def get_dist_between(self,point1:Point,point2:Point):
+        if point1 in self.points_list and point2 in self.points_list:
+            point1_index=self.points_list.index(point1)
+            point2_index=self.points_list.index(point2)
+
+            return self.matrix[point1_index][point2_index]
+
+    def get_closest_pair(self) -> (Point, Point):
+
+        random_initial_point1=random.choice([0,len(self.points_list)-1])
+        random_initial_point2=random.choice([0,len(self.points_list)-1])
+        while random_initial_point2 == random_initial_point1:
+            random_initial_point1=random.choice([0,len(self.points_list)-1])
+            random_initial_point2=random.choice([0,len(self.points_list)-1])
+
+        minimum_value = self.matrix[random_initial_point1][random_initial_point2]
+        point1_index: int = random_initial_point1
+        point2_index: int = random_initial_point2
+        for row_index, row in enumerate(self.matrix):
+            for collumn_index, collumn in enumerate(row):
+                if collumn < minimum_value and collumn>0.0:
+                    minimum_value = collumn
+                    point1_index = row_index
+                    point2_index = collumn_index
+        return self.points_list[point1_index], self.points_list[point2_index],
 
     def __str__(self):
         # result = [ str(row)+"\n" for row in self.matrix]
@@ -98,8 +124,8 @@ if __name__ == '__main__':
 
     for point in points:
         plt.scatter(point.x, point.y, c="black", alpha=0.5)
-    for point_index in points_in_epsilon:
-        plt.scatter(matrix0.points_list[point_index].x, matrix0.points_list[point_index].y, alpha=1, c="red")
+    for point_epsilon in points_in_epsilon:
+        plt.scatter(point_epsilon.x, point_epsilon.y, alpha=1, c="red")
     print(matrix0.hasPointsNotVisited())
     print(matrix0.points_list)
     points[0].visited = True
@@ -112,6 +138,7 @@ if __name__ == '__main__':
         point.visited = True
     print(matrix0.hasPointsNotVisited())
     print(matrix0.points_list)
-
+    closest_point1,closest_point2 =matrix0.get_closest_pair()
+    print("closestPair=",closest_point1,closest_point2 , "dist=",matrix0.get_dist_between(closest_point1,closest_point2))
     plt.legend()
     plt.show()
