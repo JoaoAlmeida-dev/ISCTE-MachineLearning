@@ -2,7 +2,7 @@ import random
 
 from matplotlib import pyplot as plt
 
-from Assignment3_Unsupervised_Learning.Logic.Assign3_ex4_DistanceMatrix import DistanceMatrix
+from Assignment3_Unsupervised_Learning.Logic.Assign3_DistanceMatrix import DistanceMatrix
 from Assignment3_Unsupervised_Learning.Logic.Helpers import distance_between
 from Assignment3_Unsupervised_Learning.Logic.Assign3_Point import Point
 

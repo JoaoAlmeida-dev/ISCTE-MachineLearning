@@ -6,7 +6,7 @@ import numpy as np
 
 from Assignment3_Unsupervised_Learning.Logic.Assign3_ex4_Cluster import Cluster
 from Assignment3_Unsupervised_Learning.Logic.Assign3_Point import Point
-from Assignment3_Unsupervised_Learning.Logic.Assign3_ex4_DistanceMatrix import DistanceMatrix
+from Assignment3_Unsupervised_Learning.Logic.Assign3_DistanceMatrix import DistanceMatrix
 
 
 def assign3_exercise4(epsilon: float):
