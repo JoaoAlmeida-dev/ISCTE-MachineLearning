@@ -127,11 +127,8 @@ def run_exercise2_line_a():
 
 def run_exercise2_line_b():
     labels = ["closer_r1_label1", "closer_r1_label2", "closer_r2_label2", "closer_r2_label1"]
-    EXPERIENTS = 9
-    for i in range(EXPERIENTS):
-        gridside: int = int(math.sqrt(EXPERIENTS))
-        plt.subplot(gridside, gridside, i + 1)
-        assign3_exercise2_line_b(labels)
+
+    assign3_exercise2_line_b(labels)
 
     patch_0 = patches.Patch(color=Assignment3_Unsupervised_Learning.Logic.Assign3_PointGenerator.COLORS[0],
                             label=labels[0])
@@ -147,12 +144,36 @@ def run_exercise2_line_b():
     plt.show()
 
 
+def run_exercise2_line_c():
+    labels = ["closer_r1_label1", "closer_r1_label2", "closer_r2_label2", "closer_r2_label1"]
+
+    patch_0 = patches.Patch(color=Assignment3_Unsupervised_Learning.Logic.Assign3_PointGenerator.COLORS[0],
+                            label=labels[0])
+    patch_1 = patches.Patch(color=Assignment3_Unsupervised_Learning.Logic.Assign3_PointGenerator.COLORS[1],
+                            label=labels[1])
+    patch_2 = patches.Patch(color=Assignment3_Unsupervised_Learning.Logic.Assign3_PointGenerator.COLORS[2],
+                            label=labels[2])
+    patch_3 = patches.Patch(color=Assignment3_Unsupervised_Learning.Logic.Assign3_PointGenerator.COLORS[3],
+                            label=labels[3])
+    EXPERIENTS = 9
+    for i in range(EXPERIENTS):
+        gridside: int = int(math.sqrt(EXPERIENTS))
+        plt.subplot(gridside, gridside, i + 1)
+        plt.legend(handles=[patch_0, patch_1, patch_2, patch_3])
+        assign3_exercise2_line_b(labels)
+
+    plt.tight_layout()
+    plt.show()
+
+
 if __name__ == '__main__':
     seed = random.randint(0, 1000)
     # seed = 356
     # seed = 456
+    seed = 254
     np.random.seed(seed)
     random.seed(seed)
 
-    run_exercise2_line_a()
-    # run_exercise2_line_b()
+    #run_exercise2_line_a()
+    run_exercise2_line_b()
+    run_exercise2_line_c()

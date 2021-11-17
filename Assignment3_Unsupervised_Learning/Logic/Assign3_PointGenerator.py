@@ -1,7 +1,7 @@
 import numpy as np
 from matplotlib import pyplot as plt
 
-COLORS = ["red", "green", "blue", "yellow", "purple", "cyan"]
+COLORS = ["red", "green", "blue", "purple", "yellow", "cyan"]
 GREYSCALE = [
     "#000000",
     "#999999",

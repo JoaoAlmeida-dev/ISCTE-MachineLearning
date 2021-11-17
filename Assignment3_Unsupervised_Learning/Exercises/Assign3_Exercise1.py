@@ -14,39 +14,42 @@ def assign3_exercise1(seed:int):
     a, b, c = generate_Points(plot=True, alpha=0.2, pointN=1000)
     r1ListBeggining: list = []
     r2ListBeggining: list = []
-    r3ListBeggining: list = []
+    #r3ListBeggining: list = []
     r1ListEndOfPassage: list = []
     r2ListEndOfPassage: list = []
-    r3ListEndOfPassage: list = []
+    #r3ListEndOfPassage: list = []
 
     r1 = random.choice(c.T)
     r2 = random.choice(c.T)
-    r3 = random.choice(c.T)
+    #r3 = random.choice(c.T)
     iterations = 10
     for i in range(iterations):
         for point in c.T:
             r1Closeness: float = ((r1[0] - point[0]) ** 2 + (r1[1] - point[1]) ** 2)**0.5
             r2Closeness: float = ((r2[0] - point[0]) ** 2 + (r2[1] - point[1]) ** 2)**0.5
-            r3Closeness: float = ((r3[0] - point[0]) ** 2 + (r3[1] - point[1]) ** 2)**0.5
+            #r3Closeness: float = ((r3[0] - point[0]) ** 2 + (r3[1] - point[1]) ** 2)**0.5
             # print(point_index,r1Closeness,r2Closeness)
-            if min(r1Closeness,r2Closeness,r3Closeness) == r1Closeness:
+            if min(r1Closeness,r2Closeness) == r1Closeness:
+            #if min(r1Closeness,r2Closeness,r3Closeness) == r1Closeness:
                 r1 = (1 - alpha) * r1 + alpha * point
-            elif min(r1Closeness,r2Closeness,r3Closeness) == r2Closeness:
+            elif min(r1Closeness,r2Closeness) == r2Closeness:
+            #elif min(r1Closeness,r2Closeness,r3Closeness) == r2Closeness:
                 r2 = (1 - alpha) * r2 + alpha * point
-            else:
-                r3 = (1 - alpha) * r3 + alpha * point
+            #else:
+                #r3 = (1 - alpha) * r3 + alpha * point
 
             if i == 0:
                 r1ListBeggining.append((r1[0], r1[1]))
                 r2ListBeggining.append((r2[0], r2[1]))
-                r3ListBeggining.append((r3[0], r3[1]))
+                #r3ListBeggining.append((r3[0], r3[1]))
         r1ListEndOfPassage.append((r1[0], r1[1]))
         r2ListEndOfPassage.append((r2[0], r2[1]))
-        r3ListEndOfPassage.append((r3[0], r3[1]))
+        #r3ListEndOfPassage.append((r3[0], r3[1]))
 
     exercise1_plot(
-        [r1ListBeggining, r2ListBeggining, r3ListBeggining],
-        [r1ListEndOfPassage, r2ListEndOfPassage, r3ListEndOfPassage])
+        [r1ListBeggining, r2ListBeggining ]#r3ListBeggining],
+        [r1ListEndOfPassage, r2ListEndOfPassage]#r3ListEndOfPassage])
+    )
 
     axes.set_aspect(1)
 
