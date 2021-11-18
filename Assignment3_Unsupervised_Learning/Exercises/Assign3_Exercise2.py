@@ -17,6 +17,43 @@ alpha = 10E-2
 r_color_list = ['orange', 'green', 'brown', 'black']
 r_label = ["r1first", "r1last", "r2first", "r2last"]
 
+line_b_c_labels = ["closer_r1_label1", "closer_r1_label2", "closer_r2_label2", "closer_r2_label1"]
+r1_color = "purple"
+r1_end_color = "black"
+r2_color = "green"
+r2_end_color = "grey"
+exercise2_legendPatches = [
+    Line2D([0], [0], color='w', marker='o',markerfacecolor=r1_color, markersize=10, label="r1"),
+    Line2D([0], [0], color='w', marker='o',markerfacecolor=r1_end_color, markersize=10, label="r1_end"),
+    Line2D([0], [0], color='w', marker='o',markerfacecolor=r2_color, markersize=10, label="r2"),
+    Line2D([0], [0], color='w', marker='o',markerfacecolor=r2_end_color, markersize=10, label="r2_end"),
+    patches.Patch(color=Assignment3_Unsupervised_Learning.Logic.Assign3_PointGenerator.COLORS[0],
+                  label=line_b_c_labels[0]),
+    patches.Patch(color=Assignment3_Unsupervised_Learning.Logic.Assign3_PointGenerator.COLORS[1],
+                  label=line_b_c_labels[1]),
+    patches.Patch(color=Assignment3_Unsupervised_Learning.Logic.Assign3_PointGenerator.COLORS[2],
+                  label=line_b_c_labels[2]),
+    patches.Patch(color=Assignment3_Unsupervised_Learning.Logic.Assign3_PointGenerator.COLORS[3],
+                  label=line_b_c_labels[3]),
+    ]
+
+def decode_positives_matrix(a, b, point, points_closer_r1_label1, points_closer_r1_label2, points_closer_r2_label1,
+                            points_closer_r2_label2, r1Closeness, r2Closeness):
+    if r1Closeness < r2Closeness:
+        # closer to r1 from a
+        if point in a:
+            points_closer_r1_label1.append(point)
+        # closer to r1 from b
+        elif point in b:
+            points_closer_r1_label2.append(point)
+    else:
+        # closer to r2 from a
+        if point in a:
+            points_closer_r2_label1.append(point)
+        # closer to r2 from b
+        elif point in b:
+            points_closer_r2_label2.append(point)
+
 
 def assign3_exercise2_advanceR(a: np.ndarray, b: np.ndarray, c: np.ndarray, plot: bool):
     a = a.T
@@ -52,20 +89,8 @@ def assign3_exercise2_advanceR(a: np.ndarray, b: np.ndarray, c: np.ndarray, plot
             else:
                 d2 = d2 + (point - r2)
             if i == (iterations - 1):
-                if r1Closeness < r2Closeness:
-                    # closer to r1 from a
-                    if point in a:
-                        points_closer_r1_label1.append(point)
-                    # closer to r1 from b
-                    elif point in b:
-                        points_closer_r1_label2.append(point)
-                else:
-                    # closer to r2 from a
-                    if point in a:
-                        points_closer_r2_label1.append(point)
-                    # closer to r2 from b
-                    elif point in b:
-                        points_closer_r2_label2.append(point)
+                decode_positives_matrix(a, b, point, points_closer_r1_label1, points_closer_r1_label2,
+                                        points_closer_r2_label1, points_closer_r2_label2, r1Closeness, r2Closeness)
 
         r1 = r1 + (alpha / n_examples) * d1
         r2 = r2 + (alpha / n_examples) * d2
@@ -79,11 +104,11 @@ def assign3_exercise2_advanceR(a: np.ndarray, b: np.ndarray, c: np.ndarray, plot
     r1_List_NPArray = np.asarray(r1List).T
     r2_List_NPArray = np.asarray(r2List).T
     if plot:
-        plt.plot(r1_List_NPArray[0], r1_List_NPArray[1], r_plot_symbol, label="r1", color="purple")
-        plt.plot(r1_List_NPArray[0][-1], r1_List_NPArray[1][-1], r_plot_symbol, label="r1End", color="black")
+        plt.plot(r1_List_NPArray[0], r1_List_NPArray[1], r_plot_symbol, label="r1", color=r1_color)
+        plt.plot(r1_List_NPArray[0][-1], r1_List_NPArray[1][-1], r_plot_symbol, label="r1End", color=r1_end_color)
 
-        plt.plot(r2_List_NPArray[0], r2_List_NPArray[1], r_plot_symbol, label="r2", color="green")
-        plt.plot(r2_List_NPArray[0][-1], r2_List_NPArray[1][-1], r_plot_symbol, label="r2End", color="grey")
+        plt.plot(r2_List_NPArray[0], r2_List_NPArray[1], r_plot_symbol, label="r2", color=r2_color)
+        plt.plot(r2_List_NPArray[0][-1], r2_List_NPArray[1][-1], r_plot_symbol, label="r2End", color=r2_end_color)
 
     return [points_closer_r1_label1, points_closer_r1_label2, points_closer_r2_label2, points_closer_r2_label1]
 
@@ -96,7 +121,9 @@ def assign3_exercise2_line_a(exercise_seed, exercise_alpha, pointN=1000):
     plt.legend()
 
 
-def assign3_exercise2_line_b(labels:[str]):
+def assign3_exercise2_line_b(labels: [str]):
+
+
     a, b, c = generate_Points(plot=False, alpha=0.5, pointN=1000)
     points: list = assign3_exercise2_advanceR(a, b, c, plot=True)
 
@@ -112,7 +139,6 @@ def assign3_exercise2_line_b(labels:[str]):
     #    plt.title("assign3_exercise2_line_b")
 
 
-
 def run_exercise2_line_a():
     start = time.perf_counter()
 
@@ -126,42 +152,20 @@ def run_exercise2_line_a():
 
 
 def run_exercise2_line_b():
-    labels = ["closer_r1_label1", "closer_r1_label2", "closer_r2_label2", "closer_r2_label1"]
-
-    assign3_exercise2_line_b(labels)
-
-    patch_0 = patches.Patch(color=Assignment3_Unsupervised_Learning.Logic.Assign3_PointGenerator.COLORS[0],
-                            label=labels[0])
-    patch_1 = patches.Patch(color=Assignment3_Unsupervised_Learning.Logic.Assign3_PointGenerator.COLORS[1],
-                            label=labels[1])
-    patch_2 = patches.Patch(color=Assignment3_Unsupervised_Learning.Logic.Assign3_PointGenerator.COLORS[2],
-                            label=labels[2])
-    patch_3 = patches.Patch(color=Assignment3_Unsupervised_Learning.Logic.Assign3_PointGenerator.COLORS[3],
-                            label=labels[3])
-
-    plt.legend(handles=[patch_0, patch_1, patch_2, patch_3])
+    assign3_exercise2_line_b(line_b_c_labels)
+    plt.legend(handles=exercise2_legendPatches)
     plt.tight_layout()
     plt.show()
 
 
 def run_exercise2_line_c():
-    labels = ["closer_r1_label1", "closer_r1_label2", "closer_r2_label2", "closer_r2_label1"]
-
-    patch_0 = patches.Patch(color=Assignment3_Unsupervised_Learning.Logic.Assign3_PointGenerator.COLORS[0],
-                            label=labels[0])
-    patch_1 = patches.Patch(color=Assignment3_Unsupervised_Learning.Logic.Assign3_PointGenerator.COLORS[1],
-                            label=labels[1])
-    patch_2 = patches.Patch(color=Assignment3_Unsupervised_Learning.Logic.Assign3_PointGenerator.COLORS[2],
-                            label=labels[2])
-    patch_3 = patches.Patch(color=Assignment3_Unsupervised_Learning.Logic.Assign3_PointGenerator.COLORS[3],
-                            label=labels[3])
     EXPERIENTS = 9
+    gridside: int = int(math.sqrt(EXPERIENTS))
+    fig , axes = plt.subplots(gridside, gridside)
     for i in range(EXPERIENTS):
-        gridside: int = int(math.sqrt(EXPERIENTS))
         plt.subplot(gridside, gridside, i + 1)
-        plt.legend(handles=[patch_0, patch_1, patch_2, patch_3])
-        assign3_exercise2_line_b(labels)
-
+        assign3_exercise2_line_b(line_b_c_labels)
+    fig.legend(handles=exercise2_legendPatches,loc="upper center", ncol=4,mode="expand",)
     plt.tight_layout()
     plt.show()
 
@@ -175,5 +179,5 @@ if __name__ == '__main__':
     random.seed(seed)
 
     #run_exercise2_line_a()
-    run_exercise2_line_b()
+    #run_exercise2_line_b()
     run_exercise2_line_c()
