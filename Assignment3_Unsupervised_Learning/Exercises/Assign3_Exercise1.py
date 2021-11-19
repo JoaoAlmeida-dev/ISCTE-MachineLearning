@@ -6,7 +6,7 @@ import random
 
 from Assignment3_Unsupervised_Learning.Logic.Assign3_PointGenerator import generate_Points
 
-alpha = 10E-3
+alpha = 0.0001
 
 def assign3_exercise1(seed:int):
     figure, axes = plt.subplots()
@@ -22,7 +22,7 @@ def assign3_exercise1(seed:int):
     r1 = random.choice(c.T)
     r2 = random.choice(c.T)
     #r3 = random.choice(c.T)
-    iterations = 10
+    iterations = 100
     for i in range(iterations):
         for point in c.T:
             r1Closeness: float = ((r1[0] - point[0]) ** 2 + (r1[1] - point[1]) ** 2)**0.5
@@ -47,7 +47,7 @@ def assign3_exercise1(seed:int):
         #r3ListEndOfPassage.append((r3[0], r3[1]))
 
     exercise1_plot(
-        [r1ListBeggining, r2ListBeggining ]#r3ListBeggining],
+        [r1ListBeggining, r2ListBeggining ], #r3ListBeggining],
         [r1ListEndOfPassage, r2ListEndOfPassage]#r3ListEndOfPassage])
     )
 
@@ -77,7 +77,8 @@ def exercise1_plot(beggining_list,ending_list):
 if __name__ == '__main__':
     seed = np.random.randint(0, 1000)
     #seed = 356
-    #seed = 456
+    seed = 456
+    #seed = 144
     np.random.seed(seed)
     random.seed(seed)
     print("seed=", seed)

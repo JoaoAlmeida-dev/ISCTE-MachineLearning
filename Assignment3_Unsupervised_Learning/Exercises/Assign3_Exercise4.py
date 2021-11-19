@@ -52,16 +52,16 @@ def assign3_exercise4(epsilon: float):
 if __name__ == '__main__':
     # https://www.youtube.com/watch?v=_A9Tq6mGtLI
     seed: int = random.randint(0, 10000)
-    # seed = 4670
-    # good seed 4756
-    # seed= 4670
+    # seed_109 = 4670
+    # good seed_109 4756
+    # seed_109= 4670
     seed = 9655
     np.random.seed(seed)
     random.seed(seed)
 
     start = time.perf_counter()
     epsilon: float = 1
-    print("seed=",seed,"epsilon=",epsilon)
+    print("seed_109=",seed,"epsilon=",epsilon)
     assign3_exercise4(epsilon)
     stop = time.perf_counter()
     print("time=",stop-start)

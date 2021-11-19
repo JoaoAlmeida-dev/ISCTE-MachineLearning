@@ -83,8 +83,8 @@ def assign3_exercise3(treemanager:TreeManager):
 if __name__ == '__main__':
     seed: int = random.randint(0, 10000)
     seed = 4670
-    # good seed 4756
-    # good seed 4670
+    # good seed_109 4756
+    # good seed_109 4670
     np.random.seed(seed)
     random.seed(seed)
 
@@ -94,7 +94,7 @@ if __name__ == '__main__':
     start = time.perf_counter()
     assign3_exercise3(treemanager)
     #assign3_exercise3()
-    print("seed", seed)
+    print("seed_109", seed)
     stop = time.perf_counter()
     print("time=",stop-start)
 

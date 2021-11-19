@@ -13,7 +13,6 @@ from Assignment3_Unsupervised_Learning.Logic.Assign3_PointGenerator import gener
 
 r_plot_symbol = 'o'
 
-alpha = 10E-2
 r_color_list = ['orange', 'green', 'brown', 'black']
 r_label = ["r1first", "r1last", "r2first", "r2last"]
 
@@ -23,10 +22,10 @@ r1_end_color = "black"
 r2_color = "green"
 r2_end_color = "grey"
 exercise2_legendPatches = [
-    Line2D([0], [0], color='w', marker='o',markerfacecolor=r1_color, markersize=10, label="r1"),
-    Line2D([0], [0], color='w', marker='o',markerfacecolor=r1_end_color, markersize=10, label="r1_end"),
-    Line2D([0], [0], color='w', marker='o',markerfacecolor=r2_color, markersize=10, label="r2"),
-    Line2D([0], [0], color='w', marker='o',markerfacecolor=r2_end_color, markersize=10, label="r2_end"),
+    Line2D([0], [0], color='w', marker='o', markerfacecolor=r1_color, markersize=10, label="r1"),
+    Line2D([0], [0], color='w', marker='o', markerfacecolor=r1_end_color, markersize=10, label="r1_end"),
+    Line2D([0], [0], color='w', marker='o', markerfacecolor=r2_color, markersize=10, label="r2"),
+    Line2D([0], [0], color='w', marker='o', markerfacecolor=r2_end_color, markersize=10, label="r2_end"),
     patches.Patch(color=Assignment3_Unsupervised_Learning.Logic.Assign3_PointGenerator.COLORS[0],
                   label=line_b_c_labels[0]),
     patches.Patch(color=Assignment3_Unsupervised_Learning.Logic.Assign3_PointGenerator.COLORS[1],
@@ -35,7 +34,8 @@ exercise2_legendPatches = [
                   label=line_b_c_labels[2]),
     patches.Patch(color=Assignment3_Unsupervised_Learning.Logic.Assign3_PointGenerator.COLORS[3],
                   label=line_b_c_labels[3]),
-    ]
+]
+
 
 def decode_positives_matrix(a, b, point, points_closer_r1_label1, points_closer_r1_label2, points_closer_r2_label1,
                             points_closer_r2_label2, r1Closeness, r2Closeness):
@@ -121,9 +121,7 @@ def assign3_exercise2_line_a(exercise_seed, exercise_alpha, pointN=1000):
     plt.legend()
 
 
-def assign3_exercise2_line_b(labels: [str]):
-
-
+def assign3_exercise2_line_b(exercise_seed, exercise_alpha, labels: [str]):
     a, b, c = generate_Points(plot=False, alpha=0.5, pointN=1000)
     points: list = assign3_exercise2_advanceR(a, b, c, plot=True)
 
@@ -136,13 +134,11 @@ def assign3_exercise2_line_b(labels: [str]):
                         label=labels[i],
                         alpha=alpha_value_plotting)
 
-    #    plt.title("assign3_exercise2_line_b")
 
-
-def run_exercise2_line_a():
+def run_exercise2_line_a(exercise_seed, exercise_alpha, ):
     start = time.perf_counter()
 
-    assign3_exercise2_line_a(exercise_seed=seed, exercise_alpha=alpha, pointN=1000)
+    assign3_exercise2_line_a(exercise_seed=exercise_seed, exercise_alpha=exercise_alpha, pointN=1000)
 
     stop = time.perf_counter()
     print("time=", stop - start)
@@ -151,33 +147,38 @@ def run_exercise2_line_a():
     plt.show()
 
 
-def run_exercise2_line_b():
-    assign3_exercise2_line_b(line_b_c_labels)
+def run_exercise2_line_b(exercise_seed, exercise_alpha, ):
+    assign3_exercise2_line_b(exercise_seed=exercise_seed, exercise_alpha=exercise_alpha, labels=line_b_c_labels)
+    plt.title("seed=" + str(exercise_seed) + " alpha=" + str(exercise_alpha))
     plt.legend(handles=exercise2_legendPatches)
     plt.tight_layout()
     plt.show()
 
 
-def run_exercise2_line_c():
+def run_exercise2_line_c(exercise_seed, exercise_alpha):
     EXPERIENTS = 9
     gridside: int = int(math.sqrt(EXPERIENTS))
-    fig , axes = plt.subplots(gridside, gridside)
+    fig = plt.figure()
     for i in range(EXPERIENTS):
         plt.subplot(gridside, gridside, i + 1)
-        assign3_exercise2_line_b(line_b_c_labels)
-    fig.legend(handles=exercise2_legendPatches,loc="upper center", ncol=4,mode="expand",)
+        assign3_exercise2_line_b(exercise_seed=exercise_seed, exercise_alpha=exercise_alpha, labels=line_b_c_labels)
+    fig.legend(handles=exercise2_legendPatches, loc="lower center", ncol=4, )
+    fig.suptitle("seed=" + str(exercise_seed) + " alpha=" + str(exercise_alpha))
+
     plt.tight_layout()
     plt.show()
 
 
 if __name__ == '__main__':
+    alpha = 10E-3
+
     seed = random.randint(0, 1000)
-    # seed = 356
-    # seed = 456
-    seed = 254
+    # seed_109 = 356
+    # seed_109 = 456
+    seed = 771
     np.random.seed(seed)
     random.seed(seed)
 
-    #run_exercise2_line_a()
-    #run_exercise2_line_b()
-    run_exercise2_line_c()
+    run_exercise2_line_a(exercise_seed=seed, exercise_alpha=alpha)
+    run_exercise2_line_b(exercise_seed=seed, exercise_alpha=alpha)
+    run_exercise2_line_c(exercise_seed=seed, exercise_alpha=alpha)

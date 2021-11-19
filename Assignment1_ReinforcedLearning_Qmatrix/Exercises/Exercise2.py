@@ -7,7 +7,7 @@ from Assignment1_ReinforcedLearning_Qmatrix.Logic.Robot import Robot
 from Assignment1_ReinforcedLearning_Qmatrix.Logic.Test_framework import framework
 from Assignment1_ReinforcedLearning_Qmatrix.Logic.World import World
 
-# random.seed(1)
+# random.seed_109(1)
 
 ex2_world = World(_collumns=10, _rows=10, _reward_state=(9, 9))
 ex2_robot = Robot(starting_pos=STARTING_POS)
