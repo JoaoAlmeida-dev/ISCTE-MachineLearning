@@ -14,8 +14,8 @@ class Node:
     # Function to print binary tree in 2D
     # It does reverse inorder traversal
     @classmethod
-    def print2DUtil(cls, root, space,maxdepth):
-        currdepth=space/COUNT
+    def print2DUtil(cls, root, space, maxdepth):
+        currdepth = space / COUNT
 
         # Base case
         if root is None or currdepth > maxdepth:
@@ -25,24 +25,24 @@ class Node:
         space += COUNT
 
         # Process right child first
-        Node.print2DUtil(root.right, space,maxdepth)
+        Node.print2DUtil(root.right, space, maxdepth)
 
         # Print current node after space
         # count
-        #print()
+        # print()
         for i in range(COUNT, space):
             print(end=" ")
         print(root.data)
 
         # Process left child
-        Node.print2DUtil(root.left, space,maxdepth)
+        Node.print2DUtil(root.left, space, maxdepth)
 
     # Wrapper over print2DUtil()
     @classmethod
-    def print2D(cls, root,depth:int):
+    def print2D(cls, root, depth: int):
         # space=[0]
         # Pass initial space count as 0
-        Node.print2DUtil(root, 0,depth)
+        Node.print2DUtil(root, 0, depth)
 
 
 class TreeManager:
@@ -66,12 +66,25 @@ class TreeManager:
         else:
             raise Exception(node, "Node already exists in Tree")
 
+    @classmethod
+    def get_all_children(cls, root_node: Node):
+        def aux(children_list: list, node: Node):
+            children_list.append(node)
+            if node.right is not None:
+                aux(children_list=children_list, node=node.right)
+            if node.left is not None:
+                aux(children_list=children_list, node=node.left)
+
+        children: [Node] = []
+        aux(node=root_node, children_list=children)
+        return children
+
     def build(self):
         depth = 3
         print("----------FirstNode----------")
-        print(Node.print2D(self.Assign3_Nodes_List[-1],depth))
+        print(Node.print2D(self.Assign3_Nodes_List[-1], depth))
         print("----------SecondNode----------")
-        print(Node.print2D(self.Assign3_Nodes_List[-2],depth))
+        print(Node.print2D(self.Assign3_Nodes_List[-2], depth))
 
 
 if __name__ == '__main__':
