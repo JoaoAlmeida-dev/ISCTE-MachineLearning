@@ -73,16 +73,16 @@ class TreeManager:
 
     @classmethod
     def get_all_parents(cls, root_node: Node):
-        def aux(children_list: list, node: Node):
-            children_list.append(node)
+        def aux(parent_list: list, node: Node):
+            parent_list.append(node)
             if node.right is not None:
-                aux(children_list=children_list, node=node.right)
+                aux(parent_list=parent_list, node=node.right)
             if node.left is not None:
-                aux(children_list=children_list, node=node.left)
+                aux(parent_list=parent_list, node=node.left)
 
-        children: [Node] = []
-        aux(node=root_node, children_list=children)
-        return children
+        parents: [Node] = []
+        aux(node=root_node, parent_list=parents)
+        return parents
 
 
 
