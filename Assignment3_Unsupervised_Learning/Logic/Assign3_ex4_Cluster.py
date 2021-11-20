@@ -11,9 +11,6 @@ class Cluster:
     _points_list: [Point]
     _initial_point: Point
 
-    def getInitial_Point(self) -> Point:
-        return self._initial_point
-
     def __init__(self, epsilon: float, distance_matrix: DistanceMatrix):
         self._points_list = []
         initial_point = random.choice(distance_matrix.points_list)
@@ -24,23 +21,26 @@ class Cluster:
         self._points_list.append(self._initial_point)
         initial_point_index = distance_matrix.points_list.index(self._initial_point)
 
-        self.aux(distance_matrix, epsilon, initial_point)
 
-    def aux(self, distance_matrix, epsilon, initial_point):
-        initial_point.visited = True
-        self.addPoint(point=initial_point)
+        def aux( distance_matrix, epsilon, initial_point):
+            initial_point.visited = True
+            self.addPoint(point=initial_point)
 
-        first_layer = distance_matrix.get_points_inside_epsilon(center_point=initial_point, epsilon=epsilon)
-        for point in first_layer:
-            point.visited = True
-            self.addPoint(point=point)
-            # distance_matrix.remove_point(point=point)
-        for point in first_layer:
-            self.aux(distance_matrix,epsilon,point)
+            first_layer = distance_matrix.get_points_inside_epsilon(center_point=initial_point, epsilon=epsilon)
+            for point in first_layer:
+                point.visited = True
+                self.addPoint(point=point)
+                # distance_matrix.remove_point(point=point)
+            for point in first_layer:
+                aux(distance_matrix, epsilon, point)
                 # distance_matrix.remove_point(point=point2)
+        aux(distance_matrix, epsilon, initial_point)
+
+    def getInitial_Point(self) -> Point:
+        return self._initial_point
 
     def addPoint(self, point: Point):
-        if not point in self._points_list:
+        if point not in self._points_list:
             self._points_list.append(point)
 
     def addPointList(self, points: [Point]):
@@ -62,23 +62,6 @@ class Cluster:
 
     def __repr__(self):
         return self.__str__()
-
-    #    @classmethod
-    #    def get_point_inside_epsilon(cls, initial_point: Point, points_lst: [Point], epsilon: float):
-    #        original_points: [Point] = points_lst.copy()
-    #        points_in_epsilon: [Point] = []
-    #
-    #        for point_index in points_lst:
-    #            if distance_between(point_index, initial_point) < epsilon:
-    #                points_in_epsilon.append(point_index)
-    #
-    #        for found_point in points_in_epsilon:
-    #            try:
-    #                original_points.remove(found_point)
-    #            except:
-    #                print("ERROR removing")
-    #                continue
-    #        return points_in_epsilon
 
 
 if __name__ == '__main__':
