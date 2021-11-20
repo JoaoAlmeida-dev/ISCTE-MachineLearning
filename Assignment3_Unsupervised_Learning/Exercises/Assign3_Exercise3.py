@@ -7,7 +7,7 @@ from matplotlib import pyplot as plt
 import Assignment3_Unsupervised_Learning.Logic.Assign3_PointGenerator
 from Assignment3_Unsupervised_Learning.Logic.Assign3_DistanceMatrix import DistanceMatrix
 from Assignment3_Unsupervised_Learning.Logic.Assign3_Point import Point
-from Assignment3_Unsupervised_Learning.Logic.Assign3_PointGenerator import generate_Points
+from Assignment3_Unsupervised_Learning.Logic.Assign3_PointGenerator import generate_Points_as_arrays
 # from Assignment3_Unsupervised_Learning.Logic.Assign3_TreeManager import TreeManager
 from Assignment3_Unsupervised_Learning.Logic.Assign3_TreeManager import Node, TreeManager
 
@@ -73,15 +73,15 @@ def assign3_exercise3(treemanager: TreeManager, pointN):
 
     plt.scatter(points_lst[0].x, points_lst[0].y, label="lastPointA", c="green")
     plt.scatter(points_lst[1].x, points_lst[1].y, label="lastPointB", c="purple")
-    return points_lst[0] , points_lst[1]
+    return points_lst[0], points_lst[1]
 
 
 def plot_children(root_b, root_a):
-    pointA_children: [Node] = TreeManager.get_all_children(root_node=root_a)
-    pointB_children: [Node] = TreeManager.get_all_children(root_node=root_b)
+    pointA_children: [Node] = TreeManager.get_all_parents(root_node=root_a)
+    pointB_children: [Node] = TreeManager.get_all_parents(root_node=root_b)
 
-    pointA_children_list_plot: [[float],[float]] = [[],[]]
-    pointB_children_list_plot: [[float],[float]] = [[],[]]
+    pointA_children_list_plot: [[float], [float]] = [[], []]
+    pointB_children_list_plot: [[float], [float]] = [[], []]
     for node in pointA_children:
         pointA_children_list_plot[0].append(node.data.x)
         pointA_children_list_plot[1].append(node.data.y)
@@ -89,8 +89,8 @@ def plot_children(root_b, root_a):
         pointB_children_list_plot[0].append(node.data.x)
         pointB_children_list_plot[1].append(node.data.y)
 
-    plt.scatter(x=pointA_children_list_plot[0], y=pointA_children_list_plot[1], label="pointA_Children",alpha=0.7)
-    plt.scatter(x=pointB_children_list_plot[0], y=pointB_children_list_plot[1], label="pointb_Children",alpha=0.7)
+    plt.scatter(x=pointA_children_list_plot[0], y=pointA_children_list_plot[1], label="pointA_Children", alpha=0.7)
+    plt.scatter(x=pointB_children_list_plot[0], y=pointB_children_list_plot[1], label="pointb_Children", alpha=0.7)
     plt.scatter(root_a.data.x, root_a.data.y, label="pointA")
     plt.scatter(root_b.data.x, root_b.data.y, label="pointB")
 
@@ -99,9 +99,10 @@ def plot_children(root_b, root_a):
     plt.tight_layout()
     plt.show()
 
+
 if __name__ == '__main__':
     seed: int = random.randint(0, 10000)
-    seed = 4670
+    #seed = 4670
     # good seed_109 4756
     # good seed_109 4670
     np.random.seed(seed)
@@ -111,7 +112,7 @@ if __name__ == '__main__':
 
     plt.figure(figsize=(10, 10))
     start = time.perf_counter()
-    lastPointA,lastPointB = assign3_exercise3(treemanager=treemanager, pointN=500)
+    lastPointA, lastPointB = assign3_exercise3(treemanager=treemanager, pointN=500)
 
     print("seed", seed)
     stop = time.perf_counter()
@@ -120,11 +121,11 @@ if __name__ == '__main__':
     plt.legend()
     plt.show()
 
-    root_lastPointA= treemanager.get(lastPointA)
-    root_lastPointB= treemanager.get(lastPointB)
-    plot_children(root_lastPointA,root_lastPointB,)
-
-
-
-
     treemanager.build()
+
+    root_lastPointA = treemanager.get(lastPointA)
+    root_lastPointB = treemanager.get(lastPointB)
+    print("gotten roots: root_A",root_lastPointA, "root_B=",root_lastPointB)
+
+    plot_children(root_lastPointA, root_lastPointB,)
+

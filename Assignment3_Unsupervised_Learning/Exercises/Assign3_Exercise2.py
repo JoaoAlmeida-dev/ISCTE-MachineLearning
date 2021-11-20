@@ -9,7 +9,7 @@ from matplotlib import patches
 from matplotlib.lines import Line2D
 
 import Assignment3_Unsupervised_Learning.Logic.Assign3_PointGenerator
-from Assignment3_Unsupervised_Learning.Logic.Assign3_PointGenerator import generate_Points
+from Assignment3_Unsupervised_Learning.Logic.Assign3_PointGenerator import generate_Points_as_arrays
 
 r_plot_symbol = 'o'
 
@@ -114,7 +114,7 @@ def assign3_exercise2_advanceR(a: np.ndarray, b: np.ndarray, c: np.ndarray, plot
 
 
 def assign3_exercise2_line_a(exercise_seed, exercise_alpha, pointN=1000):
-    a, b, c = generate_Points(plot=True, alpha=0.5, pointN=pointN)
+    a, b, c = generate_Points_as_arrays(plot=True, alpha=0.5, pointN=pointN)
     assign3_exercise2_advanceR(a, b, c, plot=True)
 
     plt.title("seed=" + str(exercise_seed) + " alpha=" + str(exercise_alpha))
@@ -122,7 +122,7 @@ def assign3_exercise2_line_a(exercise_seed, exercise_alpha, pointN=1000):
 
 
 def assign3_exercise2_line_b(exercise_seed, exercise_alpha, labels: [str]):
-    a, b, c = generate_Points(plot=False, alpha=0.5, pointN=1000)
+    a, b, c = generate_Points_as_arrays(plot=False, alpha=0.5, pointN=1000)
     points: list = assign3_exercise2_advanceR(a, b, c, plot=True)
 
     alpha_value_plotting: float = 0.5

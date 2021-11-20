@@ -11,11 +11,6 @@ class DistanceMatrix:
     points_list: [Point]
     size: int
 
-    def hasPointsNotVisited(self) -> bool:
-        points_visited_list = [not point.visited for point in self.points_list]
-        points_not_visited_bool = any(points_visited_list)
-        return points_not_visited_bool
-
     def __init__(self, size: int, points_list: [Point] = None):
         self.size = size
         self.matrix = [[0 for _ in range(size)] for _ in range(size)]
@@ -29,19 +24,24 @@ class DistanceMatrix:
         else:
             self.points_list = []
 
+    def hasPointsNotVisited(self) -> bool:
+        points_visited_list = [not point.visited for point in self.points_list]
+        points_not_visited_bool = any(points_visited_list)
+        return points_not_visited_bool
+
     def remove_point(self, point: Point):
         point_index = self.points_list.index(point)
         self.points_list.remove(point)
         self.size -= 1
 
-        #matrix_copy = [[] for _ in range(self.size)]
+        # matrix_copy = [[] for _ in range(self.size)]
         matrix_copy = []
-        for row_index,row in enumerate(self.matrix):
-            #if row_index != point_index:
+        for row_index, row in enumerate(self.matrix):
+            # if row_index != point_index:
             new_row = row[0:point_index:] + row[point_index + 1:len(row):]
             matrix_copy.append(new_row)
 
-            #for input in new_row:
+            # for input in new_row:
             #    matrix_copy[row_index].append(input)
         matrix_copy = matrix_copy[0:point_index:] + matrix_copy[point_index + 1:len(self.matrix):]
 
@@ -49,7 +49,7 @@ class DistanceMatrix:
 
     def add_point(self, point: Point):
         self.points_list.append(point)
-        self.size +=1
+        self.size += 1
         # _distances: [float] = [distance_between(point_in_self, point_index) for point_in_self in self.points_list]
         _distances: [float] = []
         for point_in_self in self.points_list:
@@ -81,11 +81,9 @@ class DistanceMatrix:
         if point1 in self.points_list and point2 in self.points_list:
             point1_index = self.points_list.index(point1)
             point2_index = self.points_list.index(point2)
-
             return self.matrix[point1_index][point2_index]
 
     def get_closest_pair(self) -> (Point, Point):
-
         random_initial_point1 = random.randint(0, len(self.points_list) - 1)
         random_initial_point2 = random.randint(0, len(self.points_list) - 1)
         while random_initial_point2 == random_initial_point1:

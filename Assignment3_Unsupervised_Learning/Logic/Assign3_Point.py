@@ -1,4 +1,4 @@
-from Assignment3_Unsupervised_Learning.Logic.Assign3_PointGenerator import generate_Points
+from Assignment3_Unsupervised_Learning.Logic.Assign3_PointGenerator import generate_Points_as_arrays
 
 
 class Point:
@@ -23,7 +23,7 @@ class Point:
 
     @classmethod
     def generate_Points(cls, alpha: float, plot: bool, pointN: int):
-        _a, _b, _c = generate_Points(alpha=alpha, plot=plot, pointN=pointN)
+        _a, _b, _c = generate_Points_as_arrays(alpha=alpha, plot=plot, pointN=pointN)
         _points_list: [Point] = []
         for point in _a.T:
             _points_list.append(Point(x=point[0], y=point[1], label="a"))

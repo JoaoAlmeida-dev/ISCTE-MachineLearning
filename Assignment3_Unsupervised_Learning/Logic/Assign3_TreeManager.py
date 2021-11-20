@@ -28,8 +28,6 @@ class Node:
         Node.print2DUtil(root.right, space, maxdepth)
 
         # Print current node after space
-        # count
-        # print()
         for i in range(COUNT, space):
             print(end=" ")
         print(root.data)
@@ -66,8 +64,15 @@ class TreeManager:
         else:
             raise Exception(node, "Node already exists in Tree")
 
+    def build(self):
+        depth = 3
+        print("----------FirstNode----------")
+        print(Node.print2D(self.Assign3_Nodes_List[-1], depth))
+        print("----------SecondNode----------")
+        print(Node.print2D(self.Assign3_Nodes_List[-2], depth))
+
     @classmethod
-    def get_all_children(cls, root_node: Node):
+    def get_all_parents(cls, root_node: Node):
         def aux(children_list: list, node: Node):
             children_list.append(node)
             if node.right is not None:
@@ -79,12 +84,6 @@ class TreeManager:
         aux(node=root_node, children_list=children)
         return children
 
-    def build(self):
-        depth = 3
-        print("----------FirstNode----------")
-        print(Node.print2D(self.Assign3_Nodes_List[-1], depth))
-        print("----------SecondNode----------")
-        print(Node.print2D(self.Assign3_Nodes_List[-2], depth))
 
 
 if __name__ == '__main__':

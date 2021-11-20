@@ -4,14 +4,14 @@ import matplotlib.pyplot as plt
 import numpy as np
 import random
 
-from Assignment3_Unsupervised_Learning.Logic.Assign3_PointGenerator import generate_Points
+from Assignment3_Unsupervised_Learning.Logic.Assign3_PointGenerator import generate_Points_as_arrays
 
 alpha = 0.0001
 
 def assign3_exercise1(seed:int):
     figure, axes = plt.subplots()
 
-    a, b, c = generate_Points(plot=True, alpha=0.2, pointN=1000)
+    a, b, c = generate_Points_as_arrays(plot=True, alpha=0.2, pointN=1000)
     r1ListBeggining: list = []
     r2ListBeggining: list = []
     #r3ListBeggining: list = []

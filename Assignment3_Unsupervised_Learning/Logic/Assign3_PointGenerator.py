@@ -9,7 +9,7 @@ GREYSCALE = [
 ]
 
 
-def generate_Points(plot: bool, alpha: float, pointN: int) -> (np.ndarray, np.ndarray, np.ndarray):
+def generate_Points_as_arrays(plot: bool, alpha: float, pointN: int) -> (np.ndarray, np.ndarray, np.ndarray):
     mean = [3, 3]
     cov = [[1, 0], [0, 1]]
     a = np.random.multivariate_normal(mean, cov, int(pointN / 2)).T
