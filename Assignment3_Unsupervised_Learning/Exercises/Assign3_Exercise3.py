@@ -25,10 +25,10 @@ def average_point(point_a: Point, point_b: Point) -> Point:
     return avg_point
 
 
-def assign3_exercise3(treemanager: TreeManager, pointN):
+def assign3_exercise3(treemanager: TreeManager, pointN:int, plot:bool,seed:int):
     # def assign3_exercise3():
 
-    points_lst: [Point] = Point.generate_Points(alpha=0.3, plot=False, pointN=pointN)
+    points_lst: [Point] = Point.generate_Points(alpha=0.3, plot=plot, pointN=pointN)
     distance_matrix: DistanceMatrix = DistanceMatrix(size=len(points_lst), points_list=points_lst)
 
     # lens_for_analysis = [(initial_len / 4) * 1 - 1, (initial_len / 4) * 2 - 1, (initial_len / 4) * 3 - 1, ]
@@ -38,6 +38,7 @@ def assign3_exercise3(treemanager: TreeManager, pointN):
 
         point_a, point_b = distance_matrix.get_closest_pair()
         point_avg = average_point(point_a, point_b)
+
         parent1: Node = treemanager.get(point_a)
         parent2: Node = treemanager.get(point_b)
         root: Node = Node(point_avg)
@@ -73,6 +74,7 @@ def assign3_exercise3(treemanager: TreeManager, pointN):
 
     plt.scatter(points_lst[0].x, points_lst[0].y, label="lastPointA", c="green")
     plt.scatter(points_lst[1].x, points_lst[1].y, label="lastPointB", c="purple")
+    plt.title(str("seed="+str(seed)+ "points="+str(pointN)))
     return points_lst[0], points_lst[1]
 
 
@@ -105,7 +107,8 @@ if __name__ == '__main__':
     #seed = 4670
     #seed= 4756
     #seed= 4670
-    seed = 1206
+    #seed = 1206
+    seed = 928
     np.random.seed(seed)
     random.seed(seed)
 
@@ -113,7 +116,7 @@ if __name__ == '__main__':
 
     plt.figure(figsize=(10, 10))
     start = time.perf_counter()
-    lastPointA, lastPointB = assign3_exercise3(treemanager=treemanager, pointN=500)
+    lastPointA, lastPointB = assign3_exercise3(treemanager=treemanager,plot=True, pointN=1000,seed=seed)
 
     print("seed", seed)
     stop = time.perf_counter()

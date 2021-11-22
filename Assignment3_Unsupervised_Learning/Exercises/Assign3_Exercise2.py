@@ -40,17 +40,17 @@ exercise2_legendPatches = [
 def decode_positives_matrix(a, b, point, points_closer_r1_label1, points_closer_r1_label2, points_closer_r2_label1,
                             points_closer_r2_label2, r1Closeness, r2Closeness):
     if r1Closeness < r2Closeness:
-        # closer to r1 from a
+        # point from a, closer to r1
         if point in a:
             points_closer_r1_label1.append(point)
-        # closer to r1 from b
+        # point from b, closer to r1
         elif point in b:
             points_closer_r1_label2.append(point)
     else:
-        # closer to r2 from a
+        # point from a, closer to r2
         if point in a:
             points_closer_r2_label1.append(point)
-        # closer to r2 from b
+        # point from b, closer to r2
         elif point in b:
             points_closer_r2_label2.append(point)
 
