@@ -31,8 +31,8 @@ def line3(percetron: Percetron, calulated_values: List[float]) -> List[float]:
     Calculate the difference / error (e) between o and the desired response (d) for each output.
     """
     errors = []
-    for value, desired in zip(calulated_values, percetron.desired_values):
-        errors.append(desired - value)
+    for value, desired in zip(calulated_values, percetron.desired_results):
+        errors.append(desired[1] - value[1])
     print("LINE3::errors", errors)
     return errors
 
@@ -46,12 +46,29 @@ def line4(percetron: Percetron, errors: List[float], calulated_values: List[floa
         percetron.update_weight_variances(calculated_values=calulated_values, error=error)
     print("LINE4::weights_variance",percetron.blank_weight_variance, percetron.weights_variance)
 
+def line5(percetron: Percetron):
+    """After all examples are presented (an epoch), update w1 and w2 according to:
+        w0 = w0 + ∆w0 ;
+        w1 = w1 + ∆w1 ;
+        w2 = w2 + ∆w2 ;
+        so that in the next iteration the error will diminish.
+    """
+    percetron.update_weights()
+    print("LINE5::weights",percetron.blank_weight, percetron.weights)
+
+def linea(percetron:Percetron,combinations:List[Tuple[float, float]]):
+    errors:List[float] = []
+
+    while max(errors) > 0:
+        calculated_list:List[float]=percetron.calculate_all(combinations)
+
+
 
 if __name__ == '__main__':
     example_weights: list = [0.1, 0.1, 0.1]
 
-    example_or_Percetron: Percetron = Percetron(weigths=example_weights, desired_values=OR_DESIRED)
-    example_and_Percetron: Percetron = Percetron(weigths=example_weights, desired_values=AND_DESIRED)
+    example_or_Percetron: Percetron = Percetron(weigths=example_weights,combinations=BITCOMBINATIONS, desired_values=OR_DESIRED)
+    example_and_Percetron: Percetron = Percetron(weigths=example_weights,combinations=BITCOMBINATIONS, desired_values=AND_DESIRED)
 
     line1()
     calculated_values_or = line2(example_or_Percetron)
@@ -62,3 +79,6 @@ if __name__ == '__main__':
 
     line4(example_or_Percetron, errors=errors_or, calulated_values=calculated_values_or)
     line4(example_and_Percetron, errors=errors_and, calulated_values=calculated_values_and)
+
+    line5(example_or_Percetron)
+    line5(example_and_Percetron)
