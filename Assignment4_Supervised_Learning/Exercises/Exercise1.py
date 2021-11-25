@@ -2,7 +2,7 @@ import random
 
 from typing import List, Tuple
 
-from Assignment4_SUpervised_Learning.Logic.Percetron import Percetron
+from Assignment4_Supervised_Learning.Logic.Percetron import Percetron
 
 BITCOMBINATIONS: List[Tuple[float, float]] = [(-1, -1), (-1, 1), (1, -1), (1, 1), ]
 OR_DESIRED: List[float] = [-1, 1, 1, 1]
