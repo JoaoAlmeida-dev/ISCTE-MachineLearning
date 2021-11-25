@@ -14,43 +14,83 @@ class Percetron:
         self.blank_weight = weigths[0]
         self.blank_weight_variance = self.blank_weight
         self.weights = weigths[1::]
-        self.weights_variance = weigths
+        self.weights_variance = self.weights
         self.desired_results = []
 
         for combination, desired_value in zip(combinations, desired_values):
             self.desired_results.append((combination, desired_value))
 
-    def calculate(self, combination: Tuple[float, float]) -> Tuple[Tuple[float, float], int]:
-        result = self.blank_weight
-        for (value, weight) in zip(combination, self.weights):
-            result += value * weight
+    def __str__(self):
+        return str(self.__dict__)
 
-        return self._deciding_function(combination=combination, calculated_value=result)
-
-    def calculate_all(self, list_values: List[Tuple[float, float]]) -> List[Tuple[Tuple[float, float], int]]:
-        results: List[Tuple[Tuple[float, float], int]] = []
-        for value_tuple in list_values:
-            results.append(self.calculate(combination=value_tuple))
-        return results
-
-    def calculate_error(self, calculated_combination_value:Tuple[Tuple[float, float], int]):
-        return self.desired_results[self.desired_results.index(calculated_combination_value[0])][1] - calculated_combination_value[1]
+    def __repr__(self):
+        return self.__str__()
 
     @staticmethod
-    def _deciding_function(combination: Tuple[float, float], calculated_value: float) -> Tuple[Tuple[float, float], int]:
+    def _deciding_function(combination: Tuple[float, float], calculated_value: float) \
+            -> Tuple[Tuple[float, float], float]:
         deciding_value: float = 0
         if calculated_value > deciding_value:
             return combination, 1
         else:
             return combination, -1
 
-    def update_weight_variances(self, calculated_values: List[float], error: float, ) -> None:
-        self.blank_weight_variance += self.learning_rate * error
-        for index in range(min(len(self.weights_variance), len(calculated_values))):
-            self.weights_variance[index] += self.learning_rate * calculated_values[index][1] * error
+    def calculate(self, combination: Tuple[float, float]) \
+            -> Tuple[Tuple[float, float], float]:
 
-    def update_weights(self) -> None:
+        result = self.blank_weight
+        for (value, weight) in zip(combination, self.weights):
+            result += value * weight
+
+        return self._deciding_function(combination=combination, calculated_value=result)
+
+    def calculate_all(self, list_values: List[Tuple[float, float]]) \
+            -> List[Tuple[Tuple[float, float], float]]:
+
+        results: List[Tuple[Tuple[float, float], float]] = []
+        for value_tuple in list_values:
+            results.append(self.calculate(combination=value_tuple))
+        return results
+
+    def calculate_error(self, calculated_combination_value: Tuple[Tuple[float, float], float]) \
+            -> Tuple[Tuple[float, float], float]:
+
+        index = self._desired_index(calculated_combination_value[0])
+        error = self.desired_results[index][1] - calculated_combination_value[1]
+        return calculated_combination_value[0], error
+
+    def _desired_index(self, combination: Tuple[float, float]) \
+            -> int:
+        index = -1
+        for tuple_index, tuple_value in enumerate(self.desired_results):
+            if tuple_value[0][0] == combination[0] and tuple_value[0][1] == combination[1]:
+                index = tuple_index
+        return index
+
+    def calculate_error_all(self, calculated_combination_value_list: List[Tuple[Tuple[float, float], float]]) \
+            -> List[Tuple[Tuple[float, float], float]]:
+
+        combination_error_list: List[Tuple[Tuple[float, float], float]] = []
+        for calculated_combination_value in calculated_combination_value_list:
+            combination_error_list.append(
+                self.calculate_error(calculated_combination_value=calculated_combination_value))
+        return combination_error_list
+
+    def update_weight_variances(self, error: Tuple[Tuple[float, float], float], ) \
+            -> None:
+
+        self.blank_weight_variance += self.learning_rate * error[1]
+        for index in range(len(self.weights_variance)):
+            self.weights_variance[index] += self.learning_rate * error[0][index] * error[1]
+
+    def update_weight_variances_all(self, error_list: List[Tuple[Tuple[float, float], float]], )\
+            -> None:
+        for error in error_list:
+            self.update_weight_variances(error=error)
+
+    def update_weights(self) \
+            -> None:
+
         self.blank_weight += self.blank_weight_variance
-
         for (weight, weight_variance) in zip(self.weights, self.weights_variance):
             weight += weight_variance
