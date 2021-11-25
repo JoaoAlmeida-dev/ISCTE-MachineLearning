@@ -10,10 +10,10 @@ class Percetron:
     learning_rate: float = 10E-4
     desired_results: List[Tuple[Tuple[float, float], float]]
 
-    def __init__(self, weigths: List[float], combinations: List[Tuple[float, float]], desired_values: List[float]):
-        self.blank_weight = weigths[0]
+    def __init__(self, weights: List[float], combinations: List[Tuple[float, float]], desired_values: List[float]):
+        self.blank_weight = weights[0]
         self.blank_weight_variance = self.blank_weight
-        self.weights = weigths[1::]
+        self.weights = weights[1::]
         self.weights_variance = self.weights
         self.desired_results = []
 
@@ -25,6 +25,11 @@ class Percetron:
 
     def __repr__(self):
         return self.__str__()
+
+    def set_weights(self,weights: List[float]):
+        self.blank_weight = weights[0]
+        self.weights = weights[1::]
+        self.weights_variance = self.weights
 
     @staticmethod
     def _deciding_function(combination: Tuple[float, float], calculated_value: float) \

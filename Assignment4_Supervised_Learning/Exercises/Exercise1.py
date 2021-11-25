@@ -1,4 +1,5 @@
 import random
+from statistics import mean, stdev
 
 from typing import List, Tuple
 
@@ -59,8 +60,8 @@ def line5(percetron: Percetron):
     print("LINE5::weights", percetron.blank_weight, percetron.weights)
 
 
-def linea(percetron: Percetron, combinations: List[Tuple[float, float]]):
-    calculated_list:List[Tuple[Tuple[float, float], float]]=[]
+def linea(percetron: Percetron, combinations: List[Tuple[float, float]], print_bool: bool):
+    calculated_list: List[Tuple[Tuple[float, float], float]] = []
 
     errors_dont_exist: bool = False
     counter = 0
@@ -79,15 +80,29 @@ def linea(percetron: Percetron, combinations: List[Tuple[float, float]]):
             percetron.update_weights()
         counter += 1
 
-    print("LINEA::counter=", counter, "last_calculated_values=\t", calculated_list, "percetron=", percetron, )
+    if print_bool: print("LINEA::counter=", counter, "percetron=", percetron, )
+    return counter
+
+
+def lineaExperiments(input_combinations: List[Tuple[float, float]], input_desired_values: List[float]):
+    counter_list: List[int] = []
+    for _ in range(30):
+        random_weights: List[float] = [random.random(), random.random(), random.random(), ]
+        percetron: Percetron = Percetron(weights=random_weights, combinations=input_combinations,
+                                         desired_values=input_desired_values)
+        counter_list.append(linea(percetron=percetron, combinations=input_combinations, print_bool=False))
+        print("LINEA_Experiments:: random_weights=",random_weights)
+    print("=============")
+    print("LINEA_Experiments::mean(counter_list)=", mean(counter_list), "stdev(counter_list)", stdev(counter_list,))
+    print("=============")
 
 
 if __name__ == '__main__':
     example_weights: list = [0.1, 0.1, 0.1]
 
-    example_or_Percetron: Percetron = Percetron(weigths=example_weights, combinations=BITCOMBINATIONS,
+    example_or_Percetron: Percetron = Percetron(weights=example_weights, combinations=BITCOMBINATIONS,
                                                 desired_values=OR_DESIRED)
-    example_and_Percetron: Percetron = Percetron(weigths=example_weights, combinations=BITCOMBINATIONS,
+    example_and_Percetron: Percetron = Percetron(weights=example_weights, combinations=BITCOMBINATIONS,
                                                  desired_values=AND_DESIRED)
 
     line1()
@@ -103,6 +118,9 @@ if __name__ == '__main__':
     line5(example_or_Percetron)
     line5(example_and_Percetron)
     print("MAIN::example_or_Percetron expected result=\t", example_or_Percetron.desired_results)
-    linea(percetron=example_or_Percetron, combinations=BITCOMBINATIONS)
+    linea(percetron=example_or_Percetron, combinations=BITCOMBINATIONS, print_bool=True)
     print("MAIN::example_and_Percetron expected result=\t", example_and_Percetron.desired_results)
-    linea(percetron=example_and_Percetron, combinations=BITCOMBINATIONS)
+    linea(percetron=example_and_Percetron, combinations=BITCOMBINATIONS, print_bool=True)
+
+    lineaExperiments(input_combinations=BITCOMBINATIONS, input_desired_values=OR_DESIRED)
+    lineaExperiments(input_combinations=BITCOMBINATIONS, input_desired_values=AND_DESIRED)
