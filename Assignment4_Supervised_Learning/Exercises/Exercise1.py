@@ -3,6 +3,8 @@ from statistics import mean, stdev
 
 from typing import List, Tuple
 
+import matplotlib.pyplot as plt
+
 from Assignment4_Supervised_Learning.Logic.Percetron import Percetron
 
 BITCOMBINATIONS: List[Tuple[float, float]] = [(-1, -1), (-1, 1), (1, -1), (1, 1), ]
@@ -99,14 +101,42 @@ def lineaExperiments(input_combinations: List[Tuple[float, float]], input_desire
 
 def lineb(tries: int, max_learning_rate: int, input_combinations: List[Tuple[float, float]],
           input_desired_values: List[float]):
-    for _ in range(tries):
-        _learning_rate_lineb = random.random() * max_learning_rate
-        _mean_counter, _stdev_counter = lineaExperiments(input_combinations=input_combinations,
-                                                         input_desired_values=input_desired_values,
-                                                         learning_rate=_learning_rate_lineb)
+    learning_rates_list = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]
+    # learning_rates_list: List[float] = []
+    # for _ in range(10):
+    #    learning_rates_list.append(random.random() * max_learning_rate)
+    # learning_rates_list.sort()
 
+    mean_list = [[] for _ in range(len(learning_rates_list))]
+    stdev_list = [[] for _ in range(len(learning_rates_list))]
 
-    pass
+    for learning_rate_index, learning_rate in enumerate(learning_rates_list):
+        for index in range(tries):
+            _mean_counter, _stdev_counter = lineaExperiments(input_combinations=input_combinations,
+                                                             input_desired_values=input_desired_values,
+                                                             learning_rate=learning_rate)
+            mean_list[learning_rate_index].append(_mean_counter)
+            stdev_list[learning_rate_index].append(_stdev_counter)
+    # plt.plot(BITS, mean_attempts_list, )
+
+    plt.subplot(1,2,1)
+    plt.title("M")
+    mean_mean_list = [mean(_list) for _list in mean_list]
+    plt.plot(learning_rates_list, mean_mean_list, )
+    plt.boxplot(mean_list, positions=learning_rates_list, notch=False, showfliers=False, widths=0.05)
+
+    plt.subplot(1,2,2)
+    plt.title("STDEV")
+    mean_stdev_list = [mean(_list) for _list in stdev_list]
+    plt.plot(learning_rates_list, mean_stdev_list, )
+    plt.boxplot(stdev_list, positions=learning_rates_list, notch=False, showfliers=False, widths=0.05)
+
+    # plt.plot(learning_rates_list, mean_list, label="means")
+    # plt.plot(learning_rates_list, stdev_list, label="st-deviation")
+
+    plt.legend()
+    plt.tight_layout()
+    plt.show()
 
 
 if __name__ == '__main__':
@@ -146,3 +176,6 @@ if __name__ == '__main__':
           "stdev(counter_list)", round(stdev_counter_or, 2))
     print("LINEA_Experiments:: and mean(counter_list)=", round(mean_counter_and, 2),
           "stdev(counter_list)", round(stdev_counter_and, 2))
+
+    lineb(tries=10, max_learning_rate=1, input_combinations=BITCOMBINATIONS, input_desired_values=AND_DESIRED)
+    lineb(tries=10, max_learning_rate=1, input_combinations=BITCOMBINATIONS, input_desired_values=OR_DESIRED)
