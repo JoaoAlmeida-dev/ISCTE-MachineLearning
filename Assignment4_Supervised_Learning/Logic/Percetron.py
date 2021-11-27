@@ -7,15 +7,17 @@ class Percetron:
 
     weights: List[float]
     weights_variance: List[float]
-    learning_rate: float = 10E-4
+    learning_rate: float
     desired_results: List[Tuple[Tuple[float, float], float]]
 
-    def __init__(self, weights: List[float], combinations: List[Tuple[float, float]], desired_values: List[float]):
+    def __init__(self, weights: List[float], combinations: List[Tuple[float, float]], desired_values: List[float],
+                 learning_rate: float):
         self.blank_weight = weights[0]
         self.blank_weight_variance = self.blank_weight
         self.weights = weights[1::]
         self.weights_variance = self.weights
         self.desired_results = []
+        self.learning_rate = learning_rate
 
         for combination, desired_value in zip(combinations, desired_values):
             self.desired_results.append((combination, desired_value))
@@ -26,7 +28,7 @@ class Percetron:
     def __repr__(self):
         return self.__str__()
 
-    def set_weights(self,weights: List[float]):
+    def set_weights(self, weights: List[float]):
         self.blank_weight = weights[0]
         self.weights = weights[1::]
         self.weights_variance = self.weights
@@ -83,19 +85,17 @@ class Percetron:
 
     def update_weight_variances(self, error: Tuple[Tuple[float, float], float], ) \
             -> None:
-
         self.blank_weight_variance += self.learning_rate * error[1]
         for index in range(len(self.weights_variance)):
             self.weights_variance[index] += self.learning_rate * error[0][index] * error[1]
 
-    def update_weight_variances_all(self, error_list: List[Tuple[Tuple[float, float], float]], )\
+    def update_weight_variances_all(self, error_list: List[Tuple[Tuple[float, float], float]], ) \
             -> None:
         for error in error_list:
             self.update_weight_variances(error=error)
 
     def update_weights(self) \
             -> None:
-
         self.blank_weight += self.blank_weight_variance
         for (weight, weight_variance) in zip(self.weights, self.weights_variance):
             weight += weight_variance

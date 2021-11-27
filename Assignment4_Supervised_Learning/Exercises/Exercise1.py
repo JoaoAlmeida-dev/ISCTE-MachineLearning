@@ -18,8 +18,7 @@ def line1():
 
 def line2(percetron: Percetron) \
         -> List[Tuple[Tuple[float, float], float]]:
-    """Initialize w0, w1, and w2 to small random values and, for each input pattern calculate the output (o).
-        """
+    """Initialize w0, w1, and w2 to small random values and, for each input pattern calculate the output (o)."""
     print("LINE2::weights", percetron.blank_weight, percetron.weights)
     _calculated_values: List[Tuple[Tuple[float, float], float]] = []
     for combination in BITCOMBINATIONS:
@@ -30,9 +29,7 @@ def line2(percetron: Percetron) \
 
 def line3(percetron: Percetron, calulated_values: List[Tuple[Tuple[float, float], float]]) \
         -> List[Tuple[Tuple[float, float], float]]:
-    """
-    Calculate the difference / error (e) between o and the desired response (d) for each output.
-    """
+    """Calculate the difference / error (e) between o and the desired response (d) for each output."""
     errors = percetron.calculate_error_all(calulated_values)
     print("LINE3::errors", errors)
     return errors
@@ -40,7 +37,8 @@ def line3(percetron: Percetron, calulated_values: List[Tuple[Tuple[float, float]
 
 def line4(percetron: Percetron, errors: List[Tuple[Tuple[float, float], float]],
           calulated_values: List[Tuple[Tuple[float, float], float]]):
-    """Add to the update term for w1 (∆w1) and w2 (∆w2) according to:
+    """
+    Add to the update term for w1 (∆w1) and w2 (∆w2) according to:
         ∆w0 = ∆w0 + α ·(d −o);
         ∆w1 = ∆w1 + α ·x1 ·(d −o);
     """
@@ -84,26 +82,41 @@ def linea(percetron: Percetron, combinations: List[Tuple[float, float]], print_b
     return counter
 
 
-def lineaExperiments(input_combinations: List[Tuple[float, float]], input_desired_values: List[float]):
+def lineaExperiments(input_combinations: List[Tuple[float, float]], input_desired_values: List[float],
+                     learning_rate: float):
     counter_list: List[int] = []
     for _ in range(30):
         random_weights: List[float] = [random.random(), random.random(), random.random(), ]
         percetron: Percetron = Percetron(weights=random_weights, combinations=input_combinations,
-                                         desired_values=input_desired_values)
+                                         desired_values=input_desired_values, learning_rate=learning_rate)
         counter_list.append(linea(percetron=percetron, combinations=input_combinations, print_bool=False))
-        print("LINEA_Experiments:: random_weights=",random_weights)
-    print("=============")
-    print("LINEA_Experiments::mean(counter_list)=", mean(counter_list), "stdev(counter_list)", stdev(counter_list,))
-    print("=============")
+        print("LINEA_Experiments:: random_weights=", random_weights)
+
+    _mean_counter = mean(counter_list)
+    _stdev_counter = stdev(counter_list)
+    return _mean_counter, _stdev_counter
+
+
+def lineb(tries: int, max_learning_rate: int, input_combinations: List[Tuple[float, float]],
+          input_desired_values: List[float]):
+    for _ in range(tries):
+        _learning_rate_lineb = random.random() * max_learning_rate
+        _mean_counter, _stdev_counter = lineaExperiments(input_combinations=input_combinations,
+                                                         input_desired_values=input_desired_values,
+                                                         learning_rate=_learning_rate_lineb)
+
+
+    pass
 
 
 if __name__ == '__main__':
     example_weights: list = [0.1, 0.1, 0.1]
+    example_learningrate = 10E-4
 
     example_or_Percetron: Percetron = Percetron(weights=example_weights, combinations=BITCOMBINATIONS,
-                                                desired_values=OR_DESIRED)
+                                                desired_values=OR_DESIRED, learning_rate=example_learningrate)
     example_and_Percetron: Percetron = Percetron(weights=example_weights, combinations=BITCOMBINATIONS,
-                                                 desired_values=AND_DESIRED)
+                                                 desired_values=AND_DESIRED, learning_rate=example_learningrate)
 
     line1()
     _calculated_values_or = line2(example_or_Percetron)
@@ -122,5 +135,14 @@ if __name__ == '__main__':
     print("MAIN::example_and_Percetron expected result=\t", example_and_Percetron.desired_results)
     linea(percetron=example_and_Percetron, combinations=BITCOMBINATIONS, print_bool=True)
 
-    lineaExperiments(input_combinations=BITCOMBINATIONS, input_desired_values=OR_DESIRED)
-    lineaExperiments(input_combinations=BITCOMBINATIONS, input_desired_values=AND_DESIRED)
+    mean_counter_or, stdev_counter_or = lineaExperiments(input_combinations=BITCOMBINATIONS,
+                                                         input_desired_values=OR_DESIRED,
+                                                         learning_rate=example_learningrate)
+    mean_counter_and, stdev_counter_and = lineaExperiments(input_combinations=BITCOMBINATIONS,
+                                                           input_desired_values=AND_DESIRED,
+                                                           learning_rate=example_learningrate)
+
+    print("LINEA_Experiments:: or mean(counter_list)=", round(mean_counter_or, 2),
+          "stdev(counter_list)", round(stdev_counter_or, 2))
+    print("LINEA_Experiments:: and mean(counter_list)=", round(mean_counter_and, 2),
+          "stdev(counter_list)", round(stdev_counter_and, 2))
