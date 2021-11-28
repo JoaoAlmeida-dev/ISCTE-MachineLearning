@@ -13,9 +13,9 @@ class Percetron:
     def __init__(self, weights: List[float], combinations: List[Tuple[float, float]], desired_values: List[float],
                  learning_rate: float):
         self.blank_weight = weights[0]
-        self.blank_weight_variance = self.blank_weight
+        self.blank_weight_variance = 0
         self.weights = weights[1::]
-        self.weights_variance = self.weights
+        self.weights_variance = [0 for _ in self.weights]
         self.desired_results = []
         self.learning_rate = learning_rate
 

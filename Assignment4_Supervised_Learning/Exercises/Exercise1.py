@@ -60,15 +60,15 @@ def line5(percetron: Percetron):
     print("LINE5::weights", percetron.blank_weight, percetron.weights)
 
 
-def linea(percetron: Percetron, combinations: List[Tuple[float, float]], print_bool: bool):
-    calculated_list: List[Tuple[Tuple[float, float], float]] = []
+def linea(percetron: Percetron, input_combinations: List[Tuple[float, float]], print_bool: bool):
+    calculated_list: List[Tuple[Tuple[float, float], float]]
 
     errors_dont_exist: bool = False
     counter = 0
     while not errors_dont_exist:
         # while there are still errors in the calculated results
         error_check = True
-        calculated_list: List[Tuple[Tuple[float, float], float]] = percetron.calculate_all(combinations)
+        calculated_list = percetron.calculate_all(input_combinations)
         errors_list = percetron.calculate_error_all(calculated_combination_value_list=calculated_list)
 
         for error_tuple in errors_list:
@@ -91,8 +91,8 @@ def lineaExperiments(input_combinations: List[Tuple[float, float]], input_desire
         random_weights: List[float] = [random.random(), random.random(), random.random(), ]
         percetron: Percetron = Percetron(weights=random_weights, combinations=input_combinations,
                                          desired_values=input_desired_values, learning_rate=learning_rate)
-        counter_list.append(linea(percetron=percetron, combinations=input_combinations, print_bool=False))
-        print("LINEA_Experiments:: random_weights=", random_weights)
+        counter_list.append(linea(percetron=percetron, input_combinations=input_combinations, print_bool=False))
+        # print("LINEA_Experiments:: random_weights=", random_weights)
 
     _mean_counter = mean(counter_list)
     _stdev_counter = stdev(counter_list)
@@ -102,34 +102,33 @@ def lineaExperiments(input_combinations: List[Tuple[float, float]], input_desire
 def lineb(tries: int, max_learning_rate: int, input_combinations: List[Tuple[float, float]],
           input_desired_values: List[float]):
     learning_rates_list = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]
-    # learning_rates_list: List[float] = []
-    # for _ in range(10):
-    #    learning_rates_list.append(random.random() * max_learning_rate)
-    # learning_rates_list.sort()
+    #learning_rates_list: List[float] = []
+    #for _ in range(10):
+    #    learning_rates_list.append(round(random.random() * max_learning_rate, 3))
+    #learning_rates_list.sort()
 
     mean_list = [[] for _ in range(len(learning_rates_list))]
-    stdev_list = [[] for _ in range(len(learning_rates_list))]
 
     for learning_rate_index, learning_rate in enumerate(learning_rates_list):
-        for index in range(tries):
-            _mean_counter, _stdev_counter = lineaExperiments(input_combinations=input_combinations,
-                                                             input_desired_values=input_desired_values,
-                                                             learning_rate=learning_rate)
+        for _ in range(tries):
+            random_weights: List[float] = [random.random(), random.random(), random.random(), ]
+            percetron: Percetron = Percetron(weights=random_weights, combinations=input_combinations,
+                                             desired_values=input_desired_values, learning_rate=learning_rate)
+            _mean_counter = linea(percetron=percetron, input_combinations=input_combinations, print_bool=False)
             mean_list[learning_rate_index].append(_mean_counter)
-            stdev_list[learning_rate_index].append(_stdev_counter)
     # plt.plot(BITS, mean_attempts_list, )
 
-    plt.subplot(1,2,1)
-    plt.title("M")
+    # plt.subplot(1,2,1)
+    plt.title("MEAN")
     mean_mean_list = [mean(_list) for _list in mean_list]
     plt.plot(learning_rates_list, mean_mean_list, )
     plt.boxplot(mean_list, positions=learning_rates_list, notch=False, showfliers=False, widths=0.05)
 
-    plt.subplot(1,2,2)
-    plt.title("STDEV")
-    mean_stdev_list = [mean(_list) for _list in stdev_list]
-    plt.plot(learning_rates_list, mean_stdev_list, )
-    plt.boxplot(stdev_list, positions=learning_rates_list, notch=False, showfliers=False, widths=0.05)
+    # plt.subplot(1,2,2)
+    # plt.title("STDEV")
+    # mean_stdev_list = [mean(_list) for _list in stdev_list]
+    ##plt.plot(learning_rates_list, mean_stdev_list, )
+    # plt.boxplot(stdev_list, positions=learning_rates_list, notch=False, showfliers=False, widths=0.05)
 
     # plt.plot(learning_rates_list, mean_list, label="means")
     # plt.plot(learning_rates_list, stdev_list, label="st-deviation")
@@ -139,43 +138,48 @@ def lineb(tries: int, max_learning_rate: int, input_combinations: List[Tuple[flo
     plt.show()
 
 
-if __name__ == '__main__':
-    example_weights: list = [0.1, 0.1, 0.1]
-    example_learningrate = 10E-4
+def initialDemo():
 
+    line1()
+    _calculated_values_or = line2(example_or_Percetron)
+    _calculated_values_and = line2(example_and_Percetron)
+    _errors_or = line3(example_or_Percetron, _calculated_values_or)
+    _errors_and = line3(example_and_Percetron, _calculated_values_and)
+    line4(example_or_Percetron, errors=_errors_or, calulated_values=_calculated_values_or)
+    line4(example_and_Percetron, errors=_errors_and, calulated_values=_calculated_values_and)
+    line5(example_or_Percetron)
+    line5(example_and_Percetron)
+
+
+def demoA():
+    print("MAIN::example_or_Percetron expected result=\t", example_or_Percetron.desired_results)
+    linea(percetron=example_or_Percetron, input_combinations=BITCOMBINATIONS, print_bool=True)
+    print("MAIN::example_and_Percetron expected result=\t", example_and_Percetron.desired_results)
+    linea(percetron=example_and_Percetron, input_combinations=BITCOMBINATIONS, print_bool=True)
+    mean_counter_or, stdev_counter_or = lineaExperiments(input_combinations=BITCOMBINATIONS,
+                                                         input_desired_values=OR_DESIRED,
+                                                         learning_rate=example_learningrate)
+    print("LINEA_Experiments:: or mean(counter_list)=", round(mean_counter_or, 2),
+          "stdev(counter_list)", round(stdev_counter_or, 2))
+    mean_counter_and, stdev_counter_and = lineaExperiments(input_combinations=BITCOMBINATIONS,
+                                                           input_desired_values=AND_DESIRED,
+                                                           learning_rate=example_learningrate)
+    print("LINEA_Experiments:: and mean(counter_list)=", round(mean_counter_and, 2),
+          "stdev(counter_list)", round(stdev_counter_and, 2))
+
+
+if __name__ == '__main__':
+
+    example_learningrate = 1
+    example_weights: list = [0.1, 0.1, 0.1]
     example_or_Percetron: Percetron = Percetron(weights=example_weights, combinations=BITCOMBINATIONS,
                                                 desired_values=OR_DESIRED, learning_rate=example_learningrate)
     example_and_Percetron: Percetron = Percetron(weights=example_weights, combinations=BITCOMBINATIONS,
                                                  desired_values=AND_DESIRED, learning_rate=example_learningrate)
 
-    line1()
-    _calculated_values_or = line2(example_or_Percetron)
-    _calculated_values_and = line2(example_and_Percetron)
+    initialDemo()
 
-    _errors_or = line3(example_or_Percetron, _calculated_values_or)
-    _errors_and = line3(example_and_Percetron, _calculated_values_and)
+    demoA()
 
-    line4(example_or_Percetron, errors=_errors_or, calulated_values=_calculated_values_or)
-    line4(example_and_Percetron, errors=_errors_and, calulated_values=_calculated_values_and)
-
-    line5(example_or_Percetron)
-    line5(example_and_Percetron)
-    print("MAIN::example_or_Percetron expected result=\t", example_or_Percetron.desired_results)
-    linea(percetron=example_or_Percetron, combinations=BITCOMBINATIONS, print_bool=True)
-    print("MAIN::example_and_Percetron expected result=\t", example_and_Percetron.desired_results)
-    linea(percetron=example_and_Percetron, combinations=BITCOMBINATIONS, print_bool=True)
-
-    mean_counter_or, stdev_counter_or = lineaExperiments(input_combinations=BITCOMBINATIONS,
-                                                         input_desired_values=OR_DESIRED,
-                                                         learning_rate=example_learningrate)
-    mean_counter_and, stdev_counter_and = lineaExperiments(input_combinations=BITCOMBINATIONS,
-                                                           input_desired_values=AND_DESIRED,
-                                                           learning_rate=example_learningrate)
-
-    print("LINEA_Experiments:: or mean(counter_list)=", round(mean_counter_or, 2),
-          "stdev(counter_list)", round(stdev_counter_or, 2))
-    print("LINEA_Experiments:: and mean(counter_list)=", round(mean_counter_and, 2),
-          "stdev(counter_list)", round(stdev_counter_and, 2))
-
-    lineb(tries=10, max_learning_rate=1, input_combinations=BITCOMBINATIONS, input_desired_values=AND_DESIRED)
-    lineb(tries=10, max_learning_rate=1, input_combinations=BITCOMBINATIONS, input_desired_values=OR_DESIRED)
+    lineb(tries=30, max_learning_rate=10, input_combinations=BITCOMBINATIONS, input_desired_values=AND_DESIRED)
+    # lineb(tries=10, max_learning_rate=1, input_combinations=BITCOMBINATIONS, input_desired_values=OR_DESIRED)
