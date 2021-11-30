@@ -31,19 +31,34 @@ class Flower:
             self.petal_width) + "," + str(self.flower_class)
 
     def __repr__(self): return self.__str__()
-
+    ##
+    # Method to be able to subtract two diferent flowers and get a float result
+    # ##
     def __sub__(self, other) -> float:
         return self.petal_width - other.petal_width + \
                self.petal_length - other.petal_length + \
                self.sepal_width - other.sepal_width + \
                self.sepal_length - other.sepal_length
-
+    ##
+    # Method to be able to add two diferent flowers and get a float result
+    # ##
     def __add__(self, other) -> float:
         return self.petal_width + other.petal_width + \
                self.petal_length + other.petal_length + \
                self.sepal_width + other.sepal_width + \
                self.sepal_length + other.sepal_length
-
+    ##
+    # Method to be able to acess a flower like an array, example: new_flower[0]
+    # ##
+    def __getitem__(self, item):
+        if item == 0 :
+            return self.petal_width
+        elif item == 1 :
+            return self.petal_length
+        elif item == 2 :
+            return self.sepal_width
+        elif item == 3 :
+            return self.sepal_width
 
 def euclidian_distance( flower1: Flower, flower2: Flower) -> float:
     return ((flower2.petal_length - flower1.petal_length) ** 2 +
