@@ -4,7 +4,7 @@ from typing import List, Tuple
 
 from matplotlib import pyplot as plt
 
-from Assignment4_Supervised_Learning.Models.Flower import Flower, euclidian_distance
+from Assignment4_Supervised_Learning.Models.Flower import Flower, euclidian_distance, FlowerEnum
 
 
 def loadData(path: str):
@@ -60,17 +60,19 @@ def get_k_neighbours(neighbours: List[Tuple[Flower, float]], k: int) -> List[Tup
     return neighbours[0:k:]
 
 
-def get_most_common_class_in_neighbours(neighbours: List[Tuple[Flower, float]]) -> str:
+def get_most_common_class_in_neighbours(neighbours: List[Tuple[Flower, float]]) -> FlowerEnum:
     flower_class_dict = {}
     for tuple_flower_distance in neighbours:
         if tuple_flower_distance[0].flower_class in flower_class_dict.keys():
             flower_class_dict[tuple_flower_distance[0].flower_class] += 1
         else:
             flower_class_dict.update({tuple_flower_distance[0].flower_class: 1})
-    return max(flower_class_dict)
+    max_index =list(flower_class_dict.values()).index(max(flower_class_dict.values()))
+    keys = list(flower_class_dict.keys())
+    return keys[max_index]
 
 
-def evaluate_speculation(flower: Flower, fl_class: str) -> bool:
+def evaluate_speculation(flower: Flower, fl_class: FlowerEnum) -> bool:
     return fl_class == flower.flower_class
 
 
@@ -78,7 +80,7 @@ def speculate_class(new_flower: Flower, dataset: List[Flower], k_neighbours_int:
     distances: List[Tuple[Flower, float]] = calculate_euclidian_dataset(example_flower=new_flower, dataset=dataset)
     sort_dataset(distance_dataset=distances)
     closest_neighbours: List[Tuple[Flower, float]] = get_k_neighbours(neighbours=distances, k=k_neighbours_int)
-    speculation: str = get_most_common_class_in_neighbours(neighbours=closest_neighbours)
+    speculation: FlowerEnum = get_most_common_class_in_neighbours(neighbours=closest_neighbours)
     return evaluate_speculation(new_flower, speculation)
 
 
@@ -121,6 +123,5 @@ if __name__ == '__main__':
     print("test_set", len(test_set))
     new_flower: Flower = Flower(sepal_length=0.1, sepal_width=0.3, petal_length=0.4, petal_width=0.5)
     k = 2
-
     guess_on_dataset(test_set=test_set, training_set=training_set, k=k)
     experiment(n_experiments=10, k_list=[3, 7, 10, 11], initial_dataset=flowers)
