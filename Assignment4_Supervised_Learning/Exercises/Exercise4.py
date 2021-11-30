@@ -70,9 +70,10 @@ def new_binned_set(dataset: List[Flower], bins: List[Tuple[int, int]]) -> List[T
     return binned_flowers
 
 def organize_binned_set_by_flowerenum(binned_set:List[Tuple[int, int, int, int, FlowerEnum]] )-> List[List[Tuple[int, int, int, int, FlowerEnum]]]:
+    flower_enums:List[FlowerEnum] = [ i for i in FlowerEnum]
     organized_binned_set:List[List[Tuple[int, int, int, int, FlowerEnum]]] = [ [] for _ in FlowerEnum]
     for flower in binned_set:
-        organized_binned_set[FlowerEnum.(flower[-1])]
+        organized_binned_set[flower_enums.index(flower[-1])].append(flower)
 
 
     return organized_binned_set
@@ -113,6 +114,7 @@ def guess_new_entry(new_entry: Flower, training_set: List[Flower], features_n=4)
     probability_new_class: float = calculate_probability_class_in_dataset(new_class=new_entry.flower_class,
                                                                           dataset=training_set)
     _binned_set = new_binned_set(dataset=training_set, bins=bins)
+    organize_binned_set_by_flowerenum(binned_set=_binned_set)
     print()
 
 
