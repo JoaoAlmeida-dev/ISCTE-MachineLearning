@@ -97,5 +97,9 @@ class Percetron:
     def update_weights(self) \
             -> None:
         self.blank_weight += self.blank_weight_variance
-        for (weight, weight_variance) in zip(self.weights, self.weights_variance):
-            weight += weight_variance
+        self.blank_weight_variance=0
+
+        for weight_index in range(min(len(self.weights),len(self.weights_variance))):
+            self.weights[weight_index] += self.weights_variance[weight_index]
+            self.weights_variance[weight_index] = 0
+

@@ -99,16 +99,10 @@ def lineaExperiments(input_combinations: List[Tuple[float, float]], input_desire
     return _mean_counter, _stdev_counter
 
 
-def lineb(tries: int, max_learning_rate: int, input_combinations: List[Tuple[float, float]],
-          input_desired_values: List[float]):
-    learning_rates_list = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]
-    #learning_rates_list: List[float] = []
-    #for _ in range(10):
-    #    learning_rates_list.append(round(random.random() * max_learning_rate, 3))
-    #learning_rates_list.sort()
+def lineb(tries: int, learning_rates_list: List[float], input_combinations: List[Tuple[float, float]],
+          input_desired_values: List[float], label: str = "", title =""):
 
     mean_list = [[] for _ in range(len(learning_rates_list))]
-
     for learning_rate_index, learning_rate in enumerate(learning_rates_list):
         for _ in range(tries):
             random_weights: List[float] = [random.random(), random.random(), random.random(), ]
@@ -116,30 +110,16 @@ def lineb(tries: int, max_learning_rate: int, input_combinations: List[Tuple[flo
                                              desired_values=input_desired_values, learning_rate=learning_rate)
             _mean_counter = linea(percetron=percetron, input_combinations=input_combinations, print_bool=False)
             mean_list[learning_rate_index].append(_mean_counter)
-    # plt.plot(BITS, mean_attempts_list, )
 
-    # plt.subplot(1,2,1)
-    plt.title("MEAN")
+    plt.title(title)
     mean_mean_list = [mean(_list) for _list in mean_list]
-    plt.plot(learning_rates_list, mean_mean_list, )
-    plt.boxplot(mean_list, positions=learning_rates_list, notch=False, showfliers=False, widths=0.05)
-
-    # plt.subplot(1,2,2)
-    # plt.title("STDEV")
-    # mean_stdev_list = [mean(_list) for _list in stdev_list]
-    ##plt.plot(learning_rates_list, mean_stdev_list, )
-    # plt.boxplot(stdev_list, positions=learning_rates_list, notch=False, showfliers=False, widths=0.05)
-
-    # plt.plot(learning_rates_list, mean_list, label="means")
-    # plt.plot(learning_rates_list, stdev_list, label="st-deviation")
-
+    plt.plot(learning_rates_list, mean_mean_list, label=label)
+    labels = [label for _ in learning_rates_list]
+    plt.boxplot(mean_list, positions=learning_rates_list, notch=False, showfliers=False, widths=0.05, )
     plt.legend()
-    plt.tight_layout()
-    plt.show()
 
 
 def initialDemo():
-
     line1()
     _calculated_values_or = line2(example_or_Percetron)
     _calculated_values_and = line2(example_and_Percetron)
@@ -169,7 +149,6 @@ def demoA():
 
 
 if __name__ == '__main__':
-
     example_learningrate = 1
     example_weights: list = [0.1, 0.1, 0.1]
     example_or_Percetron: Percetron = Percetron(weights=example_weights, combinations=BITCOMBINATIONS,
@@ -181,5 +160,10 @@ if __name__ == '__main__':
 
     demoA()
 
-    lineb(tries=30, max_learning_rate=10, input_combinations=BITCOMBINATIONS, input_desired_values=AND_DESIRED)
-    # lineb(tries=10, max_learning_rate=1, input_combinations=BITCOMBINATIONS, input_desired_values=OR_DESIRED)
+    learning_rates_list:List[float] = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]
+    plt.subplot(1,2,1)
+    lineb(tries=30, learning_rates_list=learning_rates_list, input_combinations=BITCOMBINATIONS, input_desired_values=AND_DESIRED, label= "AND", title="AND MEAN")
+    plt.subplot(1,2,2)
+    lineb(tries=10, learning_rates_list=learning_rates_list, input_combinations=BITCOMBINATIONS, input_desired_values=OR_DESIRED, label= "OR", title="OR MEAN")
+    plt.tight_layout()
+    plt.show()
