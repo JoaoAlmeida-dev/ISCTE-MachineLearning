@@ -1,10 +1,11 @@
 import enum
 
 class FlowerEnum(enum.Enum):
-    Iris_virginica="Iris-virginica"
-    Iris_versicolor = "Iris-versicolor"
-    Iris_setosa = "Iris-setosa"
-    NotExisting = ""
+    NotExisting = -1
+    Iris_virginica=0
+    Iris_versicolor = 1
+    Iris_setosa = 2
+
 
 class Flower:
     sepal_length: float
@@ -21,14 +22,14 @@ class Flower:
         self.petal_width = petal_width
         if flower_class is not None:
             for fl in FlowerEnum:
-                if fl.value == flower_class:
+                if fl.name == flower_class:
                     self.flower_class = fl
         else:
             self.flower_class = FlowerEnum.NotExisting
 
     def __str__(self):
         return str(self.sepal_length) + "," + str(self.sepal_width) + "," + str(self.petal_length) + "," + str(
-            self.petal_width) + "," + str(self.flower_class)
+            self.petal_width) + "," + str(self.flower_class.name)
 
     def __repr__(self): return self.__str__()
     ##

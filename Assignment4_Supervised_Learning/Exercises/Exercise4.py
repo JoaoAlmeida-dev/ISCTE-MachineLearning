@@ -40,18 +40,29 @@ def create_bins() -> List[Tuple[int, int]]:
     return [(0, 2), (2, 4), (4, 6), (6, 8)]
 
 
-def put_flower_in_bin(flower_feature: float, bins: List[Tuple[int, int]]) -> int:
+def put_flower_feature_in_bin(flower_feature: float, bins: List[Tuple[int, int]]) -> int:
     for bin_index, bin in enumerate(bins):
         if bin[0] <= flower_feature < bin[1]:
             return bin_index
     return -1
 
 
-def binned_set(dataset: List[Flower], bins: List[Tuple[int, int]], features_n=4):
+def put_flower_in_bin(bins: List[Tuple[int, int]], flower: Flower) -> Tuple[int, int, int, int, FlowerEnum]:
+    new_binned_flower: Tuple[int, int, int, int, FlowerEnum] = (
+        put_flower_feature_in_bin(flower_feature=flower[0], bins=bins),
+        put_flower_feature_in_bin(flower_feature=flower[1], bins=bins),
+        put_flower_feature_in_bin(flower_feature=flower[2], bins=bins),
+        put_flower_feature_in_bin(flower_feature=flower[3], bins=bins),
+        flower.flower_class
+    )
+    return new_binned_flower
+
+
+def binned_set(dataset: List[Flower], bins: List[Tuple[int, int]], features_n: int = 4):
     organized_set: List[List[List[Flower]]] = [[[] for _ in bins] for _ in range(features_n)]
     for flower in dataset:
         for feature_index in range(features_n):
-            calculated_bin: int = put_flower_in_bin(flower_feature=flower[feature_index], bins=bins)
+            calculated_bin: int = put_flower_feature_in_bin(flower_feature=flower[feature_index], bins=bins)
             organized_set[feature_index][calculated_bin].append(flower)
     return organized_set
 
@@ -59,26 +70,18 @@ def binned_set(dataset: List[Flower], bins: List[Tuple[int, int]], features_n=4)
 def new_binned_set(dataset: List[Flower], bins: List[Tuple[int, int]]) -> List[Tuple[int, int, int, int, FlowerEnum]]:
     binned_flowers: List[Tuple[int, int, int, int, FlowerEnum]] = []
     for flower in dataset:
-        new_binned_flower: Tuple[int, int, int, int, FlowerEnum] = (
-            put_flower_in_bin(flower_feature=flower[0], bins=bins),
-            put_flower_in_bin(flower_feature=flower[1], bins=bins),
-            put_flower_in_bin(flower_feature=flower[2], bins=bins),
-            put_flower_in_bin(flower_feature=flower[3], bins=bins),
-            flower.flower_class
-        )
+        new_binned_flower = put_flower_in_bin(bins, flower)
         binned_flowers.append(new_binned_flower)
     return binned_flowers
 
-def organize_binned_set_by_flowerenum(binned_set:List[Tuple[int, int, int, int, FlowerEnum]] )-> List[List[Tuple[int, int, int, int, FlowerEnum]]]:
-    flower_enums:List[FlowerEnum] = [ i for i in FlowerEnum]
-    organized_binned_set:List[List[Tuple[int, int, int, int, FlowerEnum]]] = [ [] for _ in FlowerEnum]
+
+def organize_binned_set_by_flowerenum(binned_set: List[Tuple[int, int, int, int, FlowerEnum]]) -> List[
+    List[Tuple[int, int, int, int, FlowerEnum]]]:
+    flower_enums: List[FlowerEnum] = [i for i in FlowerEnum]
+    organized_binned_set: List[List[Tuple[int, int, int, int, FlowerEnum]]] = [[] for _ in FlowerEnum]
     for flower in binned_set:
         organized_binned_set[flower_enums.index(flower[-1])].append(flower)
-
-
     return organized_binned_set
-
-
 
 
 # endregion
@@ -107,16 +110,58 @@ def calculate_probability_class_in_dataset(new_class: FlowerEnum, dataset: List[
     else:
         return 0
 
+
 # endregion
 
 def guess_new_entry(new_entry: Flower, training_set: List[Flower], features_n=4):
     _bins = create_bins()
-    probability_new_class: float = calculate_probability_class_in_dataset(new_class=new_entry.flower_class,
-                                                                          dataset=training_set)
-    _binned_set = new_binned_set(dataset=training_set, bins=bins)
-    organize_binned_set_by_flowerenum(binned_set=_binned_set)
-    print()
 
+
+    _binned_entry: Tuple[int, int, int, int, FlowerEnum] = put_flower_in_bin(flower=new_entry, bins=_bins)
+    _binned_set = new_binned_set(dataset=training_set, bins=bins)
+    _organized_bined_set = organize_binned_set_by_flowerenum(binned_set=_binned_set)
+    counter_list = [[ 0 for _ in range(features_n)] for _ in _organized_bined_set]
+    totals_list = [[ len(set) for _ in range(features_n)] for set in _organized_bined_set]
+    for flower_bin_index,flower_bin in enumerate(_organized_bined_set):
+        for flower_Tuple in flower_bin:
+            for feature_index in range(len(flower_Tuple)-1):
+                if flower_Tuple[feature_index] == _binned_entry[feature_index]:
+                    counter_list[flower_bin_index][feature_index] += 1
+    classes_probability_list = []
+    for class_index in range(len(counter_list)):
+        class_probability = 1
+        for feature_counter_index in range(len(counter_list[class_index])-1):
+            counter_n = counter_list[class_index][feature_counter_index]
+            total_n = totals_list[class_index][feature_counter_index]
+            if total_n == 0 :
+                class_probability *= total_n
+            else:
+                class_probability *= counter_n / total_n
+        classes_probability_list.append(class_probability)
+    print(classes_probability_list)
+
+
+    probability_each_class = [calculate_probability_class_in_dataset(flower_enum, dataset=training_set) for flower_enum
+                              in FlowerEnum]
+    probabilities_with_current_features = []
+
+    for probability_class_index,probability_class in enumerate(probability_each_class):
+        probabilities_with_current_features.append(probability_class*classes_probability_list[probability_class_index])
+
+    max_probability_index = probabilities_with_current_features.index(max(probabilities_with_current_features))-1
+    guessed_class = FlowerEnum(max_probability_index)
+    print("guessed_class",guessed_class,"original_class",new_entry.flower_class)
+    return guessed_class == new_entry.flower_class,
+
+def guess_test_set(test_set:List[Flower],training_set:List[Flower],features_n=4):
+    guesses_list:List[bool] = []
+    for flower in test_set:
+        guesses_list.append(guess_new_entry(new_entry=flower,training_set=training_set,features_n=features_n))
+    correct_counter = 0
+    for guess in guesses_list:
+        if guess:
+            correct_counter +=1
+    print("total_guesses:",len(guesses_list),"correct_guesses:",correct_counter, "%",correct_counter/len(guesses_list))
 
 if __name__ == '__main__':
     root_path = Path(__file__).parent.parent
@@ -127,5 +172,7 @@ if __name__ == '__main__':
     max_values, min_values = max_min_features(flowers)
     print("max", max_values, "min", min_values)
     binned_set(dataset=flowers, bins=bins)
+
     calculate_probability_matrix(dataset=flowers, bins=bins)
     guess_new_entry(new_entry=test_set[0], training_set=training_set)
+    guess_test_set(test_set=test_set,training_set=training_set)
