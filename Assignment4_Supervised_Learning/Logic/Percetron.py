@@ -1,6 +1,5 @@
 from typing import List, Tuple
 
-
 class Percetron:
     blank_weight: float
     blank_weight_variance: float
@@ -10,8 +9,8 @@ class Percetron:
     learning_rate: float
     desired_results: List[Tuple[Tuple[float, float], float]]
 
-    def __init__(self, weights: List[float], combinations: List[Tuple[float, float]], desired_values: List[float],
-                 learning_rate: float):
+    def __init__(self, weights: List[float], combinations: List[Tuple[float, float]],
+                 desired_values: List[float],learning_rate: float):
         self.blank_weight = weights[0]
         self.blank_weight_variance = 0
         self.weights = weights[1::]

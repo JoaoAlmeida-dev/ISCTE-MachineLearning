@@ -4,6 +4,7 @@ from statistics import mean, stdev
 from typing import List, Tuple
 
 import matplotlib.pyplot as plt
+import numpy.random
 
 from Assignment4_Supervised_Learning.Logic.Percetron import Percetron
 
@@ -37,8 +38,7 @@ def line3(percetron: Percetron, calulated_values: List[Tuple[Tuple[float, float]
     return errors
 
 
-def line4(percetron: Percetron, errors: List[Tuple[Tuple[float, float], float]],
-          calulated_values: List[Tuple[Tuple[float, float], float]]):
+def line4(percetron: Percetron, errors: List[Tuple[Tuple[float, float], float]]):
     """
     Add to the update term for w1 (∆w1) and w2 (∆w2) according to:
         ∆w0 = ∆w0 + α ·(d −o);
@@ -100,8 +100,7 @@ def lineaExperiments(input_combinations: List[Tuple[float, float]], input_desire
 
 
 def lineb(tries: int, learning_rates_list: List[float], input_combinations: List[Tuple[float, float]],
-          input_desired_values: List[float], label: str = "", title =""):
-
+          input_desired_values: List[float], label: str = "", title=""):
     mean_list = [[] for _ in range(len(learning_rates_list))]
     for learning_rate_index, learning_rate in enumerate(learning_rates_list):
         for _ in range(tries):
@@ -114,12 +113,11 @@ def lineb(tries: int, learning_rates_list: List[float], input_combinations: List
     plt.title(title)
     mean_mean_list = [mean(_list) for _list in mean_list]
     plt.plot(learning_rates_list, mean_mean_list, label=label)
-    labels = [label for _ in learning_rates_list]
     plt.boxplot(mean_list, positions=learning_rates_list, notch=False, showfliers=False, widths=0.05, )
     plt.legend()
 
 
-def initialDemo():
+def initialDemo(example_or_Percetron:Percetron,example_and_Percetron:Percetron):
     line1()
     _calculated_values_or = line2(example_or_Percetron)
     _calculated_values_and = line2(example_and_Percetron)
@@ -131,7 +129,7 @@ def initialDemo():
     line5(example_and_Percetron)
 
 
-def demoA():
+def demoA(example_or_Percetron:Percetron,example_and_Percetron:Percetron):
     print("MAIN::example_or_Percetron expected result=\t", example_or_Percetron.desired_results)
     linea(percetron=example_or_Percetron, input_combinations=BITCOMBINATIONS, print_bool=True)
     print("MAIN::example_and_Percetron expected result=\t", example_and_Percetron.desired_results)
@@ -148,7 +146,22 @@ def demoA():
           "stdev(counter_list)", round(stdev_counter_and, 2))
 
 
+def demoB():
+    learning_rates_list: List[float] = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]
+    plt.subplot(1, 2, 1)
+    lineb(tries=30, learning_rates_list=learning_rates_list, input_combinations=BITCOMBINATIONS,
+          input_desired_values=AND_DESIRED, label="AND", title="AND MEAN")
+    plt.subplot(1, 2, 2)
+    lineb(tries=10, learning_rates_list=learning_rates_list, input_combinations=BITCOMBINATIONS,
+          input_desired_values=OR_DESIRED, label="OR", title="OR MEAN")
+    plt.tight_layout()
+    plt.show()
+
+
 if __name__ == '__main__':
+    random.seed(1)
+    numpy.random.seed(1)
+
     example_learningrate = 1
     example_weights: list = [0.1, 0.1, 0.1]
     example_or_Percetron: Percetron = Percetron(weights=example_weights, combinations=BITCOMBINATIONS,
@@ -156,14 +169,6 @@ if __name__ == '__main__':
     example_and_Percetron: Percetron = Percetron(weights=example_weights, combinations=BITCOMBINATIONS,
                                                  desired_values=AND_DESIRED, learning_rate=example_learningrate)
 
-    initialDemo()
-
-    demoA()
-
-    learning_rates_list:List[float] = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]
-    plt.subplot(1,2,1)
-    lineb(tries=30, learning_rates_list=learning_rates_list, input_combinations=BITCOMBINATIONS, input_desired_values=AND_DESIRED, label= "AND", title="AND MEAN")
-    plt.subplot(1,2,2)
-    lineb(tries=10, learning_rates_list=learning_rates_list, input_combinations=BITCOMBINATIONS, input_desired_values=OR_DESIRED, label= "OR", title="OR MEAN")
-    plt.tight_layout()
-    plt.show()
+    initialDemo(example_or_Percetron=example_or_Percetron,example_and_Percetron=example_and_Percetron)
+    demoA(example_or_Percetron=example_or_Percetron,example_and_Percetron=example_and_Percetron)
+    demoB()

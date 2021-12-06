@@ -1,6 +1,9 @@
 import math
+import random
 from pathlib import Path
 from typing import List, Tuple
+
+import numpy
 
 from Assignment4_Supervised_Learning.Logic.Loader import loadData
 from Assignment4_Supervised_Learning.Models.Flower import Flower, FlowerEnum
@@ -69,17 +72,21 @@ def calculate_gains_all_features(dataset: List[Flower], flr_class: FlowerEnum) -
     for feature in range(4):
         gain_list.append(calculate_gain(dataset=dataset, feature=feature, flr_class=flr_class))
     print(gain_list)
-    max_index:int =gain_list.index(max(gain_list))
+    max_index: int = gain_list.index(max(gain_list))
     return max_index, gain_list[max_index]
 
 
 if __name__ == '__main__':
+    random.seed(1)
+    numpy.random.seed(1)
+
     root_path = Path(__file__).parent.parent
     flowers: List[Flower] = loadData(str(root_path) + "/Resources/iris.data")
     upper_list, lower_list = split_dataset_based_on_collumn(flowers, 0)
-    print(upper_list)
-    print(lower_list)
+    print("upper_list", len(upper_list), upper_list)
+    print("lower_list", len(lower_list), lower_list)
 
+    print("Initial entropy=", calculate_set_entropy(dataset=flowers, flr_class=FlowerEnum.Iris_setosa))
     print("upper_list entropy=", calculate_set_entropy(dataset=upper_list, flr_class=FlowerEnum.Iris_setosa))
     print("lower_list entropy=", calculate_set_entropy(dataset=lower_list, flr_class=FlowerEnum.Iris_setosa))
     print("gain", calculate_gain(dataset=flowers, feature=0, flr_class=FlowerEnum.Iris_setosa))

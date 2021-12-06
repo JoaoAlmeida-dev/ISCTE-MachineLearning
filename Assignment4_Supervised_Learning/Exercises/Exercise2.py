@@ -1,3 +1,5 @@
+import numpy
+import random
 from pathlib import Path
 from typing import List, Tuple
 
@@ -34,7 +36,7 @@ def get_most_common_class_in_neighbours(neighbours: List[Tuple[Flower, float]]) 
             flower_class_dict[tuple_flower_distance[0].flower_class] += 1
         else:
             flower_class_dict.update({tuple_flower_distance[0].flower_class: 1})
-    max_index =list(flower_class_dict.values()).index(max(flower_class_dict.values()))
+    max_index = list(flower_class_dict.values()).index(max(flower_class_dict.values()))
     keys = list(flower_class_dict.keys())
     return keys[max_index]
 
@@ -71,17 +73,24 @@ def experiment(n_experiments: int, k_list: List[int], initial_dataset: List[Flow
             _training_set, _test_set = random_split_dataset(initial_dataset)
             correct, wrong = guess_on_dataset(training_set=_training_set, test_set=_test_set, k=_k)
             results_list[_k_index].append(correct / (correct + wrong))
-    plt.subplot(1,2,1)
-    plt.boxplot(results_list, positions=k_list)
-    plt.subplot(1,2,2)
-    for results_index,results in enumerate(results_list):
-        plt.plot(results,label="k="+str(k_list[results_index]))
+    #plt.subplot(1, 2, 1)
+    plt.boxplot(results_list, positions=k_list,widths=3)
+    #plt.subplot(1, 2, 2)
+    #for results_index, results in enumerate(results_list):
+    #    plt.plot(results, label="k=" + str(k_list[results_index]))
+    plt.xlabel("K values")
+    plt.ylabel("% correct")
+    plt.title("Exercise2 with "+str(n_experiments) + " experiments")
+    plt.tight_layout()
     plt.legend()
     plt.show()
     return results_list
 
 
 if __name__ == '__main__':
+    random.seed(1)
+    numpy.random.seed(1)
+
     root_path = Path(__file__).parent.parent
     print(root_path)
     flowers: List[Flower] = loadData(str(root_path) + "/Resources/iris.data")
@@ -91,4 +100,4 @@ if __name__ == '__main__':
     new_flower: Flower = Flower(sepal_length=0.1, sepal_width=0.3, petal_length=0.4, petal_width=0.5)
     k = 2
     guess_on_dataset(test_set=test_set, training_set=training_set, k=k)
-    experiment(n_experiments=10, k_list=[3, 7, 10, 11], initial_dataset=flowers)
+    experiment(n_experiments=10, k_list=[2,10,20,30,40,50,60,70,80,90,100], initial_dataset=flowers)
