@@ -112,8 +112,8 @@ def lineb(tries: int, learning_rates_list: List[float], input_combinations: List
 
     plt.title(title)
     mean_mean_list = [mean(_list) for _list in mean_list]
-    plt.plot(learning_rates_list, mean_mean_list, label=label)
-    plt.boxplot(mean_list, positions=learning_rates_list, notch=False, showfliers=False, widths=0.05, )
+    #plt.plot(learning_rates_list, mean_mean_list, label=label)
+    plt.boxplot(mean_list,positions=learning_rates_list,  )
     plt.legend()
 
 
@@ -123,8 +123,8 @@ def initialDemo(example_or_Percetron:Percetron,example_and_Percetron:Percetron):
     _calculated_values_and = line2(example_and_Percetron)
     _errors_or = line3(example_or_Percetron, _calculated_values_or)
     _errors_and = line3(example_and_Percetron, _calculated_values_and)
-    line4(example_or_Percetron, errors=_errors_or, calulated_values=_calculated_values_or)
-    line4(example_and_Percetron, errors=_errors_and, calulated_values=_calculated_values_and)
+    line4(example_or_Percetron, errors=_errors_or)
+    line4(example_and_Percetron, errors=_errors_and)
     line5(example_or_Percetron)
     line5(example_and_Percetron)
 
@@ -147,7 +147,7 @@ def demoA(example_or_Percetron:Percetron,example_and_Percetron:Percetron):
 
 
 def demoB():
-    learning_rates_list: List[float] = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]
+    learning_rates_list: List[float] = [0.001, 0.002, 0.003, 0.004, 0.005, 0.006, 0.007, 0.008, 0.009, 0.01]
     plt.subplot(1, 2, 1)
     lineb(tries=30, learning_rates_list=learning_rates_list, input_combinations=BITCOMBINATIONS,
           input_desired_values=AND_DESIRED, label="AND", title="AND MEAN")

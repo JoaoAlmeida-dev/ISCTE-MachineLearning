@@ -2,7 +2,6 @@ import enum
 
 
 class FlowerEnum(enum.Enum):
-    NotExisting = -1
     Iris_virginica = 0
     Iris_versicolor = 1
     Iris_setosa = 2
