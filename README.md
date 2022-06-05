@@ -1,5 +1,7 @@
 # ISCTE-MachineLearning
 
+Academic repository to explore indepth how to implement machine learning algorithms using python, matplotlib and pandas
+
 <h2>Assignment2 Evolutionary algorithms</h2>
 
 <p>Random guessing</p>
